@@ -1,0 +1,70 @@
+<div class="card-body">
+  <p align="left">
+    <button type="button" class="btn btn-ghost-success" (click)="openModal(element)"><i class="fa fa-lightbulb-o"></i>ajouter
+      Suivis
+    </button>
+  </p>
+</div>
+<ng2-smart-table [settings]="settings" [source]="data" (custom)="chooseAction($event, element, delete)" ></ng2-smart-table>
+<ng-template #element>
+  <strong>Ajouter un Suivis </strong>
+  <h2 mat-dialog-title></h2>
+  <mat-dialog-content class="mat-typography">
+
+      <div class="card-body" >
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="textarea-input"><strong>Description Action</strong></label>
+          <div class="col-md-9">
+            <textarea id="textarea-input" [(ngModel)]="Description_Action" name="textarea-input" rows="9" class="form-control" placeholder="Content.."></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label"><strong>Avancement</strong></label>
+          <div class="col-md-9">
+            <select  id="statut" [(ngModel)]="Avancement" name="statut" class="form-control">
+              <option  value=""disabled selected="selected">-------------</option>
+              <option>Contacter</option>
+              <option>Entretien RH</option>
+              <option>Envoi mail</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="date_input"><strong>Date Input</strong></label>
+          <div class="col-md-9">
+            <input class="form-control"  [(ngModel)]="date_input" id="date_input" type="date" name="date_input" placeholder="date">
+            <span class="help-block">Veuillez entrer une date valide</span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" ><strong>Attacher une piéce jointe</strong></label>
+          <label class="col-md-3 col-form-label" for="file-multiple-input"></label>
+          <div class="col-md-9">
+            <input type="file" id="file-multiple-input" name="file-multiple-input" multiple>
+          </div> </div>
+        </div>
+    <div class="col-6 col-sm-4 col-md mb-3 mb-xl-0 text-center">
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <div class="col-6 col-sm-4 col-md mb-3 mb-xl-0 text-center">
+      <p align="right">
+        <button mat-button mat-dialog-close (click)="clear()">Annuler</button>
+        <button mat-button [mat-dialog-close]="true" (click)="addSuivis()" cdkFocusInitial>valider</button>
+      </p>
+    </div>
+  </mat-dialog-actions>
+</ng-template>
+<ng-template #delete>
+  <strong>Confirmation De La Suppression</strong>
+  <h2 mat-dialog-title></h2>
+  <mat-dialog-content class="mat-typography">
+    <div class="card-body">
+      <p>Etes-vous sur de vouloir supprimer cet Suivis ?</p>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Annuler</button>
+    <button mat-button [mat-dialog-close]="true" (click)="deleteSuivis()" cdkFocusInitial>supprimer</button>
+  </mat-dialog-actions>
+</ng-template>
