@@ -10,7 +10,7 @@ import {MatDialog} from '@angular/material/dialog';
 })
 export class AvantagesComponent implements OnInit {
 
-  constructor(private service: AvantagesService,  private matDialog: MatDialog,) { }
+  constructor(private service: AvantagesService,  private matDialog: MatDialog, ) { }
   settings = {
     columns: {
       competence_name: {
@@ -33,8 +33,8 @@ export class AvantagesComponent implements OnInit {
     },
   };
   data = [];
-  advantage_name : any;
-  advantage_group : any;
+  advantage_name: any;
+  advantage_group: any;
   ngOnInit(): void {
     this.findAllAvantages();
   }
