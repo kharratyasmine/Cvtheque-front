@@ -37,10 +37,10 @@ export const routes: Routes = [
       {path: 'competence',
         loadChildren: () => import('./views/competence/competence.module').then(m => m.CompetenceModule)
       },
-      {path: 'postes',
+      {path: 'post',
         loadChildren: () => import('./views/postes/postes.module').then(m => m.PostesModule)
       },
-      {path: 'université',
+      {path: 'university',
         loadChildren: () => import('./views/university/university.module').then(m => m.UniversityModule)
       }
     ]

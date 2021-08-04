@@ -4,7 +4,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {Competence} from '../../model/competence';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 @Component({
-  selector: 'app-competance',
+  selector: 'app-competence',
   templateUrl: './competence.component.html',
   styleUrls: ['./competence.component.scss']
 })
@@ -43,9 +43,10 @@ export class CompetenceComponent implements OnInit {
   data = [];
   competence_group: any;
   competence_name: any;
-  idCompetence: any;
+  idCompetence = null;
   deleted: any;
   competence: any;
+  title: string;
   ngOnInit(): void {
     this.findAllCompetence();
   }
@@ -55,6 +56,7 @@ export class CompetenceComponent implements OnInit {
     });
   }
   openModal( element: any) {
+    this.title = 'Nouvelle';
     this.matDialog.open(element, {
       width: '800px',
       disableClose: true
@@ -64,10 +66,12 @@ export class CompetenceComponent implements OnInit {
     this.competence = event.data;
     switch (event.action) {
       case 'delete' :
+        this.idCompetence = event.data.id_competence;
         this.matDialog.open(elementDelete, {disableClose: true});
-        this.idCompetence = event.data.idCompetence;
         break;
       default :
+        event.action === 'edit' ? this.idCompetence = event.data.id_competence : this.idCompetence = null;
+        this.title = 'Modifier';
         this.fillDate(event.data);
         this.matDialog.open(element, {disableClose: true}); break;
     }
@@ -83,7 +87,7 @@ export class CompetenceComponent implements OnInit {
         this.close();
       });
     } else {
-      competence.id = idCompetence;
+      competence.id_competence = idCompetence;
       this.service.updateCompetence(competence, idCompetence).subscribe(() => {
         this.ngOnInit();
         this.close();
@@ -105,7 +109,7 @@ export class CompetenceComponent implements OnInit {
   private fillDate(data) {
     this.competence_name = data.competence_name;
     this.competence_group = data.competence_group;
-    this.idCompetence = data.idCompetence; }
+  }
   // onSubmit() {
   //   console.log(this.productForm.value);
   // }
@@ -124,6 +128,7 @@ export class CompetenceComponent implements OnInit {
   // removecompetence(i: number) {
   //   this.competences().removeAt(i);
   // }
+
 
 }
 

@@ -38,8 +38,9 @@ export class AvantagesComponent implements OnInit {
   data = [];
   advantage_name: any;
   advantage_group: any;
-  idAdvantage: any;
+  idAdvantage = null;
   deleted: any;
+  title = '';
   ngOnInit(): void {
     this.findAllAvantages();
   }
@@ -49,6 +50,7 @@ export class AvantagesComponent implements OnInit {
     });
   }
   openModal(avant: any) {
+    this.title = 'Nouvelle';
     this.matDialog.open(avant, {
       width: '800px',
       disableClose: true
@@ -57,12 +59,14 @@ export class AvantagesComponent implements OnInit {
   chooseAction(event: any, avant: any, avantDelete: any) {
   switch (event.action) {
     case 'delete' :
-      this.matDialog.open(avantDelete, {disableClose: true});
       this.idAdvantage = event.data.id_advantage;
+      this.matDialog.open(avantDelete, {disableClose: true});
       break;
       default :
+        event.action === 'edit' ? this.idAdvantage = event.data.id_advantage : this.idAdvantage = null;
+        this.title = 'Modifier';
         this.fillDate(event.data);
-      this.matDialog.open(avant, {
+        this.matDialog.open(avant, {
         width: '800px',
         disableClose: true
       });
@@ -101,6 +105,5 @@ export class AvantagesComponent implements OnInit {
   private fillDate(data) {
     this.advantage_name = data.advantage_name;
     this.advantage_group = data.advantage_group;
-    this.idAdvantage = data.idAdvantage;
   }
 }

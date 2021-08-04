@@ -29,11 +29,11 @@ export const navItems: INavData[] = [
     icon: 'icon-pie-chart'
   },
   {name: 'Postes',
-    url: '/Postes',
+    url: '/post',
     icon: 'icon-pie-chart'
   },
   {name: 'Université',
-    url: '/University',
+    url: '/university',
     icon: 'icon-pie-chart'
   },
 ];

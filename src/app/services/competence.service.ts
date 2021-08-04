@@ -18,7 +18,7 @@ export class CompetenceService {
 
 
   postCompetence(competence: Competence): Observable<any> {
-    return this.httpClient.post(this.url + 'competence', Competence);
+    return this.httpClient.post(this.url + 'competence', competence);
   }
 
   deleteCompetence(idCompetence: any): Observable<any> {
@@ -26,6 +26,6 @@ export class CompetenceService {
   }
 
   updateCompetence(competence: Competence, idCompetence) {
-    return this.httpClient.put(this.url + 'competence/' + idCompetence, Competence);
+    return this.httpClient.put(this.url + 'competence/' + idCompetence, competence);
   }
 }
