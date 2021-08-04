@@ -6,7 +6,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {CandidatureRoutingModule} from './candidature-routing.module';
-
+import {CommonModule} from '@angular/common';
 
 @NgModule({
   imports: [
@@ -16,7 +16,8 @@ import {CandidatureRoutingModule} from './candidature-routing.module';
     MatButtonModule,
     FormsModule,
     MatSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule
   ],
   declarations: [CandidatureComponent],
   providers: [

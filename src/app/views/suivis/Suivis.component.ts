@@ -9,19 +9,19 @@ import {Suivis} from '../../model/suivis';
   styleUrls: ['./Suivis.component.scss']
 })
 export class SuivisComponent implements OnInit {
-  private suivis: Suivis;
+  private suivis: any;
   constructor(private service: SuivisService, private matDialog: MatDialog) {
   }
   settings = {
     columns: {
-      Description_Action: {
-        title: 'Description Action'
+      Date_de_Suivi: {
+        title: 'Date de Suivi'
       },
       Avancement: {
         title: 'Avancement'
       },
-      Date_de_Suivi: {
-        title: 'Date de Suivi'
+      Description_Action: {
+        title: 'Description Action'
       },
       Attacher_une_piece_jointe: {
         title: 'Attacher une piéce jointe'
@@ -32,10 +32,35 @@ export class SuivisComponent implements OnInit {
       edit: false,
       delete: false,
       position: 'right',
-      custom: [{
-          name: 'edit',
-          title: '<i class="cil-pencil width: 300px"></i>  ',
+      custom: [
+        {
+          name: 'delete',
+          title: '<i class="cil-x width: 300px"></i> ',
         },
+      ],
+    },
+  };
+  setting = {
+    columns: {
+      piece_jointe: {
+        title: 'Piece jointe'
+      },
+      Date: {
+        title: 'Date'
+      },
+       type_de_piece_jointe: {
+        title: 'Type de piece jointe'
+      },
+      Type: {
+        title: 'Type'
+      },
+    },
+    actions: {
+      add: false,
+      edit: false,
+      delete: false,
+      position: 'right',
+      custom: [
         {
           name: 'delete',
           title: '<i class="cil-x width: 300px"></i> ',
@@ -47,28 +72,34 @@ export class SuivisComponent implements OnInit {
   Description_Action: any;
   Avancement: any;
   date_input: any;
-
-
   ngOnInit(): void {
     this.findAllSuivis();
   }
+
   findAllSuivis() {
     this.service.findAllSuivis().subscribe(resultat => {
       console.log(resultat);
       this.data = resultat;
     });
   }
-  openModal( element: any) {
+
+  openModal(element: any) {
     this.matDialog.open(element, {
       width: '800px'
     });
   }
+
   chooseAction(event: any, element: any, elementDelete: any) {
     switch (event.action) {
-      case 'delete' :  this.matDialog.open(elementDelete); break;
-      default :  this.matDialog.open(element); break;
+      case 'delete' :
+        this.matDialog.open(elementDelete);
+        break;
+      default :
+        this.matDialog.open(element);
+        break;
     }
   }
+
   addSuivis() {
     const suivis = new Suivis();
     suivis.Description_Action = this.Description_Action;
@@ -79,17 +110,21 @@ export class SuivisComponent implements OnInit {
       console.log(r);
     });
   }
+
   deleteSuivis() {
     this.service.deleteSuivis(this.suivis.id).subscribe(r => {
       console.log(this.suivis);
     });
   }
-
-  clear() {
-    this.Description_Action = '';
-    this.Avancement = '';
-    this.date_input = '';
+  close() {
+    this.Description_Action = null;
+    this.Avancement = null;
+    this.date_input = null;
+    this.matDialog.closeAll();
   }
+
+
+
 }
 
 

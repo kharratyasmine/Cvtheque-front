@@ -1,4 +1,4 @@
-export class Condidat {
+export class CondidatDetails {
   id: any;
   last_name: any;
   first_name: any;

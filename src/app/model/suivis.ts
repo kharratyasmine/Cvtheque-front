@@ -3,4 +3,5 @@ export class Suivis {
   Description_Action: any;
   Date_Input: any;
   Avancement: any;
+  deleted: any;
 }

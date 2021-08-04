@@ -10,11 +10,9 @@ export class SuivisService {
 
   constructor(private httpClient: HttpClient) {
   }
-
   findAllSuivis(): Observable<any> {
     return this.httpClient.get(this.url + 'suivis');
   }
-
   postSuivis(suivis: Suivis): Observable<any> {
     return this.httpClient.post(this.url + 'suivis', suivis);
   }

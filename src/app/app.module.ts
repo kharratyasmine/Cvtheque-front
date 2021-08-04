@@ -23,9 +23,9 @@ import {initializer} from './utils/initializer';
 import {KeycloakAngularModule, KeycloakService} from 'keycloak-angular';
 import {HttpClientModule} from '@angular/common/http';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatStepperModule} from '@angular/material/stepper';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
@@ -54,7 +54,10 @@ const APP_CONTAINERS = [
     HttpClientModule,
     Ng2SmartTableModule,
     BrowserModule,
-    PdfViewerModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatStepperModule,
   ],
   declarations: [
     AppComponent,
@@ -80,4 +83,4 @@ const APP_CONTAINERS = [
   bootstrap: [AppComponent]
 })
 export class AppModule {}
-platformBrowserDynamic().bootstrapModule(AppModule);
+

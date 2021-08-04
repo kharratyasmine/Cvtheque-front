@@ -3,6 +3,7 @@ import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Avantage} from '../model/avantage';
+import {Competence} from '../model/competence';
 
 
 @Injectable({
@@ -15,14 +16,17 @@ export class AvantagesService {
   }
 
   findAllAvantages(): Observable<any> {
-    return this.httpClient.get(this.url + 'avantage');
+    return this.httpClient.get(this.url + 'advantage');
   }
 
-  postAvantage(avantage: Avantage): Observable<any> {
-    return this.httpClient.post(this.url + 'avantage', avantage);
+  postAdvantage(avantage: Avantage): Observable<any> {
+    return this.httpClient.post(this.url + 'advantage', avantage);
   }
 
-  deleteAvantage(idAvantage: any): Observable<any> {
-    return this.httpClient.delete(this.url + 'avantage/' + idAvantage);
+  deleteAvantage(idAdvantage: any): Observable<any> {
+    return this.httpClient.delete(this.url + 'advantage/' + idAdvantage);
+  }
+  updateAvantage(avantage: Avantage, idAdvantage) {
+    return this.httpClient.put(this.url + 'advantage/' + idAdvantage, avantage);
   }
 }

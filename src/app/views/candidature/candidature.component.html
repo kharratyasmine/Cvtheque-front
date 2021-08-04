@@ -1,28 +1,50 @@
 <div class="col-6 col-sm-4 col-md mb-3 mb-xl-0 text-center">
   <p align="left">
     <button type="button" class="btn btn-ghost-success" (click)="openModal(avant)"><i class="fa fa-lightbulb-o"></i>ajouter
-    </button>
+  candidature</button>
   </p>
 </div>
 <ng2-smart-table [settings]="settings" [source]="data"
-                 (custom)="chooseAction($event, avant, delete)" ></ng2-smart-table>
+                 (custom)="chooseAction($event, avant, delete, competence)" ></ng2-smart-table>
 <ng-template #avant>
-  <strong>Nouvelle Competance</strong>
-  <h2 mat-dialog-title></h2>
-  <mat-dialog-content class="mat-typography">
+  <strong>Nouvelle Candidature</strong>
+  <mat-dialog-content class="mat-typography" >
     <div class="card-body">
-
+      <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+        <div class="form-group ">
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label" for="candidat_id"><strong>Nom candidat</strong></label>
+                  <div class="col-md-9">
+                    <input type="text" id="candidat_id" name="candidat_id" class="form-control" placeholder="Nom candidat" [(ngModel)]="candidat_id">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label" for="recruted_postion_id"><strong>poste recruté</strong></label>
+                  <div class="col-md-9">
+                    <input type="text" id="recruted_postion_id" name="recruted_postion_id" class="form-control" placeholder="poste recruté"
+                           [(ngModel)]="recruted_postion_id">
+                  </div>
+                </div>
+                <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="last_modified_date"><strong>Date de dernière modification</strong></label>
+            <div class="col-md-9">
+              <input class="form-control" [(ngModel)]="last_modified_date" id="last_modified_date" type="date" name="last_modified_date" placeholder="Date de dernière modification">
+            </div>
+          </div>
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label" for="last_modified_by"><strong>Dernière modification par</strong></label>
+                  <div class="col-md-9">
+                    <input type="text" id="last_modified_by" name="last_modified_by" class="form-control" placeholder="Dernière modification par"
+                           [(ngModel)]="last_modified_by">
+                  </div>
+                </div>
+        </div>
+      </form>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <div class="form-group row">
-      <label class="col-md-3 col-form-label" for="file-multiple-input"></label>
-      <div class="col-md-9">
-        <input type="file" id="file-multiple-input" name="file-multiple-input" multiple>
-      </div>
-    </div>
-    <button mat-button mat-dialog-close>Annuler</button>
-    <button mat-button [mat-dialog-close]="true" (click)=" addCandidature()" cdkFocusInitial>Enregistrer</button>
+    <button mat-button mat-dialog-close (click)="close()">Annuler</button>
+    <button mat-button [mat-dialog-close]="true" (click)=" addCandidature(idcandidature)" cdkFocusInitial>Enregistrer</button>
   </mat-dialog-actions>
 </ng-template>
 <ng-template #delete>
@@ -30,11 +52,19 @@
   <h2 mat-dialog-title></h2>
   <mat-dialog-content class="mat-typography">
     <div class="card-body">
-      <p>Etes-vous sur de vouloir supprimer cet competance ?</p>
+      <p>Etes-vous sur de vouloir supprimer cet candidature ?</p>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Annuler</button>
+    <button mat-button mat-dialog-close (click)="close()">Annuler</button>
     <button mat-button [mat-dialog-close]="true" (click)="deleteCandidature()" cdkFocusInitial>supprimer</button>
+  </mat-dialog-actions>
+</ng-template>
+<ng-template #competence>
+  <strong></strong>
+  <h2 mat-dialog-title></h2>
+  <mat-dialog-content class="mat-typography">
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
   </mat-dialog-actions>
 </ng-template>

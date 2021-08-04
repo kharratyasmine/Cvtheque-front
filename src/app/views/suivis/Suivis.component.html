@@ -1,17 +1,13 @@
-<div class="card-body">
-  <p align="left">
-    <button type="button" class="btn btn-ghost-success" (click)="openModal(element)"><i class="fa fa-lightbulb-o"></i>ajouter
-      Suivis
-    </button>
-  </p>
+<div class="col-6 col-sm-4 col-md mb-3 mb-xl-0 text-center">
+  <p align="left"><button type="button" class="btn btn-success" (click)="openModal(element)">
+      <i class="fa fa-comments-o "></i>Suivis candidat</button></p>
 </div>
+
 <ng2-smart-table [settings]="settings" [source]="data" (custom)="chooseAction($event, element, delete)" ></ng2-smart-table>
 <ng-template #element>
-  <strong>Ajouter un Suivis </strong>
   <h2 mat-dialog-title></h2>
   <mat-dialog-content class="mat-typography">
-
-      <div class="card-body" >
+    <div class="card-body" >
         <div class="form-group row">
           <label class="col-md-3 col-form-label" for="textarea-input"><strong>Description Action</strong></label>
           <div class="col-md-9">
@@ -30,7 +26,7 @@
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-md-3 col-form-label" for="date_input"><strong>Date Input</strong></label>
+          <label class="col-md-3 col-form-label" for="date_input"><strong>Date de Suivi</strong></label>
           <div class="col-md-9">
             <input class="form-control"  [(ngModel)]="date_input" id="date_input" type="date" name="date_input" placeholder="date">
             <span class="help-block">Veuillez entrer une date valide</span>
@@ -49,7 +45,7 @@
   <mat-dialog-actions align="end">
     <div class="col-6 col-sm-4 col-md mb-3 mb-xl-0 text-center">
       <p align="right">
-        <button mat-button mat-dialog-close (click)="clear()">Annuler</button>
+        <button mat-button mat-dialog-close (click)="close()">Annuler</button>
         <button mat-button [mat-dialog-close]="true" (click)="addSuivis()" cdkFocusInitial>valider</button>
       </p>
     </div>
@@ -64,7 +60,10 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Annuler</button>
+    <button mat-button mat-dialog-close (click)="close()">Annuler</button>
     <button mat-button [mat-dialog-close]="true" (click)="deleteSuivis()" cdkFocusInitial>supprimer</button>
   </mat-dialog-actions>
 </ng-template>
+
+<button type="button" class="btn btn-success" onclick=""> <i class="icon-cloud-download "></i>importer piéce jointe</button>
+<ng2-smart-table [settings]="setting"  ></ng2-smart-table>

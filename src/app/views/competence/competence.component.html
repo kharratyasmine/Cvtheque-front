@@ -1,0 +1,76 @@
+<div class="col-6 col-sm-4 col-md mb-3 mb-xl-0 text-center">
+  <p align="left">
+  <p align="left">
+    <button type="button" class="btn btn-success" (click)="openModal(avant)">
+      <i class="fa fa-plus fa-lg "></i>Ajouter competence</button>
+  </p>
+
+</div>
+<ng2-smart-table [settings]="settings" [source]="data" (custom)="chooseAction($event, avant, delete)" ></ng2-smart-table>
+<ng-template #avant>
+  <strong>Nouvelle Competence</strong>
+  <h2 mat-dialog-title></h2>
+  <mat-dialog-content class="mat-typography">
+    <div class="card-body">
+      <div class="card-body">
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="nom"><strong>Nom</strong></label>
+          <div class="col-md-9">
+            <input type="text" id="nom" name="nom" class="form-control" placeholder="Nom" [(ngModel)]="competence_name">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="group"><strong>Groupe</strong></label>
+          <div class="col-md-9">
+            <input type="text" id="group" name="group" class="form-control" placeholder="Groupe" [(ngModel)]="competence_group">
+          </div>
+        </div>
+      </div>
+<!--      <div class="container">-->
+<!--        <form [formGroup]="productForm" (ngSubmit)="onSubmit()">-->
+<!--          <p>-->
+<!--            <label for="name">Groupe des compétences:</label>-->
+<!--            <input type="text" id="name" name="name" formControlName="name" class="form-control">-->
+<!--          </p>-->
+<!--          <table class="table table-bordered" formArrayName="competance">-->
+<!--            <tr>-->
+<!--              <th colspan="2">Ajouter des competences:</th>-->
+<!--              <th width="150px"><button type="button" (click)="addcompetence()" class="btn btn-primary">Ajouter</button></th>-->
+<!--            </tr>-->
+<!--            <tr *ngFor="let competence of competences().controls; let i=index" [formGroupName]="i">-->
+<!--              <td>-->
+<!--                competence :-->
+<!--                <input type="text" formControlName="competence" class="form-control">-->
+<!--              </td>-->
+<!--              <td>-->
+<!--               groupe-->
+<!--                <input type="text" formControlName="price" class="form-control">-->
+<!--              </td>-->
+<!--              <td>-->
+<!--                <button (click)="removecompetence(i)" class="btn btn-danger">supprimer</button>-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--          </table>-->
+<!--        </form>-->
+<!--        <br/>-->
+<!--      </div>-->
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close (click)="close()">Annuler</button>
+    <button mat-button [mat-dialog-close]="true" (click)=" addCompetence()" cdkFocusInitial>Enregistrer</button>
+  </mat-dialog-actions>
+</ng-template>
+<ng-template #delete>
+  <strong>Confirmation de la Suppression</strong>
+  <h2 mat-dialog-title></h2>
+  <mat-dialog-content class="mat-typography">
+    <div class="card-body">
+      <p>Etes-vous sur de vouloir supprimer cet competence?</p>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close (click)="close()">Annuler</button>
+    <button mat-button [mat-dialog-close]="true" (click)="deleteCompetence()" cdkFocusInitial>supprimer</button>
+  </mat-dialog-actions>
+</ng-template>

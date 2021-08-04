@@ -6,9 +6,10 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 import {MatStepper, MatStepperModule} from '@angular/material/stepper';
 import {CdkStepper, CdkStepperModule} from '@angular/cdk/stepper';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {SuivisService} from '../../services/suivis.service';
+import {CommonModule} from '@angular/common';
 
 @NgModule({
   imports: [
@@ -19,7 +20,9 @@ import {SuivisService} from '../../services/suivis.service';
     MatStepperModule,
     CdkStepperModule,
     FormsModule,
-    MatSelectModule
+    MatSelectModule,
+    ReactiveFormsModule,
+    CommonModule
   ],
   declarations: [SuivisComponent],
   providers: [

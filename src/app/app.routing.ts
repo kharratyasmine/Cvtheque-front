@@ -1,13 +1,10 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 
 // Import Containers
-import { DefaultLayoutComponent } from './containers';
+import {DefaultLayoutComponent} from './containers';
 
-import { P404Component } from './views/error/404.component';
-import { P500Component } from './views/error/500.component';
-import { LoginComponent } from './views/login/login.component';
-import { RegisterComponent } from './views/register/register.component';
+import {P404Component} from './views/error/404.component';
 
 export const routes: Routes = [
   {
@@ -16,84 +13,35 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: '404',
-    component: P404Component,
-    data: {
-      title: 'Page 404'
-    }
-  },
-  {
-    path: '500',
-    component: P500Component,
-    data: {
-      title: 'Page 500'
-    }
-  },
-  {
-    path: 'login',
-    component: LoginComponent,
-    data: {
-      title: 'Login Page'
-    }
-  },
-  {
-    path: 'register',
-    component: RegisterComponent,
-    data: {
-      title: 'Register Page'
-    }
-  },
-  {
     path: '',
     component: DefaultLayoutComponent,
     data: {
       title: 'Home'
     },
     children: [
-      {
-        path: 'base',
-        loadChildren: () => import('./views/base/base.module').then(m => m.BaseModule)
-      },
-      {
-        path: 'buttons',
-        loadChildren: () => import('./views/buttons/buttons.module').then(m => m.ButtonsModule)
-      },
-      {
-        path: 'Suivis',
-        loadChildren: () => import('./views/suivis/Suivis.module').then(m => m.SuivisModule)
-      },
-      {
-        path: 'candidat',
-        loadChildren: () => import('./views/candidat/candidat.module').then(m => m.CandidatModule)
-      }, {
-        path: 'avantages',
-        loadChildren: () => import('./views/avantages/avantages.module').then(m => m.AvantagesModule)
-      }, {
-        path: 'candidature',
-        loadChildren: () => import('./views/candidature/candidature.module').then(m => m.CandidatureModule)
-      }, {
-        path: 'competance',
-        loadChildren: () => import('./views/competance/competance.module').then(m => m.CompetanceModule)
-      },
-      {
-        path: 'dashboard',
+      {path: 'dashboard',
         loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
-      {
-        path: 'icons',
-        loadChildren: () => import('./views/icons/icons.module').then(m => m.IconsModule)
+      {path: 'Suivis',
+        loadChildren: () => import('./views/suivis/Suivis.module').then(m => m.SuivisModule)
       },
-      {
-        path: 'notifications',
-        loadChildren: () => import('./views/notifications/notifications.module').then(m => m.NotificationsModule)
+      {path: 'candidat',
+        loadChildren: () => import('./views/candidat/candidat.module').then(m => m.CandidatModule)
       },
-      {
-        path: 'theme',
-        loadChildren: () => import('./views/theme/theme.module').then(m => m.ThemeModule)
+      {path: 'avantages',
+        loadChildren: () => import('./views/avantages/avantages.module').then(m => m.AvantagesModule)
       },
-      {
-        path: 'widgets',
-        loadChildren: () => import('./views/widgets/widgets.module').then(m => m.WidgetsModule)
+      {path: 'candidature',
+        loadChildren: () => import('./views/candidature/candidature.module').then(m => m.CandidatureModule)
+      },
+      {path: 'competence',
+        loadChildren: () => import('./views/competence/competence.module').then(m => m.CompetenceModule)
+      },
+      {path: 'postes',
+        loadChildren: () => import('./views/postes/postes.module').then(m => m.PostesModule)
+      },
+      {path: 'université',
+        loadChildren: () => import('./views/university/university.module').then(m => m.UniversityModule)
       }
     ]
   },

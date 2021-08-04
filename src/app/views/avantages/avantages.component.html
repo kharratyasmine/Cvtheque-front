@@ -1,7 +1,7 @@
 <div class="col-6 col-sm-4 col-md mb-3 mb-xl-0 text-center">
   <p align="left">
-    <button type="button" class="btn btn-ghost-success" (click)="openModal(avant)"><i class="fa fa-lightbulb-o"></i>ajouter
-    </button>
+    <button type="button" class="btn btn-success" (click)="openModal(avant)">
+      <i class="fa fa-plus fa-lg "></i>Ajouter Avantage</button>
   </p>
 </div>
 <ng2-smart-table [settings]="settings" [source]="data"
@@ -10,19 +10,24 @@
   <strong>Nouvelle Avantages</strong>
   <h2 mat-dialog-title></h2>
   <mat-dialog-content class="mat-typography">
-    <div class="card-body">
-
-    </div>
+        <div class="card-body">
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="nom"><strong>Nom</strong></label>
+            <div class="col-md-9">
+              <input type="text" id="nom" name="nom" class="form-control" placeholder="Nom" [(ngModel)]="advantage_name">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label" for="group"><strong>Groupe</strong></label>
+            <div class="col-md-9">
+              <input type="text" id="group" name="group" class="form-control" placeholder="Groupe" [(ngModel)]="advantage_group">
+            </div>
+          </div>
+        </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <div class="form-group row">
-      <label class="col-md-3 col-form-label" for="file-multiple-input"></label>
-      <div class="col-md-9">
-        <input type="file" id="file-multiple-input" name="file-multiple-input" multiple>
-      </div>
-    </div>
-    <button mat-button mat-dialog-close>Annuler</button>
-    <button mat-button [mat-dialog-close]="true" (click)=" addAvantage()" cdkFocusInitial>Enregistrer</button>
+    <button mat-button mat-dialog-close (click)="close()">Annuler</button>
+    <button mat-button [mat-dialog-close]="true" (click)=" addAdvantage()" cdkFocusInitial>Enregistrer</button>
   </mat-dialog-actions>
 </ng-template>
 <ng-template #delete>
@@ -34,7 +39,7 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Annuler</button>
+    <button mat-button mat-dialog-close (click)="close()">Annuler</button>
     <button mat-button [mat-dialog-close]="true" (click)="deleteAvantage()" cdkFocusInitial>supprimer</button>
   </mat-dialog-actions>
 </ng-template>

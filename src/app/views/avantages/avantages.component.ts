@@ -9,14 +9,13 @@ import {MatDialog} from '@angular/material/dialog';
   styleUrls: ['./avantages.component.scss']
 })
 export class AvantagesComponent implements OnInit {
-
   constructor(private service: AvantagesService,  private matDialog: MatDialog, ) { }
   settings = {
     columns: {
-      competence_name: {
+      advantage_name: {
         title: 'Nom'
       },
-      competence_group: {
+      advantage_group: {
         title: 'group'
       },
     },
@@ -29,12 +28,18 @@ export class AvantagesComponent implements OnInit {
           name: 'delete',
           title: '<i class="icon-trash width: 300px"></i> ',
         },
+        {
+          name: 'edit',
+          title: '<i class="cil-pencil width: 300px"></i>  ',
+        },
       ],
     },
   };
   data = [];
   advantage_name: any;
   advantage_group: any;
+  idAdvantage: any;
+  deleted: any;
   ngOnInit(): void {
     this.findAllAvantages();
   }
@@ -43,33 +48,59 @@ export class AvantagesComponent implements OnInit {
       this.data = resultat;
     });
   }
-
   openModal(avant: any) {
     this.matDialog.open(avant, {
-      width: '800px'
+      width: '800px',
+      disableClose: true
     });
   }
   chooseAction(event: any, avant: any, avantDelete: any) {
   switch (event.action) {
     case 'delete' :
-      this.matDialog.open(avantDelete);
+      this.matDialog.open(avantDelete, {disableClose: true});
+      this.idAdvantage = event.data.id_advantage;
       break;
       default :
+        this.fillDate(event.data);
       this.matDialog.open(avant, {
-        width: '800px'
+        width: '800px',
+        disableClose: true
       });
       break;
   }}
-  addAvantage() {
+  addAdvantage(idAdvantage) {
     const avantage  = new Avantage();
     avantage .advantage_name = this.advantage_name;
     avantage .advantage_group = this.advantage_group;
-    console.log(avantage );
-    this.service.postAvantage (avantage ).subscribe(r => {
-      console.log(r);
-    });
+    avantage.deleted = 0;
+    if (this.idAdvantage === null) {
+      this.service.postAdvantage(avantage).subscribe(() => {
+        this.ngOnInit();
+        this.close();
+      });
+    } else {
+      avantage.id = idAdvantage;
+      this.service.updateAvantage(avantage, idAdvantage).subscribe(() => {
+        this.ngOnInit();
+        this.close();
+      });
+    }
   }
   deleteAvantage() {
+    this.service.deleteAvantage(this.idAdvantage).subscribe(r => {
+      this.ngOnInit();
+      this.close();
+     } );
   }
-
+  close() {
+    this.advantage_name = null;
+    this.advantage_group = null;
+    this.idAdvantage = null;
+    this.matDialog.closeAll();
+  }
+  private fillDate(data) {
+    this.advantage_name = data.advantage_name;
+    this.advantage_group = data.advantage_group;
+    this.idAdvantage = data.idAdvantage;
+  }
 }
