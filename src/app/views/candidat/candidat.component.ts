@@ -68,62 +68,6 @@ export class CandidatComponent implements OnInit {
       ],
     },
   };
-  setings = {
-    columns: {
-      Date_de_Suivi: {
-        title: 'Date de Suivi'
-      },
-      Avancement: {
-        title: 'Avancement'
-      },
-      Description_Action: {
-        title: 'Description Action'
-      },
-      Attacher_une_piece_jointe: {
-        title: 'Attacher une piéce jointe'
-      },
-    },
-    actions: {
-      add: false,
-      edit: false,
-      delete: false,
-      position: 'right',
-      custom: [
-        {
-          name: 'delete',
-          title: '<i class="cil-x width: 300px"></i> ',
-        },
-      ],
-    },
-  };
-  setting = {
-    columns: {
-      piece_jointe: {
-        title: 'Piece jointe'
-      },
-      Date: {
-        title: 'Date'
-      },
-      type_de_piece_jointe: {
-        title: 'Type de piece jointe'
-      },
-      Type: {
-        title: 'Type'
-      },
-    },
-    actions: {
-      add: false,
-      edit: false,
-      delete: false,
-      position: 'right',
-      custom: [
-        {
-          name: 'delete',
-          title: '<i class="cil-x width: 300px"></i> ',
-        },
-      ],
-    },
-  };
   data = [];
   prenom: any;
   nom: any;
