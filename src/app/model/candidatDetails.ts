@@ -15,7 +15,15 @@ export class CondidatDetails {
   ex_employers: any;
   last_position: any;
   motivation: any;
-  Statut: any;
+  statut: any;
   deleted: any;
   cv: any;
+  step_description: any;
+  Avancement: any;
+  planned_date: any;
+  poste: any;
+  status: any;
+  sequence: any;
+  candidature: any;
+
 }

@@ -11,12 +11,11 @@ export class CondidatService {
   private url = environment.BASE_URL;
   constructor(private httpClient: HttpClient) {
   }
-
   findAllCondidates(): Observable<any> {
     return this.httpClient.get(this.url + 'candidate');
   }
-  postCondidat(condidat: Condidat): Observable<any> {
-    return this.httpClient.post(this.url + 'candidate', condidat );
+  postCondidat(candidate: Condidat): Observable<any> {
+    return this.httpClient.post(this.url + 'candidate', candidate );
   }
   deleteCandidate(idCandidate: any): Observable<any> {
     return this.httpClient.delete(this.url + 'candidate/' + idCandidate );
@@ -34,10 +33,13 @@ export class CondidatService {
     return this.httpClient.get(this.url + 'suivis');
   }
   postSuivis(suivis: Suivis): Observable<any> {
-    return this.httpClient.post(this.url + 'suivis', suivis);
+    return this.httpClient.post(this.url + 'suivis', Suivis);
   }
 
-  deleteSuivis(idSuivis: any): Observable<any> {
-    return this.httpClient.delete(this.url + 'suivis/' + idSuivis);
+  deleteSuivis(idCandidatureSteps: any): Observable<any> {
+    return this.httpClient.delete(this.url + 'suivis/' + idCandidatureSteps);
+  }
+  updateSuivis(suivis: Suivis, idCandidatureSteps) {
+    return this.httpClient.put(this.url + 'suivis/' + idCandidatureSteps, Suivis);
   }
 }

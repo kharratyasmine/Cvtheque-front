@@ -3,7 +3,7 @@ import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Avantage} from '../model/avantage';
-import {Competence} from '../model/competence';
+
 
 
 @Injectable({

@@ -104,7 +104,7 @@ export class SuivisComponent implements OnInit {
     const suivis = new Suivis();
     suivis.Description_Action = this.Description_Action;
     suivis.Avancement = this.Avancement;
-    suivis.Date_Input = this.date_input;
+    suivis.date_input = this.date_input;
     console.log(suivis);
     this.service.postSuivis(suivis).subscribe(r => {
       console.log(r);

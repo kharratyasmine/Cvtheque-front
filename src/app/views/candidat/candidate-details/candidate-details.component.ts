@@ -9,29 +9,36 @@ import {UniversityService} from '../../../services/university.service';
 import {DiplomaService} from '../../../services/diploma.service';
 import {CandidatureService} from '../../../services/candidature.service';
 import {Candidature} from '../../../model/candidature';
+import {Suivis} from '../../../model/suivis';
+import {MatDialog} from '@angular/material/dialog';
+import {SuivisService} from '../../../services/suivis.service';
 @Component({
   selector: 'app-candidate-details',
   templateUrl: './candidate-details.component.html',
   styleUrls: ['./candidate-details.component.scss']
 })
 export class CandidateDetailsComponent implements OnInit {
+  private suivis: any;
+
   constructor(private service: CondidatService,
               private postesService: PostesService,
               private genericService: GenericService,
               private universityService: UniversityService,
               private diplomaService: DiplomaService,
               private announcementService: AnnouncementService,
-              private candidatureService: CandidatureService, ) { }
+              private candidatureService: CandidatureService,
+              private matDialog: MatDialog,
+              private suivisService: SuivisService) { }
   @ViewChild(MatAccordion) accordion: MatAccordion;
   settings = {
     columns: {
-      Date_de_Suivi: {
+      date_input: {
         title: 'Date de Suivi'
       },
       Avancement: {
         title: 'Avancement'
       },
-      Description_Action: {
+      step_description: {
         title: 'Description Action'
       },
       Attacher_une_piece_jointe: {
@@ -96,7 +103,6 @@ export class CandidateDetailsComponent implements OnInit {
   listePostes: any;
   listUniversity: any;
   listDiploma: any;
-  Poste: any;
   ecole: any;
   tel_mobile: any;
   tel_fix: any;
@@ -104,6 +110,17 @@ export class CandidateDetailsComponent implements OnInit {
   cv: any;
   identity: any;
   idCandidate: any;
+  step_description: any;
+  Avancement: any;
+  planned_date: any;
+  status: any;
+  poste: any;
+  candidature: any;
+  sequence: any;
+  Description_Action: any;
+  date_input: any;
+  Statut: any;
+  idCandidatureSteps: any;
   ngOnInit(): void {
     this.genericService.subscribeMessage.subscribe((data: any) => {
       this.genericService.subscribeDisabledData.subscribe((b: boolean) => {
@@ -111,7 +128,7 @@ export class CandidateDetailsComponent implements OnInit {
         this.disabled = b;
       });
     });
-
+    this.findAllSuivis();
     this.findAllPostes();
     this.findAllCandidature();
     this.findAllUniversities();
@@ -127,27 +144,9 @@ export class CandidateDetailsComponent implements OnInit {
   }
   findPoste(target: any) {
     console.log(target.value); }
-  private findAllCandidature() {}
-  close() {
-    this.nom = null;
-    this.prenom = null;
-    this.ecole = null;
-    this.Ex_employeurs = null;
-    this.Motivation = null;
-    this.nombreDanneDexperience = null;
-    this.gender = null;
-    this.birth_date = null;
-    this.diplome = null;
-    this.diploma_date = null;
-    this.last_position = null;
-    this.email = null;
-    this.tel_fix = null;
-    this.tel_mobile = null;
-    this.cv = null;
-    this.disabled = false;
-    this.identity = null;
-    this.idCandidate = null;
-  }
+  private findAllCandidature() {
+    this.candidatureService.findAllCandidature().subscribe(data => {}
+    ); }
   updateCandidate() {
     const candidate = new Condidat();
     candidate.last_name = this.nom;
@@ -170,7 +169,7 @@ export class CandidateDetailsComponent implements OnInit {
     candidate.deleted = 0;
     candidate.id = this.idCandidate;
     this.service.updateCondidat(candidate, this.idCandidate).subscribe(() => {
-      this.announcementService.findAnnouncement(this.listPoste.find(post => post.id_post === this.Poste))
+      this.announcementService.findAnnouncement(this.listPoste.find(post => post.id_post === this.poste))
         .subscribe(result => {
           const candidature: any = {
             candidate: candidate,
@@ -183,6 +182,95 @@ export class CandidateDetailsComponent implements OnInit {
         });
       });
   }
+ private findAllUniversities() {
+    this.universityService.findUniversities().subscribe(data => {
+      this.listUniversity = data;
+    });
+  }
+  private findAllDiplomas() {
+    this.diplomaService.findDiplomas().subscribe(data => {
+      this.listDiploma = data;
+    });
+  }
+  findAllSuivis() {
+    this.service.findAllSuivis().subscribe(resultat => {
+      this.data = resultat;
+    });
+  }
+  openModal(element: any) {
+    this.matDialog.open(element, {
+      width: '800px',
+      disableClose: true
+    });
+  }
+  chooseAction(event: any, element: any, elemDelete: any) {
+    this.suivis = event.data;
+    switch (event.action) {
+      case 'delete' :
+        this.matDialog.open(elemDelete, {disableClose: true});
+        break;
+      default :
+        this.idCandidatureSteps = event.data.id_candidature_steps;
+        this.fillDate(event.data);
+        this.matDialog.open(element, {
+          width: '800px',
+          disableClose: true
+        });
+        break;
+    }
+  }
+  addSuivis(idCandidatureSteps) {
+    const suivis = new Suivis();
+    suivis.step_description = this.Description_Action;
+    suivis.Avancement = this.Avancement;
+    suivis.planned_date = this.date_input;
+    suivis.status = this.status;
+    suivis.sequence = this.sequence;
+    if (idCandidatureSteps === null) {
+      this.service.postSuivis(suivis).subscribe(() => {
+        this.ngOnInit();
+        this.close();
+      });
+    } else {
+      suivis.id = idCandidatureSteps;
+      this.service.updateSuivis(suivis, idCandidatureSteps).subscribe(() => {
+        this.ngOnInit();
+        this.close();
+      });
+    }
+  }
+  deleteSuivis() {
+    this.service.deleteSuivis(this.suivis.id).subscribe(r => {
+      console.log(this.suivis);
+    });
+  }
+  close() {
+    this.nom = null;
+    this.prenom = null;
+    this.ecole = null;
+    this.Ex_employeurs = null;
+    this.Motivation = null;
+    this.nombreDanneDexperience = null;
+    this.gender = null;
+    this.birth_date = null;
+    this.diplome = null;
+    this.diploma_date = null;
+    this.last_position = null;
+    this.email = null;
+    this.tel_fix = null;
+    this.tel_mobile = null;
+    this.cv = null;
+    this.status = null;
+    this.Statut = null;
+    this.disabled = false;
+    this.identity = null;
+    this.idCandidate = null;
+    this.idCandidatureSteps = null;
+    this.step_description = null;
+    this.Avancement = null;
+    this.planned_date = null;
+    this.candidature = null;
+    this.sequence = null; }
   private fillDate(data) {
     this.nom = data.last_name;
     this.prenom = data.first_name;
@@ -200,16 +288,12 @@ export class CandidateDetailsComponent implements OnInit {
     this.tel_fix = data.tel_fix;
     this.tel_mobile = data.tel_mobile ;
     this.cv = data.cv;
+    this.status = data.statut;
     this.idCandidate = data.candidate_id;
-  }
-  private findAllUniversities() {
-    this.universityService.findUniversities().subscribe(data => {
-      this.listUniversity = data;
-    });
-  }
-  private findAllDiplomas() {
-    this.diplomaService.findDiplomas().subscribe(data => {
-      this.listDiploma = data;
-    });
+    this.idCandidatureSteps = data.id_candidature_steps;
+    this.step_description = data.Description_Action ;
+    this.Avancement = data.Avancement;
+    this.planned_date = data.date_input;
+    this.poste = data.poste;
   }
 }
