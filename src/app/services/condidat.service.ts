@@ -35,11 +35,10 @@ export class CondidatService {
   postSuivis(suivis: Suivis): Observable<any> {
     return this.httpClient.post(this.url + 'suivis', Suivis);
   }
-
-  deleteSuivis(idCandidatureSteps: any): Observable<any> {
-    return this.httpClient.delete(this.url + 'suivis/' + idCandidatureSteps);
+  deleteSuivis(id_candidature_steps: any): Observable<any> {
+    return this.httpClient.delete(this.url + 'suivis/' + id_candidature_steps);
   }
-  updateSuivis(suivis: Suivis, idCandidatureSteps) {
-    return this.httpClient.put(this.url + 'suivis/' + idCandidatureSteps, Suivis);
+  updateSuivis(suivis: Suivis, id_candidature_steps) {
+    return this.httpClient.put(this.url + 'suivis/' + id_candidature_steps, Suivis);
   }
 }

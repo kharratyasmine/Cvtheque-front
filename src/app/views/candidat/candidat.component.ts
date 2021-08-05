@@ -35,10 +35,16 @@ export class CandidatComponent implements OnInit {
         title: 'Ecole',
         valuePrepareFunction: (data) => {
           return data.name; }, },
-      Poste: {
-        title: 'Poste' },
+      Post: {
+        title: 'Poste',
+        // valuePrepareFunction: (data) => {
+        //   return data.post; },
+      },
       Statut: {
-        title: 'Statut' },
+        title: 'Statut',
+        // valuePrepareFunction: (data) => {
+        //   return data.statut; },
+      },
     },
     actions: {
       add: false,
@@ -81,6 +87,7 @@ export class CandidatComponent implements OnInit {
   idCandidate = null;
   deleted: any;
   disabled = false;
+  title = '';
   ngOnInit(): void {
     this.findAllCondidates();
     this.findAllUniversities();
@@ -92,6 +99,7 @@ export class CandidatComponent implements OnInit {
     });
   }
   openModal(element: any) {
+    this.title = 'Nouvelle';
     this.matDialog.open(element, {
       width: '800px',
       disableClose: true
@@ -115,6 +123,7 @@ export class CandidatComponent implements OnInit {
         });
         break;
       default :
+        this.title = 'Modifier';
         this.fillDate(event.data);
         event.action === 'view' ? this.disabled = true : this.disabled = false;
         this.genericService.addData(event.data);

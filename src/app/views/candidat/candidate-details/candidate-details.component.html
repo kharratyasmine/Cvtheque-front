@@ -7,7 +7,7 @@
          <span>
       <b>{{gender}} {{prenom}} {{nom}}</b>
     </span>
-      <span>Email {{email}}</span>
+      <span>Email:{{email}}</span>
     </div>
 </div>
   <mat-accordion class="example-headers-align" multi>
@@ -189,19 +189,12 @@
 <div class="container" style="margin-top: 15px">
   <div class="floatLeft">
     <div class="col-6 col-sm-4 col-md mb-3 mb-xl-0 text-center">
-      <p align="left">
-        <button type="button" class="btn btn-success" (click)="openModal(element)">
-          <i class="fa fa-comments-o "></i>Suivis candidat
-        </button>
-      </p>
-    </div>
-    <ng2-smart-table [settings]="settings" [source]="data"
-                     (custom)="chooseAction($event, element, delete)"></ng2-smart-table>
+      <app-suivis></app-suivis>
   </div>
   <div class="floatRight">
     <button type="button" class="btn btn-success" onclick=""><i class="icon-cloud-download "></i>importer piéce jointe
     </button>
-    <ng2-smart-table [settings]="setting"></ng2-smart-table>
+    <ng2-smart-table [settings]="settings"></ng2-smart-table>
   </div>
 </div>
 <ng-template #element>
@@ -267,6 +260,5 @@
     <button mat-button [mat-dialog-close]="true" (click)="deleteSuivis()" cdkFocusInitial>supprimer</button>
   </mat-dialog-actions>
 </ng-template>
-
 
 

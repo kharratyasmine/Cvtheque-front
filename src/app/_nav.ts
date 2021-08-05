@@ -1,16 +1,23 @@
 import { INavData } from '@coreui/angular';
 
 export const navItems: INavData[] = [
-  {name: 'Dashboard',
+  {
+    name: 'Dashboard',
     url: '/dashboard',
     icon: 'icon-speedometer',
   },
-  {name: 'Candidat',
+  {
+    name: 'Candidat',
     url: '/candidat',
     icon: 'icon-people'
   },
-  {name: 'Announcement',
-    url: '/announcement',
+  // {
+  //   name: 'candidature',
+  //   url: '/candidature',
+  //   icon: 'icon-people'
+  // },
+  {name: 'Suivis',
+    url: '/Suivis',
     icon: 'icon-pie-chart'
   },
   {name: 'Competence',
@@ -27,6 +34,10 @@ export const navItems: INavData[] = [
   },
   {name: 'Université',
     url: '/University',
+    icon: 'icon-pie-chart'
+  },
+  {name: 'Announcement',
+    url: '/announcement',
     icon: 'icon-pie-chart'
   },
 ];

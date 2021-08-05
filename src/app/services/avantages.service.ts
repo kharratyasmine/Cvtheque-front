@@ -4,8 +4,6 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Avantage} from '../model/avantage';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -14,15 +12,12 @@ export class AvantagesService {
 
   constructor(private httpClient: HttpClient) {
   }
-
   findAllAvantages(): Observable<any> {
     return this.httpClient.get(this.url + 'advantage');
   }
-
   postAdvantage(avantage: Avantage): Observable<any> {
     return this.httpClient.post(this.url + 'advantage', avantage);
   }
-
   deleteAvantage(idAdvantage: any): Observable<any> {
     return this.httpClient.delete(this.url + 'advantage/' + idAdvantage);
   }

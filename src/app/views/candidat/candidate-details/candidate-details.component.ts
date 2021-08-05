@@ -19,7 +19,6 @@ import {SuivisService} from '../../../services/suivis.service';
 })
 export class CandidateDetailsComponent implements OnInit {
   private suivis: any;
-
   constructor(private service: CondidatService,
               private postesService: PostesService,
               private genericService: GenericService,
@@ -31,34 +30,6 @@ export class CandidateDetailsComponent implements OnInit {
               private suivisService: SuivisService) { }
   @ViewChild(MatAccordion) accordion: MatAccordion;
   settings = {
-    columns: {
-      date_input: {
-        title: 'Date de Suivi'
-      },
-      Avancement: {
-        title: 'Avancement'
-      },
-      step_description: {
-        title: 'Description Action'
-      },
-      Attacher_une_piece_jointe: {
-        title: 'Attacher une piéce jointe'
-      },
-    },
-    actions: {
-      add: false,
-      edit: false,
-      delete: false,
-      position: 'right',
-      custom: [
-        {
-          name: 'delete',
-          title: '<i class="cil-x width: 300px"></i> ',
-        },
-      ],
-    },
-  };
-  setting = {
     columns: {
       piece_jointe: {
         title: 'Piece jointe'
@@ -120,7 +91,7 @@ export class CandidateDetailsComponent implements OnInit {
   Description_Action: any;
   date_input: any;
   Statut: any;
-  idCandidatureSteps: any;
+  id_candidature_steps: any;
   ngOnInit(): void {
     this.genericService.subscribeMessage.subscribe((data: any) => {
       this.genericService.subscribeDisabledData.subscribe((b: boolean) => {
@@ -182,7 +153,7 @@ export class CandidateDetailsComponent implements OnInit {
         });
       });
   }
- private findAllUniversities() {
+  private findAllUniversities() {
     this.universityService.findUniversities().subscribe(data => {
       this.listUniversity = data;
     });
@@ -192,7 +163,7 @@ export class CandidateDetailsComponent implements OnInit {
       this.listDiploma = data;
     });
   }
-  findAllSuivis() {
+  private findAllSuivis() {
     this.service.findAllSuivis().subscribe(resultat => {
       this.data = resultat;
     });
@@ -210,7 +181,7 @@ export class CandidateDetailsComponent implements OnInit {
         this.matDialog.open(elemDelete, {disableClose: true});
         break;
       default :
-        this.idCandidatureSteps = event.data.id_candidature_steps;
+        this.id_candidature_steps = event.data.id_candidature_steps;
         this.fillDate(event.data);
         this.matDialog.open(element, {
           width: '800px',
@@ -219,30 +190,29 @@ export class CandidateDetailsComponent implements OnInit {
         break;
     }
   }
-  addSuivis(idCandidatureSteps) {
+  addSuivis(id_candidature_steps) {
     const suivis = new Suivis();
     suivis.step_description = this.Description_Action;
     suivis.Avancement = this.Avancement;
     suivis.planned_date = this.date_input;
     suivis.status = this.status;
     suivis.sequence = this.sequence;
-    if (idCandidatureSteps === null) {
+    suivis.deleted = 0;
+    if (id_candidature_steps === null) {
       this.service.postSuivis(suivis).subscribe(() => {
         this.ngOnInit();
         this.close();
       });
     } else {
-      suivis.id = idCandidatureSteps;
-      this.service.updateSuivis(suivis, idCandidatureSteps).subscribe(() => {
+      suivis.id = id_candidature_steps;
+      this.service.updateSuivis(suivis, id_candidature_steps).subscribe(() => {
         this.ngOnInit();
         this.close();
       });
     }
   }
   deleteSuivis() {
-    this.service.deleteSuivis(this.suivis.id).subscribe(r => {
-      console.log(this.suivis);
-    });
+    this.service.deleteSuivis(this.suivis.suivis.id).subscribe(() => this.ngOnInit());
   }
   close() {
     this.nom = null;
@@ -265,7 +235,7 @@ export class CandidateDetailsComponent implements OnInit {
     this.disabled = false;
     this.identity = null;
     this.idCandidate = null;
-    this.idCandidatureSteps = null;
+    this.id_candidature_steps = null;
     this.step_description = null;
     this.Avancement = null;
     this.planned_date = null;
@@ -290,7 +260,7 @@ export class CandidateDetailsComponent implements OnInit {
     this.cv = data.cv;
     this.status = data.statut;
     this.idCandidate = data.candidate_id;
-    this.idCandidatureSteps = data.id_candidature_steps;
+    this.id_candidature_steps = data.id_candidature_steps;
     this.step_description = data.Description_Action ;
     this.Avancement = data.Avancement;
     this.planned_date = data.date_input;

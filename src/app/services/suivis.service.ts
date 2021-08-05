@@ -15,14 +15,13 @@ export class SuivisService {
     return this.httpClient.get(this.url + 'suivis');
   }
   postSuivis(suivis: Suivis): Observable<any> {
-    return this.httpClient.post(this.url + 'suivis', suivis);
+    return this.httpClient.post(this.url + 'suivis', Suivis);
   }
   deleteSuivis(id_candidature_steps: any): Observable<any> {
     return this.httpClient.delete(this.url + 'suivis/' + id_candidature_steps);
   }
-  updateCondidat(suivis: Suivis, id_candidature_steps) {
-    return this.httpClient.put(this.url + 'suivis/' + id_candidature_steps, suivis);
-  }
+  updateSuivis(suivis: Suivis, id_candidature_steps) {
+    return this.httpClient.put(this.url + 'suivis/' + id_candidature_steps, Suivis);
 
-}
+}}
 

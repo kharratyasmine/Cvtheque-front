@@ -14,10 +14,13 @@ export class AnnouncementComponent implements OnInit {
   constructor(private service: AnnouncementService, private matDialog: MatDialog) { }
   settings = {
     columns: {
-      last_name: {
-        title: 'Nom' },
-      first_name: {
-        title: 'Prénom' },
+      Post: {
+        title: 'Poste' ,
+        // valuePrepareFunction: (data) => {
+        //   return data.post; },
+      },
+      description: {
+        title: 'Description Action' },
     },
     actions: {
       add: false,
@@ -31,8 +34,9 @@ export class AnnouncementComponent implements OnInit {
     },
   };
   data = [];
-  nom: any;
+  Post: any;
   idAnnouncement: any;
+  description: any;
   announcement: any;
   disabled: any;
 
@@ -61,13 +65,15 @@ export class AnnouncementComponent implements OnInit {
         this.matDialog.open(event, {
           width: '800px',
           disableClose: true
-
         });
         break;
   }}
   addAnnouncement(idAnnouncement) {
     const announcement = new Announcement();
-    announcement.nom = this.nom;
+    announcement.Post = this.Post;
+    announcement.idAnnouncement = this.idAnnouncement;
+    announcement.description = this.description;
+    announcement.announcement = this.announcement;
     if (idAnnouncement === null) {
       this.service.postAnnouncement(announcement).subscribe(() => {
         this.ngOnInit();
@@ -76,23 +82,26 @@ export class AnnouncementComponent implements OnInit {
     } else {
       announcement.id = idAnnouncement;
       this.service.updateAnnouncement(announcement, idAnnouncement).subscribe(() => {
-
         this.ngOnInit();
         this.close();
       });
     }
   }
   deleteAnnouncement() {
-    this.service.deleteAnnouncement(this.announcement.announcement_id).subscribe(() => this.ngOnInit());
+    this.service.deleteAnnouncement(this.idAnnouncement).subscribe(() => this.ngOnInit());
   }
   close() {
-    this.nom = null;
+    this.Post = null;
     this.idAnnouncement = null;
+    this.description = null;
+    this.announcement = null;
     this.disabled = false;
     this.matDialog.closeAll();
   }
   private fillDate(data) {
-    this.nom = data.last_name;
-    this.idAnnouncement = data.announcement_id;
+    this.Post = data.Post;
+    this.description = data.description;
+    this.announcement = data.announcement;
+    this.idAnnouncement = data.idAnnouncement;
   }
 }

@@ -13,6 +13,7 @@ import { CandidateDetailsComponent } from './candidate-details/candidate-details
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {SuivisModule} from '../suivis/Suivis.module';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     CommonModule,
     MatExpansionModule,
     MatIconModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    SuivisModule
   ],
   declarations: [CandidatComponent, CandidateDetailsComponent],
   providers: [

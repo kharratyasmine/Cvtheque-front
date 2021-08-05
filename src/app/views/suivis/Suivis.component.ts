@@ -14,45 +14,22 @@ export class SuivisComponent implements OnInit {
   }
   settings = {
     columns: {
-      Date_de_Suivi: {
+      planned_date: {
         title: 'Date de Suivi'
       },
-      Avancement: {
-        title: 'Avancement'
+      sequence: {
+        title: 'Sequence'
       },
-      Description_Action: {
+      step_description: {
         title: 'Description Action'
+      },
+      status: {
+        title: 'Statut',
+        valuePrepareFunction: (data) => {
+          return data.Statut; },
       },
       Attacher_une_piece_jointe: {
         title: 'Attacher une piéce jointe'
-      },
-    },
-    actions: {
-      add: false,
-      edit: false,
-      delete: false,
-      position: 'right',
-      custom: [
-        {
-          name: 'delete',
-          title: '<i class="cil-x width: 300px"></i> ',
-        },
-      ],
-    },
-  };
-  setting = {
-    columns: {
-      piece_jointe: {
-        title: 'Piece jointe'
-      },
-      Date: {
-        title: 'Date'
-      },
-       type_de_piece_jointe: {
-        title: 'Type de piece jointe'
-      },
-      Type: {
-        title: 'Type'
       },
     },
     actions: {
@@ -72,60 +49,85 @@ export class SuivisComponent implements OnInit {
   Description_Action: any;
   Avancement: any;
   date_input: any;
-  ngOnInit(): void {
+  step_description: any;
+  planned_date: any;
+  status: any;
+  poste: any;
+  candidature: any;
+  disabled: any;
+  sequence: any;
+  Statut: any;
+  idCandidatureSteps: any;
+    ngOnInit(): void {
     this.findAllSuivis();
   }
-
-  findAllSuivis() {
+    findAllSuivis() {
     this.service.findAllSuivis().subscribe(resultat => {
-      console.log(resultat);
       this.data = resultat;
     });
   }
-
-  openModal(element: any) {
+    openModal(element: any) {
     this.matDialog.open(element, {
       width: '800px'
     });
   }
-
-  chooseAction(event: any, element: any, elementDelete: any) {
+    chooseAction(event: any, element: any, elementDelete: any) {
+    this.suivis = event.data;
     switch (event.action) {
       case 'delete' :
-        this.matDialog.open(elementDelete);
+        this.matDialog.open(elementDelete, {disableClose: true});
         break;
       default :
-        this.matDialog.open(element);
-        break;
+        this.idCandidatureSteps = event.data.id_candidature_steps;
+        this.matDialog.open(element, {
+          width: '800px',
+          disableClose: true
+        });
+        break; }
+  }
+    addSuivis(idCandidatureSteps) {
+      const suivis = new Suivis();
+      suivis.step_description = this.Description_Action;
+      suivis.Avancement = this.Avancement;
+      suivis.planned_date = this.date_input;
+      suivis.status = this.status;
+      suivis.sequence = this.sequence;
+      suivis.deleted = 0;
+      if (idCandidatureSteps === null) {
+        this.service.postSuivis(suivis).subscribe(() => {
+          this.ngOnInit(); });
+      } else {
+        suivis.id = idCandidatureSteps;
+        this.service.updateSuivis(suivis, idCandidatureSteps).subscribe(() => {
+          this.ngOnInit(); });
+      }
     }
-  }
-
-  addSuivis() {
-    const suivis = new Suivis();
-    suivis.Description_Action = this.Description_Action;
-    suivis.Avancement = this.Avancement;
-    suivis.date_input = this.date_input;
-    console.log(suivis);
-    this.service.postSuivis(suivis).subscribe(r => {
-      console.log(r);
-    });
-  }
-
-  deleteSuivis() {
-    this.service.deleteSuivis(this.suivis.id).subscribe(r => {
-      console.log(this.suivis);
-    });
-  }
-  close() {
-    this.Description_Action = null;
-    this.Avancement = null;
-    this.date_input = null;
-    this.matDialog.closeAll();
-  }
-
+    deleteSuivis() {
+      this.service.deleteSuivis(this.suivis.suivis.id).subscribe(() => this.ngOnInit());
+    }
+    close() {
+      this.status = null;
+      this.Statut = null;
+      this.disabled = false;
+      this.idCandidatureSteps = null;
+      this.step_description = null;
+      this.Avancement = null;
+      this.planned_date = null;
+      this.candidature = null;
+      this.sequence = null; }
+    private fillDate(data) {
+      this.status = data.statut;
+      this.idCandidatureSteps = data.id_candidature_steps;
+      this.step_description = data.Description_Action ;
+      this.Avancement = data.Avancement;
+      this.planned_date = data.date_input;
+      this.poste = data.poste;
+    }
 
 
 }
+
+
 
 
 

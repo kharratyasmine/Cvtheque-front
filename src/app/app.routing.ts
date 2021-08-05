@@ -5,7 +5,6 @@ import {RouterModule, Routes} from '@angular/router';
 import {DefaultLayoutComponent} from './containers';
 
 import {P404Component} from './views/error/404.component';
-import {AnnouncementModule} from './views/announcement/announcement.module';
 
 export const routes: Routes = [
   {
@@ -23,8 +22,8 @@ export const routes: Routes = [
       {path: 'dashboard',
         loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
-      {path: 'announcement',
-        loadChildren: () => import('./views/announcement/Announcement.module').then(m => m.AnnouncementModule)
+      {path: 'Suivis',
+        loadChildren: () => import('./views/suivis/Suivis.module').then(m => m.SuivisModule)
       },
       {path: 'candidat',
         loadChildren: () => import('./views/candidat/candidat.module').then(m => m.CandidatModule)
@@ -43,7 +42,10 @@ export const routes: Routes = [
       },
       {path: 'université',
         loadChildren: () => import('./views/university/university.module').then(m => m.UniversityModule)
-      }
+      },
+      {path: 'announcement',
+        loadChildren: () => import('./views/announcement/Announcement.module').then(m => m.AnnouncementModule)
+      },
     ]
   },
   { path: '**', component: P404Component }
