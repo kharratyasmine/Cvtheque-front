@@ -1,29 +1,34 @@
 <div class="col-6 col-sm-4 col-md mb-3 mb-xl-0 text-center">
   <p align="left">
-    <button type="button" class="btn btn-success" (click)="openModal(element)">
-      <i class="fa fa-plus fa-lg "></i>Ajouter candidat</button>
+    <button type="button" class="btn btn-success" (click)="openModal(post)">
+      <i class="fa fa-plus fa-lg "></i>Ajouter Poste</button>
 
   </p>
 </div>
-<ng2-smart-table [settings]="settings"></ng2-smart-table>
-<!--Modal-->
-<ng-template #element>
+<ng2-smart-table [settings]="settings" [source]="data"
+                 (custom)="chooseAction($event, post, delete)" ></ng2-smart-table>
+<ng-template #post>
+  <strong>{{title}} Poste</strong>
   <h2 mat-dialog-title></h2>
   <mat-dialog-content class="mat-typography">
     <div class="card-body">
-      <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-        <div class="form-group ">
-          <div class="form-group row">
-            <mat-horizontal-stepper orientation="horizontal" style="width: 160%">
-            </mat-horizontal-stepper>
-          </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="nom"><strong>Nom</strong></label>
+        <div class="col-md-9">
+          <input type="text" id="nom" name="nom" class="form-control" placeholder="Nom" [(ngModel)]="post_name">
         </div>
-      </form>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="Description"><strong>Description</strong></label>
+        <div class="col-md-9">
+          <input type="text" id="Description" name="Description" class="form-control" placeholder="Description" [(ngModel)]="description">
+        </div>
+      </div>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close (click)="close()">Annuler</button>
-    <button mat-button [mat-dialog-close]="true" (click)="addPostes(idPostes)" cdkFocusInitial >Enregistrer</button>
+    <button mat-button [mat-dialog-close]="true" (click)="addPostes(id_post)" cdkFocusInitial >Enregistrer</button>
   </mat-dialog-actions>
 </ng-template>
 <ng-template #delete>

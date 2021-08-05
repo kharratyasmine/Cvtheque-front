@@ -23,7 +23,7 @@ export class PostesService {
   deletePostes(id_post: any): Observable<any> {
     return this.httpClient.delete(this.url + 'post/' + id_post );
   }
-  updateCondidat(Poste: Postes, id_post) {
+  updatePostes(Poste: Postes, id_post) {
     return this.httpClient.put(this.url + 'post/' + id_post, Poste);
   }
 }

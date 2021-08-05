@@ -104,7 +104,7 @@ export class UniversityComponent implements OnInit {
     this.matDialog.closeAll();
   }
   private fillDate(data) {
-    this.name = data.last_name;
+    this.name = data.name;
     this.description = data.description;
   }
 }
