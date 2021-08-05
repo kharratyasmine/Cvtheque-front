@@ -16,10 +16,10 @@ export const navItems: INavData[] = [
   //   url: '/candidature',
   //   icon: 'icon-people'
   // },
-  // {name: 'Suivis',
-  //   url: '/Suivis',
-  //   icon: 'icon-pie-chart'
-  // },
+  {name: 'Suivis',
+    url: '/Suivis',
+    icon: 'icon-pie-chart'
+  },
   {name: 'Competence',
     url: '/competence',
     icon: 'icon-pie-chart'
@@ -34,6 +34,10 @@ export const navItems: INavData[] = [
   },
   {name: 'Université',
     url: '/university',
+    icon: 'icon-pie-chart'
+  },
+  {name: 'Announcement',
+    url: '/announcement',
     icon: 'icon-pie-chart'
   },
 ];

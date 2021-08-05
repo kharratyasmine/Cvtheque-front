@@ -42,7 +42,10 @@ export const routes: Routes = [
       },
       {path: 'university',
         loadChildren: () => import('./views/university/university.module').then(m => m.UniversityModule)
-      }
+      },
+      {path: 'announcement',
+        loadChildren: () => import('./views/announcement/Announcement.module').then(m => m.AnnouncementModule)
+      },
     ]
   },
   { path: '**', component: P404Component }

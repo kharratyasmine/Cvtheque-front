@@ -1,0 +1,33 @@
+<div class="col-6 col-sm-4 col-md mb-3 mb-xl-0 text-center">
+  <p align="left">
+    <button type="button" class="btn btn-success" (click)="openModal(element)">
+      <i class="fa fa-plus fa-lg "></i>Ajouter Announcement</button>
+  </p>
+</div>
+<ng2-smart-table [settings]="settings"[source]="data"
+                 (custom)="chooseAction($event, element, delete )"></ng2-smart-table>
+<ng-template #element>
+  <h2 mat-dialog-title></h2>
+  <mat-dialog-content class="mat-typography">
+    <div class="card-body">
+
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close (click)="close()">Annuler</button>
+    <button mat-button [mat-dialog-close]="true" (click)="addAnnouncement(idAnnouncement)" cdkFocusInitial >Enregistrer</button>
+  </mat-dialog-actions>
+</ng-template>
+<ng-template #delete>
+  <strong>Confirmation de la Suppression</strong>
+  <h2 mat-dialog-title></h2>
+  <mat-dialog-content class="mat-typography">
+    <div class="card-body">
+      <p>Etes-vous sur de vouloir supprimer cet condidat ?</p>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close (click)="close()">Annuler</button>
+    <button mat-button [mat-dialog-close]="true" (click)="deleteAnnouncement()" cdkFocusInitial>supprimer</button>
+  </mat-dialog-actions>
+</ng-template>

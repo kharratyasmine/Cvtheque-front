@@ -1,17 +1,25 @@
 .example-action-buttons {
   padding-bottom: 20px;
 }
-
 .example-headers-align .mat-expansion-panel-header-title,
 .example-headers-align .mat-expansion-panel-header-description {
   flex-basis: 0;
 }
-
 .example-headers-align .mat-expansion-panel-header-description {
   justify-content: space-between;
   align-items: center;
 }
-
 .example-headers-align .mat-form-field + .mat-form-field {
   margin-left: 8px;
 }
+.floatLeft { width: 70%;height: 60% ; float: left; }
+.floatRight {width: 30% ; float: right; }
+.container { overflow: hidden; }
+
+.img-circle {
+  margin-left:2%;
+  float:left;
+  height:60px;
+  width:60px; }
+
+

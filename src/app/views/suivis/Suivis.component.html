@@ -2,7 +2,6 @@
   <p align="left"><button type="button" class="btn btn-success" (click)="openModal(element)">
       <i class="fa fa-comments-o "></i>Suivis candidat</button></p>
 </div>
-
 <ng2-smart-table [settings]="settings" [source]="data" (custom)="chooseAction($event, element, delete)" ></ng2-smart-table>
 <ng-template #element>
   <h2 mat-dialog-title></h2>
@@ -46,7 +45,7 @@
     <div class="col-6 col-sm-4 col-md mb-3 mb-xl-0 text-center">
       <p align="right">
         <button mat-button mat-dialog-close (click)="close()">Annuler</button>
-        <button mat-button [mat-dialog-close]="true" (click)="addSuivis()" cdkFocusInitial>valider</button>
+        <button mat-button [mat-dialog-close]="true" (click)="addSuivis(idCandidatureSteps)" cdkFocusInitial>valider</button>
       </p>
     </div>
   </mat-dialog-actions>
@@ -65,5 +64,3 @@
   </mat-dialog-actions>
 </ng-template>
 
-<button type="button" class="btn btn-success" onclick=""> <i class="icon-cloud-download "></i>importer piéce jointe</button>
-<ng2-smart-table [settings]="setting"  ></ng2-smart-table>

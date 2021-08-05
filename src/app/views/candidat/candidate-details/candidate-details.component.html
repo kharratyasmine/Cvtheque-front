@@ -1,158 +1,264 @@
-<mat-accordion class="example-headers-align" multi>
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Information personnelle
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <div >
-      <h2 mat-dialog-title></h2>
-      <mat-dialog-content class="mat-typography">
-        <div class="card-body">
-          <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-            <div class="form-group ">
-              <div class="form-group row">
-                <mat-horizontal-stepper orientation="horizontal" style="width: 160%">
-                  <mat-step>
-                    <div class="form-group row">
-                      <label class="col-md-3 col-form-label"><strong>Civilite</strong></label>
-                      <div class="col-md-9">
-                        <select id="Civilite" [(ngModel)]="gender" name="Civilite" class="form-control" [disabled]="disabled">
-                          <option value="Mr." >Monsieur</option>
-                          <option value="Mme.">Madame</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-md-3 col-form-label" for="nom"><strong>Nom</strong></label>
-                      <div class="col-md-9">
-                        <input type="text" id="nom" name="nom" class="form-control" placeholder="nom" [disabled]="disabled" [(ngModel)]="nom">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-md-3 col-form-label" for="prenom"><strong>Prenom</strong></label>
-                      <div class="col-md-9">
-                        <input type="text" id="prenom" name="prenom" class="form-control" placeholder="prenom"
-                               [(ngModel)]="prenom" [disabled]="disabled">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-md-3 col-form-label" for="dateDeNaissance"><strong>Date de naissance</strong></label>
-                      <div class="col-md-9">
-                        <input class="form-control" [disabled]="disabled" [(ngModel)]="birth_date" id="dateDeNaissance" type="date" name="dateDeNaissance" placeholder="date">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-md-3 col-form-label" for="Email"><strong>Email</strong></label>
-                      <div class="col-md-9">
-                        <input type="email" [(ngModel)]="email" id="Email" name="email-input" class="form-control"
-                               placeholder="name@example.com" autocomplete="email" [disabled]="disabled">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-md-3 col-form-label" for="Identité"><strong>Identité</strong></label>
-                      <div class="col-md-9">
-                        <input type="text" id="Identité" name="Identité" class="form-control" placeholder="Identité" [disabled]="disabled" [(ngModel)]="identity">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-md-3 col-form-label" for="tel_mobile"><strong>Téléphone</strong></label>
-                      <div class="col-md-9">
-                        <input type="text" id="tel_mobile" name="tel_mobile" class="form-control" placeholder="tel_mobile" [disabled]="disabled" [(ngModel)]="tel_mobile">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-md-3 col-form-label" for="TéléphoneFix"><strong>Téléphone fix</strong></label>
-                      <div class="col-md-9">
-                        <input type="text" id="TéléphoneFix" name="Téléphone fix" class="form-control" placeholder="Téléphone fix" [disabled]="disabled" [(ngModel)]="tel_fix">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-md-3 col-form-label" for="Diplôme"><strong>Diplôme</strong></label>
-                      <div class="col-md-9">
-                        <select [disabled]="disabled" [(ngModel)]="diplome" id="Diplôme" name="Diplôme" class="form-control">
-                          <option *ngFor="let dip of listDiploma" [ngValue]="dip.diploma_id" >
-                            {{dip.name}}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-md-3 col-form-label" for="diploma_date"><strong>Date de diplome</strong></label>
-                      <div class="col-md-9">
-                        <input class="form-control" [disabled]="disabled" [(ngModel)]="diploma_date" id="diploma_date" type="date" name="dateDeNaissance" placeholder="date">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-md-3 col-form-label" for="Ecole"><strong>Ecole</strong></label>
-                      <div class="col-md-9">
-                        <select [(ngModel)]="ecole" [disabled]="disabled" id="Ecole" name="Ecole" class="form-control">
-                          <option *ngFor="let university of listUniversity" [ngValue]="university.university_id" >
-                            {{university.name}}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-md-3 col-form-label" for="Nombre d'anné d'expérience"> <strong>Nombre d'année
-                        d'expérience</strong></label>
-                      <div class="col-md-9">
-                        <input type="text" [disabled]="disabled" [(ngModel)]="nombreDanneDexperience" id="Nombre d'anné d'expérience"
-                               name="Nombre d'anné d'expérience"
-                               class="form-control"
-                               placeholder="Nombre d'anné d'expérience">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-md-3 col-form-label" for="Ex-employeurs"> <strong>Ex-employeurs</strong></label>
-                      <div class="col-md-9">
-                        <input type="text" [disabled]="disabled" [(ngModel)]="Ex_employeurs" id="Ex-employeurs" name="Ex-employeurs"
-                               class="form-control"
-                               placeholder="Ex-employeurs">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-md-3 col-form-label" for="last_position"> <strong>Dernière position</strong></label>
-                      <div class="col-md-9">
-                        <input type="text" [disabled]="disabled" [(ngModel)]="last_position" id="last_position" name="last_position"
-                               class="form-control"
-                               placeholder="Dernière position">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-md-3 col-form-label" for="Motivation"><strong>Motivation</strong></label>
-                      <div class="col-md-9">
-                        <input type="text" [disabled]="disabled" [(ngModel)]="Motivation" id="Motivation" name="Motivation" class="form-control"
-                               placeholder="Motivation">
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-md-3 col-form-label" for="Poste"><strong>Poste</strong></label>
-                      <div class="col-md-9">
-                        <select [disabled]="disabled" [(ngModel)]="Poste" id="Poste" name="Poste" class="form-control">
-                          <option *ngFor="let post of listPoste" [ngValue]="post.id_post" >
-                            {{post.post_name}}
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label class="col-md-3 col-form-label" for="file-input"><strong>Téléverser votre CV</strong></label>
-                      <div class="col-md-9">
-                        <input type="file" accept="application/pdf" id="file-input" name="file-input"[disabled]="disabled" [(ngModel)]="cv">
-                      </div>
-                    </div>
-                  </mat-step>
-                </mat-horizontal-stepper>
-              </div>
-            </div>
-          </form>
-        </div>
-      </mat-dialog-content>
-      <mat-dialog-actions align="end">
-        <button mat-button mat-dialog-close (click)="close()">Annuler</button>
-        <button mat-button [mat-dialog-close]="true" (click)="updateCandidate()" cdkFocusInitial >Enregistrer</button>
-      </mat-dialog-actions>
+<div style="display: flex; flex-direction: column">
+  <div style="display: flex; justify-content: center">
+  <span>
+    <img src="assets/img/avatars/10.jpg" class="img-circle" style="float: left;">
+  </span>
+    <div style="display: flex; flex-direction: column">
+         <span>
+      <b>{{gender}} {{prenom}} {{nom}}</b>
+    </span>
+      <span>Email:{{email}}</span>
     </div>
-  </mat-expansion-panel>
-</mat-accordion>
+</div>
+  <mat-accordion class="example-headers-align" multi>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Information personnelle
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div>
+        <h2 mat-dialog-title></h2>
+        <mat-dialog-content class="mat-typography">
+          <div class="card-body">
+            <form action="" method="post" class="form-horizontal">
+              <div class="form-group ">
+                <div class="form-group row">
+                  <mat-horizontal-stepper orientation="horizontal" style="width: 160%">
+                    <mat-step>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label"><strong>Civilite</strong></label>
+                        <div class="col-md-9">
+                          <select id="Civilite" [(ngModel)]="gender" name="Civilite" class="form-control"
+                                  [disabled]="disabled">
+                            <option value="Mr.">Monsieur</option>
+                            <option value="Mme.">Madame</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="nom"><strong>Nom</strong></label>
+                        <div class="col-md-9">
+                          <input type="text" id="nom" name="nom" class="form-control" placeholder="nom"
+                                 [disabled]="disabled" [(ngModel)]="nom">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="prenom"><strong>Prenom</strong></label>
+                        <div class="col-md-9">
+                          <input type="text" id="prenom" name="prenom" class="form-control" placeholder="prenom"
+                                 [(ngModel)]="prenom" [disabled]="disabled">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="dateDeNaissance"><strong>Date de
+                          naissance</strong></label>
+                        <div class="col-md-9">
+                          <input class="form-control" [disabled]="disabled" [(ngModel)]="birth_date" id="dateDeNaissance"
+                                 type="date" name="dateDeNaissance" placeholder="date">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="Email"><strong>Email</strong></label>
+                        <div class="col-md-9">
+                          <input type="email" [(ngModel)]="email" id="Email" name="email-input" class="form-control"
+                                 placeholder="name@example.com" autocomplete="email" [disabled]="disabled">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="Identité"><strong>Identité</strong></label>
+                        <div class="col-md-9">
+                          <input type="text" id="Identité" name="Identité" class="form-control" placeholder="Identité"
+                                 [disabled]="disabled" [(ngModel)]="identity">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="tel_mobile"><strong>Téléphone</strong></label>
+                        <div class="col-md-9">
+                          <input type="text" id="tel_mobile" name="tel_mobile" class="form-control"
+                                 placeholder="tel_mobile" [disabled]="disabled" [(ngModel)]="tel_mobile">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="TéléphoneFix"><strong>Téléphone fix</strong></label>
+                        <div class="col-md-9">
+                          <input type="text" id="TéléphoneFix" name="Téléphone fix" class="form-control"
+                                 placeholder="Téléphone fix" [disabled]="disabled" [(ngModel)]="tel_fix">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="Diplôme"><strong>Diplôme</strong></label>
+                        <div class="col-md-9">
+                          <select [disabled]="disabled" [(ngModel)]="diplome" id="Diplôme" name="Diplôme"
+                                  class="form-control">
+                            <option *ngFor="let dip of listDiploma" [ngValue]="dip.diploma_id">
+                              {{dip.name}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="diploma_date"><strong>Date de diplome</strong></label>
+                        <div class="col-md-9">
+                          <input class="form-control" [disabled]="disabled" [(ngModel)]="diploma_date" id="diploma_date"
+                                 type="date" name="dateDeNaissance" placeholder="date">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="Ecole"><strong>Ecole</strong></label>
+                        <div class="col-md-9">
+                          <select [(ngModel)]="ecole" [disabled]="disabled" id="Ecole" name="Ecole" class="form-control">
+                            <option *ngFor="let university of listUniversity" [ngValue]="university.university_id">
+                              {{university.name}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="Nombre d'anné d'expérience"> <strong>Nombre d'année
+                          d'expérience</strong></label>
+                        <div class="col-md-9">
+                          <input type="text" [disabled]="disabled" [(ngModel)]="nombreDanneDexperience"
+                                 id="Nombre d'anné d'expérience"
+                                 name="Nombre d'anné d'expérience"
+                                 class="form-control"
+                                 placeholder="Nombre d'anné d'expérience">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="Ex-employeurs"> <strong>Ex-employeurs</strong></label>
+                        <div class="col-md-9">
+                          <input type="text" [disabled]="disabled" [(ngModel)]="Ex_employeurs" id="Ex-employeurs"
+                                 name="Ex-employeurs"
+                                 class="form-control"
+                                 placeholder="Ex-employeurs">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="last_position"> <strong>Dernière
+                          position</strong></label>
+                        <div class="col-md-9">
+                          <input type="text" [disabled]="disabled" [(ngModel)]="last_position" id="last_position"
+                                 name="last_position"
+                                 class="form-control"
+                                 placeholder="Dernière position">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="Motivation"><strong>Motivation</strong></label>
+                        <div class="col-md-9">
+                          <input type="text" [disabled]="disabled" [(ngModel)]="Motivation" id="Motivation"
+                                 name="Motivation" class="form-control"
+                                 placeholder="Motivation">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="Poste"><strong>Poste</strong></label>
+                        <div class="col-md-9">
+                          <select [disabled]="disabled" [(ngModel)]="poste" id="Poste" name="Poste" class="form-control">
+                            <option *ngFor="let post of listPoste" [ngValue]="post.id_post">
+                              {{post.post_name}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="file-input"><strong>Téléverser votre
+                          CV</strong></label>
+                        <div class="col-md-9">
+                          <input type="file" accept="application/pdf" id="file-input" name="file-input"
+                                 [disabled]="disabled" [(ngModel)]="cv">
+                        </div>
+                      </div>
+                    </mat-step>
+                  </mat-horizontal-stepper>
+                </div>
+              </div>
+            </form>
+          </div>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+          <button mat-button mat-dialog-close (click)="close()">Annuler</button>
+          <button mat-button [mat-dialog-close]="true" (click)="updateCandidate()" cdkFocusInitial>Enregistrer</button>
+        </mat-dialog-actions>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+
+<div class="container" style="margin-top: 15px">
+  <div class="floatLeft">
+    <div class="col-6 col-sm-4 col-md mb-3 mb-xl-0 text-center">
+      <app-suivis></app-suivis>
+  </div>
+  <div class="floatRight">
+    <button type="button" class="btn btn-success" onclick=""><i class="icon-cloud-download "></i>importer piéce jointe
+    </button>
+    <ng2-smart-table [settings]="settings"></ng2-smart-table>
+  </div>
+</div>
+<ng-template #element>
+  <h2 mat-dialog-title></h2>
+  <mat-dialog-content class="mat-typography">
+    <div class="card-body">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="textarea-input"><strong>Description Action</strong></label>
+        <div class="col-md-9">
+          <textarea id="textarea-input" [(ngModel)]="Description_Action" name="textarea-input" rows="9"
+                    class="form-control" placeholder="Content.."></textarea>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label"><strong>Avancement</strong></label>
+        <div class="col-md-9">
+          <select id="statut" [(ngModel)]="Avancement" name="statut" class="form-control">
+            <option value="" disabled selected="selected">-------------</option>
+            <option>Contacter</option>
+            <option>Entretien RH</option>
+            <option>Envoi mail</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="date_input"><strong>Date de Suivi</strong></label>
+        <div class="col-md-9">
+          <input class="form-control" [(ngModel)]="date_input" id="date_input" type="date" name="date_input"
+                 placeholder="date">
+          <span class="help-block">Veuillez entrer une date valide</span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label"><strong>Attacher une piéce jointe</strong></label>
+        <label class="col-md-3 col-form-label" for="file-multiple-input"></label>
+        <div class="col-md-9">
+          <input type="file" id="file-multiple-input" name="file-multiple-input" multiple>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-sm-4 col-md mb-3 mb-xl-0 text-center">
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <div class="col-6 col-sm-4 col-md mb-3 mb-xl-0 text-center">
+      <p align="right">
+        <button mat-button mat-dialog-close (click)="close()">Annuler</button>
+        <button mat-button [mat-dialog-close]="true" (click)="addSuivis(idCandidatureSteps)" cdkFocusInitial>valider</button>
+      </p>
+    </div>
+  </mat-dialog-actions>
+</ng-template>
+<ng-template #delete>
+  <strong>Confirmation De La Suppression</strong>
+  <h2 mat-dialog-title></h2>
+  <mat-dialog-content class="mat-typography">
+    <div class="card-body">
+      <p>Etes-vous sur de vouloir supprimer cet Suivis ?</p>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close (click)="close()">Annuler</button>
+    <button mat-button [mat-dialog-close]="true" (click)="deleteSuivis()" cdkFocusInitial>supprimer</button>
+  </mat-dialog-actions>
+</ng-template>
+
+

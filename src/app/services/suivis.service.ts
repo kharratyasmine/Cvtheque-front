@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {Suivis} from '../model/suivis';
+import {Condidat} from '../model/condidat';
 
 @Injectable({providedIn: 'root'})
 export class SuivisService {
@@ -14,12 +15,13 @@ export class SuivisService {
     return this.httpClient.get(this.url + 'suivis');
   }
   postSuivis(suivis: Suivis): Observable<any> {
-    return this.httpClient.post(this.url + 'suivis', suivis);
+    return this.httpClient.post(this.url + 'suivis', Suivis);
   }
-
-  deleteSuivis(idSuivis: any): Observable<any> {
-    return this.httpClient.delete(this.url + 'suivis/' + idSuivis);
+  deleteSuivis(id_candidature_steps: any): Observable<any> {
+    return this.httpClient.delete(this.url + 'suivis/' + id_candidature_steps);
   }
+  updateSuivis(suivis: Suivis, id_candidature_steps) {
+    return this.httpClient.put(this.url + 'suivis/' + id_candidature_steps, Suivis);
 
-}
+}}
 

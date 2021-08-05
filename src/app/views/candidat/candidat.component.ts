@@ -14,13 +14,11 @@ import {GenericService} from '../../services/generic.service';
   styleUrls: ['./candidat.component.scss']
 })
 export class CandidatComponent implements OnInit {
-  private suivis: any;
   constructor(private service: CondidatService, private matDialog: MatDialog,
               private universityService: UniversityService,
               private router: Router,
               private diplomaService: DiplomaService,
-              private genericService: GenericService,
-              private suivisService: SuivisService) {}
+              private genericService: GenericService, ) { }
   settings = {
     columns: {
       last_name: {
@@ -32,39 +30,36 @@ export class CandidatComponent implements OnInit {
       diploma: {
         title: 'Diplôme',
         valuePrepareFunction: (data) => {
-          return data.name; },
-      },
+          return data.name; }, },
       university: {
         title: 'Ecole',
         valuePrepareFunction: (data) => {
-          return data.name; },
+          return data.name; }, },
+      Post: {
+        title: 'Poste',
+        // valuePrepareFunction: (data) => {
+        //   return data.post; },
       },
-      Poste: {
-        title: 'Poste' },
       Statut: {
-        title: 'Statut' },
+        title: 'Statut',
+        // valuePrepareFunction: (data) => {
+        //   return data.statut; },
+      },
     },
     actions: {
       add: false,
       edit: false,
       delete: false,
       position: 'right',
-      custom: [{
-        name: 'view',
-        title: '<i class="cil-check-alt width: 300px"></i>  ',
-      },
-        {
-          name: 'edit',
-          title: '<i class="cil-pencil width: 300px"></i>  ',
-        },
-        {
-          name: 'delete',
-          title: '<i class="icon-trash width: 300px"></i> ',
-        },
-        {
-          name: 'CV',
-          title: '<i class="icon-cloud-download width: 300px"></i>',
-        }
+      custom: [
+        { name: 'view',
+        title: '<i class="cil-check-alt width: 300px"></i>  ', },
+        { name: 'edit',
+          title: '<i class="cil-pencil width: 300px"></i>  ', },
+        { name: 'delete',
+          title: '<i class="icon-trash width: 300px"></i> ', },
+        { name: 'CV',
+          title: '<i class="icon-cloud-download width: 300px"></i>', }
       ],
     },
   };
@@ -91,16 +86,12 @@ export class CandidatComponent implements OnInit {
   cv: any;
   idCandidate = null;
   deleted: any;
-  Description_Action: any;
-  Avancement: any;
-  date_input: any;
   disabled = false;
-
+  title = '';
   ngOnInit(): void {
     this.findAllCondidates();
     this.findAllUniversities();
     this.findAllDiplomas();
-    this.findAllSuivis();
   }
   findAllCondidates() {
     this.service.findAllCondidates().subscribe(resultat => {
@@ -108,6 +99,7 @@ export class CandidatComponent implements OnInit {
     });
   }
   openModal(element: any) {
+    this.title = 'Nouvelle';
     this.matDialog.open(element, {
       width: '800px',
       disableClose: true
@@ -131,26 +123,12 @@ export class CandidatComponent implements OnInit {
         });
         break;
       default :
+        this.title = 'Modifier';
         this.fillDate(event.data);
         event.action === 'view' ? this.disabled = true : this.disabled = false;
         this.genericService.addData(event.data);
         this.genericService.addDisabled(this.disabled);
         this.router.navigate(['/candidat/details']);
-        break;
-    }
-  }
-  choisirAction(event: any, elem: any, elemSupp: any) {
-    this.suivis = event.data;
-    switch (event.action) {
-      case 'Supp' :
-        this.matDialog.open(elemSupp, {disableClose: true});
-        break;
-      default :
-        this.fillDate(event.data);
-        this.matDialog.open(elem, {
-          width: '800px',
-          disableClose: true
-        });
         break;
     }
   }
@@ -201,12 +179,6 @@ export class CandidatComponent implements OnInit {
       this.listDiploma = data;
     });
   }
-  findAllSuivis() {
-    this.service.findAllSuivis().subscribe(resultat => {
-      console.log(resultat);
-      this.data = resultat;
-    });
-  }
   findUniversity(target: any) {
     console.log(target.value);
   }
@@ -231,9 +203,6 @@ export class CandidatComponent implements OnInit {
     this.tel_mobile = null;
     this.cv = null;
     this.idCandidate = null;
-    this.Description_Action = null;
-    this.Avancement = null;
-    this.date_input = null;
     this.disabled = false;
     this.matDialog.closeAll();
   }
@@ -252,24 +221,9 @@ export class CandidatComponent implements OnInit {
     this.last_position = data.last_position;
     this.email = data.mail;
     this.tel_fix = data.tel_fix;
-    this.tel_mobile = data.tel_mobile ;
+    this.tel_mobile = data.tel_mobile;
     this.cv = data.cv;
     this.idCandidate = data.candidate_id;
-  }
-  addSuivis() {
-    const suivis = new Suivis();
-    suivis.Description_Action = this.Description_Action;
-    suivis.Avancement = this.Avancement;
-    suivis.Date_Input = this.date_input;
-    console.log(suivis);
-    this.service.postSuivis(suivis).subscribe(r => {
-      console.log(r);
-    });
-  }
-  deleteSuivis() {
-    this.service.deleteSuivis(this.suivis.id).subscribe(r => {
-      console.log(this.suivis);
-    });
   }
 }
 

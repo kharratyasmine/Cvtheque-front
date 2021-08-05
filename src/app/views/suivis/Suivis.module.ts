@@ -12,22 +12,25 @@ import {SuivisService} from '../../services/suivis.service';
 import {CommonModule} from '@angular/common';
 
 @NgModule({
-  imports: [
-    SuivisRoutingModule,
-    Ng2SmartTableModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatStepperModule,
-    CdkStepperModule,
-    FormsModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    CommonModule
-  ],
-  declarations: [SuivisComponent],
-  providers: [
-    SuivisService
-  ]
+    imports: [
+        SuivisRoutingModule,
+        Ng2SmartTableModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatStepperModule,
+        CdkStepperModule,
+        FormsModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        CommonModule
+    ],
+    declarations: [SuivisComponent],
+    exports: [
+        SuivisComponent
+    ],
+    providers: [
+        SuivisService
+    ]
 })
 export class SuivisModule {
 }
