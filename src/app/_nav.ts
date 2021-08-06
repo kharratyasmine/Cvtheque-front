@@ -36,7 +36,7 @@ export const navItems: INavData[] = [
     url: '/university',
     icon: 'icon-pie-chart'
   },
-  {name: 'Announcement',
+  {name: 'Annonces',
     url: '/announcement',
     icon: 'icon-pie-chart'
   },
