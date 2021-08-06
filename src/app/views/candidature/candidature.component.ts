@@ -86,7 +86,7 @@ openModal( element: any) {
 }
 addCandidature(idcandidature) {
   const candidature = new Candidature();
-  candidature.candidat_id = this.candidat_id
+  candidature.candidat_id = this.candidat_id;
   candidature.recruted_postion_id = this.recruted_postion_id;
   candidature.last_modified_date = this.last_modified_date;
   candidature.last_modified_by = this.last_modified_by;

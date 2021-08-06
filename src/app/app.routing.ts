@@ -22,9 +22,6 @@ export const routes: Routes = [
       {path: 'dashboard',
         loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
-      {path: 'Suivis',
-        loadChildren: () => import('./views/suivis/Suivis.module').then(m => m.SuivisModule)
-      },
       {path: 'candidat',
         loadChildren: () => import('./views/candidat/candidat.module').then(m => m.CandidatModule)
       },

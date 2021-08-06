@@ -1,4 +1,4 @@
-import {Component,  OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {SuivisService} from '../../services/Suivis.service';
 import {MatDialog} from '@angular/material/dialog';
 import {Suivis} from '../../model/suivis';
@@ -9,7 +9,10 @@ import {Suivis} from '../../model/suivis';
   styleUrls: ['./Suivis.component.scss']
 })
 export class SuivisComponent implements OnInit {
-  private suivis: any;
+  @Input()
+  suivis: any;
+  @Input()
+  candidature: any;
   constructor(private service: SuivisService, private matDialog: MatDialog) {
   }
   settings = {
@@ -25,12 +28,10 @@ export class SuivisComponent implements OnInit {
       },
       status: {
         title: 'Statut',
-        valuePrepareFunction: (data) => {
-          return data.Statut; },
       },
-      Attacher_une_piece_jointe: {
-        title: 'Attacher une piéce jointe'
-      },
+      // Attacher_une_piece_jointe: {
+      //   title: 'Attacher une piéce jointe'
+      // },
     },
     actions: {
       add: false,
@@ -40,12 +41,11 @@ export class SuivisComponent implements OnInit {
       custom: [
         {
           name: 'delete',
-          title: '<i class="cil-x width: 300px"></i> ',
+          title: '<i class="icon-trash width: 300px"></i> ',
         },
       ],
     },
   };
-  data = [];
   Description_Action: any;
   Avancement: any;
   date_input: any;
@@ -53,19 +53,11 @@ export class SuivisComponent implements OnInit {
   planned_date: any;
   status: any;
   poste: any;
-  candidature: any;
   disabled: any;
   sequence: any;
   Statut: any;
-  idCandidatureSteps: any;
-    ngOnInit(): void {
-    this.findAllSuivis();
-  }
-    findAllSuivis() {
-    this.service.findAllSuivis().subscribe(resultat => {
-      this.data = resultat;
-    });
-  }
+  idCandidatureSteps = null;
+    ngOnInit(): void {}
     openModal(element: any) {
     this.matDialog.open(element, {
       width: '800px'
@@ -75,10 +67,12 @@ export class SuivisComponent implements OnInit {
     this.suivis = event.data;
     switch (event.action) {
       case 'delete' :
+        this.idCandidatureSteps = event.data.id_candidature_steps;
         this.matDialog.open(elementDelete, {disableClose: true});
         break;
       default :
         this.idCandidatureSteps = event.data.id_candidature_steps;
+        this.fillDate(event.data);
         this.matDialog.open(element, {
           width: '800px',
           disableClose: true
@@ -88,22 +82,22 @@ export class SuivisComponent implements OnInit {
     addSuivis(idCandidatureSteps) {
       const suivis = new Suivis();
       suivis.step_description = this.Description_Action;
-      suivis.Avancement = this.Avancement;
       suivis.planned_date = this.date_input;
       suivis.status = this.status;
       suivis.sequence = this.sequence;
+      suivis.candidature = this.candidature;
       suivis.deleted = 0;
       if (idCandidatureSteps === null) {
         this.service.postSuivis(suivis).subscribe(() => {
           this.ngOnInit(); });
       } else {
-        suivis.id = idCandidatureSteps;
+        suivis.id_candidature_steps = idCandidatureSteps;
         this.service.updateSuivis(suivis, idCandidatureSteps).subscribe(() => {
           this.ngOnInit(); });
       }
     }
     deleteSuivis() {
-      this.service.deleteSuivis(this.suivis.suivis.id).subscribe(() => this.ngOnInit());
+      this.service.deleteSuivis(this.idCandidatureSteps).subscribe(() => this.ngOnInit());
     }
     close() {
       this.status = null;
@@ -117,14 +111,11 @@ export class SuivisComponent implements OnInit {
       this.sequence = null; }
     private fillDate(data) {
       this.status = data.statut;
-      this.idCandidatureSteps = data.id_candidature_steps;
       this.step_description = data.Description_Action ;
       this.Avancement = data.Avancement;
       this.planned_date = data.date_input;
       this.poste = data.poste;
     }
-
-
 }
 
 

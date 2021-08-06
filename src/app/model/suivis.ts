@@ -1,5 +1,5 @@
 export class Suivis {
-  id: any;
+  id_candidature_steps: any;
   step_description: any;
   Description_Action: any ;
   Avancement: any;

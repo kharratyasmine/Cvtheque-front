@@ -29,16 +29,4 @@ export class CondidatService {
   getDocument() {
     return of('https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf');
   }
-  findAllSuivis(): Observable<any> {
-    return this.httpClient.get(this.url + 'suivis');
-  }
-  postSuivis(suivis: Suivis): Observable<any> {
-    return this.httpClient.post(this.url + 'suivis', Suivis);
-  }
-  deleteSuivis(id_candidature_steps: any): Observable<any> {
-    return this.httpClient.delete(this.url + 'suivis/' + id_candidature_steps);
-  }
-  updateSuivis(suivis: Suivis, id_candidature_steps) {
-    return this.httpClient.put(this.url + 'suivis/' + id_candidature_steps, Suivis);
-  }
 }

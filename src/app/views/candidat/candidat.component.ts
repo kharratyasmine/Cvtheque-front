@@ -37,8 +37,8 @@ export class CandidatComponent implements OnInit {
           return data.name; }, },
       Post: {
         title: 'Poste',
-        // valuePrepareFunction: (data) => {
-        //   return data.post; },
+        valuePrepareFunction: (data) => {
+          return data.post; },
       },
       Statut: {
         title: 'Statut',

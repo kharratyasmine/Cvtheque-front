@@ -2,7 +2,7 @@
   <p align="left"><button type="button" class="btn btn-success" (click)="openModal(element)">
       <i class="fa fa-comments-o "></i>Suivis candidat</button></p>
 </div>
-<ng2-smart-table [settings]="settings" [source]="data" (custom)="chooseAction($event, element, delete)" ></ng2-smart-table>
+<ng2-smart-table [settings]="settings" [source]="suivis" (custom)="chooseAction($event, element, delete)" ></ng2-smart-table>
 <ng-template #element>
   <h2 mat-dialog-title></h2>
   <mat-dialog-content class="mat-typography">
@@ -13,17 +13,24 @@
             <textarea id="textarea-input" [(ngModel)]="Description_Action" name="textarea-input" rows="9" class="form-control" placeholder="Content.."></textarea>
           </div>
         </div>
-        <div class="form-group row">
-          <label class="col-md-3 col-form-label"><strong>Avancement</strong></label>
-          <div class="col-md-9">
-            <select  id="statut" [(ngModel)]="Avancement" name="statut" class="form-control">
-              <option  value=""disabled selected="selected">-------------</option>
-              <option>Contacter</option>
-              <option>Entretien RH</option>
-              <option>Envoi mail</option>
-            </select>
-          </div>
+<!--        <div class="form-group row">-->
+<!--          <label class="col-md-3 col-form-label"><strong>Avancement</strong></label>-->
+<!--          <div class="col-md-9">-->
+<!--            <select  id="statut" [(ngModel)]="Avancement" name="statut" class="form-control">-->
+<!--              <option  value=""disabled selected="selected">-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</option>-->
+<!--              <option>Contacter</option>-->
+<!--              <option>Entretien RH</option>-->
+<!--              <option>Envoi mail</option>-->
+<!--            </select>-->
+<!--          </div>-->
+<!--        </div>-->
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="sequence"><strong>Sequence</strong></label>
+        <div class="col-md-9">
+          <input type="text" id="sequence" name="sequence" class="form-control" placeholder="sequence"
+                 [disabled]="disabled" [(ngModel)]="sequence">
         </div>
+      </div>
         <div class="form-group row">
           <label class="col-md-3 col-form-label" for="date_input"><strong>Date de Suivi</strong></label>
           <div class="col-md-9">

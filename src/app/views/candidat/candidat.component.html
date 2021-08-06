@@ -2,7 +2,6 @@
   <p align="left">
     <button type="button" class="btn btn-success" (click)="openModal(element)">
       <i class="fa fa-plus fa-lg "></i>Ajouter candidat</button>
-
   </p>
 </div>
 <ng2-smart-table [settings]="settings" [source]="data"
@@ -15,11 +14,11 @@
     <div class="card-body">
       <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
         <div class="form-group ">
+          <div class="form-group row"><div style="width: 160%">
+            <div><i class="fa fa-info-circle " ><strong>  Informations personnelles</strong></i></div>
+            <div><br></div>
+            <div><br></div>
           <div class="form-group row">
-            <mat-horizontal-stepper orientation="horizontal" style="width: 160%">
-              <mat-step>
-                <ng-template matStepLabel>Information personnelle</ng-template>
-                <div class="form-group row">
                   <label class="col-md-3 col-form-label"><strong>Civilite</strong></label>
                   <div class="col-md-9">
                     <select id="Civilite" [(ngModel)]="gender" name="Civilite" class="form-control" [disabled]="disabled" required="required">
@@ -137,8 +136,9 @@
                     <input type="file" required="required" accept="application/pdf" id="file-input" name="file-input"[disabled]="disabled" [(ngModel)]="cv">
                   </div>
                 </div>
-              </mat-step>
-            </mat-horizontal-stepper>
+<!--              </mat-step>-->
+<!--            </mat-horizontal-stepper>-->
+          </div>
           </div>
         </div>
       </form>

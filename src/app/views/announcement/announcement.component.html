@@ -10,7 +10,19 @@
   <h2 mat-dialog-title></h2>
   <mat-dialog-content class="mat-typography">
     <div class="card-body">
-
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="Poste"><strong>Poste</strong></label>
+        <div class="col-md-9">
+          <input type="text" id="Poste" name="Poste" class="form-control" placeholder="Poste" [disabled]="disabled" [(ngModel)]="Post" required="required">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="Description_Action"><strong>Description Action</strong></label>
+        <div class="col-md-9">
+          <input type="text" id="Description_Action" name="Description_Action" class="form-control" placeholder="Description Action"
+                 [(ngModel)]="description" [disabled]="disabled" required="required">
+        </div>
+      </div>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
@@ -23,7 +35,7 @@
   <h2 mat-dialog-title></h2>
   <mat-dialog-content class="mat-typography">
     <div class="card-body">
-      <p>Etes-vous sur de vouloir supprimer cet condidat ?</p>
+      <p>Etes-vous sur de vouloir supprimer cet Announcement ?</p>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">

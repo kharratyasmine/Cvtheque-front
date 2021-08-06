@@ -4,7 +4,7 @@ export const navItems: INavData[] = [
   {
     name: 'Dashboard',
     url: '/dashboard',
-    icon: 'icon-speedometer',
+    icon: 'icon-home',
   },
   {
     name: 'Candidat',
@@ -16,17 +16,13 @@ export const navItems: INavData[] = [
   //   url: '/candidature',
   //   icon: 'icon-people'
   // },
-  {name: 'Suivis',
-    url: '/Suivis',
-    icon: 'icon-pie-chart'
-  },
   {name: 'Competence',
     url: '/competence',
-    icon: 'icon-pie-chart'
+    icon: 'icon-gears'
   },
   {name: 'Avantages',
     url: '/avantages',
-    icon: 'icon-pie-chart'
+    icon: 'cil-star'
   },
   {name: 'Postes',
     url: '/Postes',
@@ -34,7 +30,7 @@ export const navItems: INavData[] = [
   },
   {name: 'Université',
     url: '/University',
-    icon: 'icon-pie-chart'
+    icon: 'cil-education'
   },
   {name: 'Announcement',
     url: '/announcement',

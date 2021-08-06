@@ -19,6 +19,10 @@ export class CandidatureService {
     return this.httpClient.get(this.url + 'candidature');
   }
 
+  findCandidatureByCandidate(id): Observable<any> {
+    return this.httpClient.get(this.url + 'candidature/candidate/' + id);
+  }
+
   postCandidature(candidature: any): Observable<any> {
     return this.httpClient.post(this.url + 'candidature', candidature);
   }

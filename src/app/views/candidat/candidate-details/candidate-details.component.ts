@@ -8,8 +8,6 @@ import {GenericService} from '../../../services/generic.service';
 import {UniversityService} from '../../../services/university.service';
 import {DiplomaService} from '../../../services/diploma.service';
 import {CandidatureService} from '../../../services/candidature.service';
-import {Candidature} from '../../../model/candidature';
-import {Suivis} from '../../../model/suivis';
 import {MatDialog} from '@angular/material/dialog';
 import {SuivisService} from '../../../services/suivis.service';
 @Component({
@@ -18,7 +16,7 @@ import {SuivisService} from '../../../services/suivis.service';
   styleUrls: ['./candidate-details.component.scss']
 })
 export class CandidateDetailsComponent implements OnInit {
-  private suivis: any;
+  suivis: any[] = [];
   constructor(private service: CondidatService,
               private postesService: PostesService,
               private genericService: GenericService,
@@ -52,7 +50,7 @@ export class CandidateDetailsComponent implements OnInit {
       custom: [
         {
           name: 'delete',
-          title: '<i class="cil-x width: 300px"></i> ',
+          title: '<i class="icon-trash width: 300px"></i> ',
         },
       ],
     },
@@ -95,11 +93,16 @@ export class CandidateDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.genericService.subscribeMessage.subscribe((data: any) => {
       this.genericService.subscribeDisabledData.subscribe((b: boolean) => {
-        this.fillDate(data);
-        this.disabled = b;
+        this.candidatureService.findCandidatureByCandidate(data.candidate_id).subscribe(result => {
+          this.candidature = result;
+          this.suivisService.findAllSuivisByIdCandidature(result.id, data.candidate_id).subscribe(steps => {
+            this.suivis = steps;
+            this.fillDate(data);
+            this.disabled = b;
+          });
+        });
       });
     });
-    this.findAllSuivis();
     this.findAllPostes();
     this.findAllCandidature();
     this.findAllUniversities();
@@ -163,11 +166,6 @@ export class CandidateDetailsComponent implements OnInit {
       this.listDiploma = data;
     });
   }
-  private findAllSuivis() {
-    this.service.findAllSuivis().subscribe(resultat => {
-      this.data = resultat;
-    });
-  }
   openModal(element: any) {
     this.matDialog.open(element, {
       width: '800px',
@@ -175,7 +173,6 @@ export class CandidateDetailsComponent implements OnInit {
     });
   }
   chooseAction(event: any, element: any, elemDelete: any) {
-    this.suivis = event.data;
     switch (event.action) {
       case 'delete' :
         this.matDialog.open(elemDelete, {disableClose: true});
@@ -189,30 +186,6 @@ export class CandidateDetailsComponent implements OnInit {
         });
         break;
     }
-  }
-  addSuivis(id_candidature_steps) {
-    const suivis = new Suivis();
-    suivis.step_description = this.Description_Action;
-    suivis.Avancement = this.Avancement;
-    suivis.planned_date = this.date_input;
-    suivis.status = this.status;
-    suivis.sequence = this.sequence;
-    suivis.deleted = 0;
-    if (id_candidature_steps === null) {
-      this.service.postSuivis(suivis).subscribe(() => {
-        this.ngOnInit();
-        this.close();
-      });
-    } else {
-      suivis.id = id_candidature_steps;
-      this.service.updateSuivis(suivis, id_candidature_steps).subscribe(() => {
-        this.ngOnInit();
-        this.close();
-      });
-    }
-  }
-  deleteSuivis() {
-    this.service.deleteSuivis(this.suivis.suivis.id).subscribe(() => this.ngOnInit());
   }
   close() {
     this.nom = null;
@@ -260,7 +233,6 @@ export class CandidateDetailsComponent implements OnInit {
     this.cv = data.cv;
     this.status = data.statut;
     this.idCandidate = data.candidate_id;
-    this.id_candidature_steps = data.id_candidature_steps;
     this.step_description = data.Description_Action ;
     this.Avancement = data.Avancement;
     this.planned_date = data.date_input;
