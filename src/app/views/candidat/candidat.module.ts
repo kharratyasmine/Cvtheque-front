@@ -6,7 +6,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 import {MatStepper, MatStepperModule} from '@angular/material/stepper';
 import {CdkStepper, CdkStepperModule} from '@angular/cdk/stepper';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {CommonModule} from '@angular/common';
 import { CandidateDetailsComponent } from './candidate-details/candidate-details.component';
@@ -29,7 +29,8 @@ import {SuivisModule} from '../suivis/Suivis.module';
     MatExpansionModule,
     MatIconModule,
     MatDatepickerModule,
-    SuivisModule
+    SuivisModule,
+    ReactiveFormsModule
   ],
   declarations: [CandidatComponent, CandidateDetailsComponent],
   providers: [

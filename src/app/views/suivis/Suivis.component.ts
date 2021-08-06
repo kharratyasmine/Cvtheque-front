@@ -39,6 +39,8 @@ export class SuivisComponent implements OnInit {
       delete: false,
       position: 'right',
       custom: [
+        { name: 'edit',
+          title: '<i class="cil-pencil width: 300px"></i>  ', },
         {
           name: 'delete',
           title: '<i class="icon-trash width: 300px"></i> ',
@@ -77,8 +79,7 @@ export class SuivisComponent implements OnInit {
           width: '800px',
           disableClose: true
         });
-        break; }
-  }
+        break; } }
     addSuivis(idCandidatureSteps) {
       const suivis = new Suivis();
       suivis.step_description = this.Description_Action;
@@ -89,15 +90,15 @@ export class SuivisComponent implements OnInit {
       suivis.deleted = 0;
       if (idCandidatureSteps === null) {
         this.service.postSuivis(suivis).subscribe(() => {
-          this.ngOnInit(); });
+          this.findAllStepsByCandidature(); });
       } else {
         suivis.id_candidature_steps = idCandidatureSteps;
         this.service.updateSuivis(suivis, idCandidatureSteps).subscribe(() => {
-          this.ngOnInit(); });
+          this.findAllStepsByCandidature(); });
       }
     }
     deleteSuivis() {
-      this.service.deleteSuivis(this.idCandidatureSteps).subscribe(() => this.ngOnInit());
+      this.service.deleteSuivis(this.idCandidatureSteps).subscribe(() => this.findAllStepsByCandidature());
     }
     close() {
       this.status = null;
@@ -110,11 +111,16 @@ export class SuivisComponent implements OnInit {
       this.candidature = null;
       this.sequence = null; }
     private fillDate(data) {
-      this.status = data.statut;
-      this.step_description = data.Description_Action ;
-      this.Avancement = data.Avancement;
-      this.planned_date = data.date_input;
-      this.poste = data.poste;
+      this.status = data.status;
+      this.step_description = data.step_description ;
+      this.sequence = data.sequence;
+      this.planned_date = data.planned_date;
+      this.candidature = data.candidature;
+    }
+    findAllStepsByCandidature() {
+      this.service.findAllSuivisByIdCandidature(this.candidature.id, this.candidature.candidate.candidate_id)
+        .subscribe(steps => { this.suivis = steps;
+      });
     }
 }
 

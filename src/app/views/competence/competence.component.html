@@ -26,39 +26,12 @@
           </div>
         </div>
       </div>
-<!--      <div class="container">-->
-<!--        <form [formGroup]="productForm" (ngSubmit)="onSubmit()">-->
-<!--          <p>-->
-<!--            <label for="name">Groupe des compétences:</label>-->
-<!--            <input type="text" id="name" name="name" formControlName="name" class="form-control">-->
-<!--          </p>-->
-<!--          <table class="table table-bordered" formArrayName="competance">-->
-<!--            <tr>-->
-<!--              <th colspan="2">Ajouter des competences:</th>-->
-<!--              <th width="150px"><button type="button" (click)="addcompetence()" class="btn btn-primary">Ajouter</button></th>-->
-<!--            </tr>-->
-<!--            <tr *ngFor="let competence of competences().controls; let i=index" [formGroupName]="i">-->
-<!--              <td>-->
-<!--                competence :-->
-<!--                <input type="text" formControlName="competence" class="form-control">-->
-<!--              </td>-->
-<!--              <td>-->
-<!--               groupe-->
-<!--                <input type="text" formControlName="price" class="form-control">-->
-<!--              </td>-->
-<!--              <td>-->
-<!--                <button (click)="removecompetence(i)" class="btn btn-danger">supprimer</button>-->
-<!--              </td>-->
-<!--            </tr>-->
-<!--          </table>-->
-<!--        </form>-->
-<!--        <br/>-->
-<!--      </div>-->
+
     </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close (click)="close()">Annuler</button>
-    <button mat-button [mat-dialog-close]="true" (click)=" addCompetence()" cdkFocusInitial>Enregistrer</button>
+    <button mat-button [mat-dialog-close]="true" (click)=" addCompetence(idCompetence)" cdkFocusInitial>Enregistrer</button>
   </mat-dialog-actions>
 </ng-template>
 <ng-template #delete>

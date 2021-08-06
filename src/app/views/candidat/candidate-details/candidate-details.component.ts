@@ -10,6 +10,8 @@ import {DiplomaService} from '../../../services/diploma.service';
 import {CandidatureService} from '../../../services/candidature.service';
 import {MatDialog} from '@angular/material/dialog';
 import {SuivisService} from '../../../services/suivis.service';
+import { FormBuilder} from '@angular/forms';
+import {CompetenceService} from '../../../services/competence.service';
 @Component({
   selector: 'app-candidate-details',
   templateUrl: './candidate-details.component.html',
@@ -17,7 +19,7 @@ import {SuivisService} from '../../../services/suivis.service';
 })
 export class CandidateDetailsComponent implements OnInit {
   suivis: any[] = [];
-  constructor(private service: CondidatService,
+constructor(private service: CondidatService,
               private postesService: PostesService,
               private genericService: GenericService,
               private universityService: UniversityService,
@@ -25,8 +27,14 @@ export class CandidateDetailsComponent implements OnInit {
               private announcementService: AnnouncementService,
               private candidatureService: CandidatureService,
               private matDialog: MatDialog,
-              private suivisService: SuivisService) { }
+              private suivisService: SuivisService,
+              private fb: FormBuilder,
+              private CompetenceService: CompetenceService, ) { }
   @ViewChild(MatAccordion) accordion: MatAccordion;
+  // productForm = this.fb.group({
+  //   name: '',
+  //   competences: this.fb.array([]) ,
+  // });
   settings = {
     columns: {
       piece_jointe: {
@@ -40,6 +48,28 @@ export class CandidateDetailsComponent implements OnInit {
       },
       Type: {
         title: 'Type'
+      },
+    },
+    actions: {
+      add: false,
+      edit: false,
+      delete: false,
+      position: 'right',
+      custom: [
+        {
+          name: 'delete',
+          title: '<i class="icon-trash width: 300px"></i> ',
+        },
+      ],
+    },
+  };
+  setting = {
+    columns: {
+      competence_name: {
+        nom: 'Competence'
+      },
+      evaluation: {
+        title: 'Evaluation'
       },
     },
     actions: {
@@ -88,6 +118,7 @@ export class CandidateDetailsComponent implements OnInit {
   sequence: any;
   Description_Action: any;
   date_input: any;
+  competence_name: any;
   Statut: any;
   id_candidature_steps: any;
   ngOnInit(): void {
@@ -107,6 +138,7 @@ export class CandidateDetailsComponent implements OnInit {
     this.findAllCandidature();
     this.findAllUniversities();
     this.findAllDiplomas();
+    this.findAllCompetence();
   }
   private findAllPostes() {
     this.postesService.findAllPostes().subscribe(data => {
@@ -237,5 +269,12 @@ export class CandidateDetailsComponent implements OnInit {
     this.Avancement = data.Avancement;
     this.planned_date = data.date_input;
     this.poste = data.poste;
+  }
+
+
+  private findAllCompetence() {
+    this.CompetenceService.findAllCompetence().subscribe(data => {
+      this.listPoste = data;
+    });
   }
 }

@@ -17,6 +17,9 @@ export class PostesService {
   findAllPostes(): Observable<any> {
     return this.httpClient.get(this.url + 'post');
   }
+  findposteByCandidatureAndCandidate(idCandidature: any, idCandidate: any): Observable<any> {
+    return this.httpClient.get(this.url + 'post/' + idCandidature + '/' + idCandidate);
+  }
   postPostes(Poste: Postes): Observable<any> {
     return this.httpClient.post(this.url + 'post', Poste);
   }

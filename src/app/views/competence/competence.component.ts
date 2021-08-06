@@ -9,11 +9,8 @@ import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
   styleUrls: ['./competence.component.scss']
 })
 export class CompetenceComponent implements OnInit {
-  constructor(private service: CompetenceService, private matDialog: MatDialog, private fb: FormBuilder ) { }
-  // productForm = this.fb.group({
-  //   name: '',
-  //   competences: this.fb.array([]) ,
-  // });
+  constructor(private service: CompetenceService, private matDialog: MatDialog ) { }
+
   settings = {
     columns: {
       competence_name: {
@@ -106,24 +103,7 @@ export class CompetenceComponent implements OnInit {
     this.competence_name = data.competence_name;
     this.competence_group = data.competence_group;
     this.idCompetence = data.idCompetence; }
-  // onSubmit() {
-  //   console.log(this.productForm.value);
-  // }
-  // competences(): FormArray {
-  //   return this.productForm.get('competences') as FormArray;
-  // }
-  // private newcompetence(): FormGroup {
-  //   return this.fb.group({
-  //     competence: '',
-  //     price: '',
-  //   });
-  // }
-  // addcompetence() {
-  //   this.competences().push(this.newcompetence());
-  // }
-  // removecompetence(i: number) {
-  //   this.competences().removeAt(i);
-  // }
+
 
 }
 

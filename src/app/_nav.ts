@@ -18,7 +18,7 @@ export const navItems: INavData[] = [
   // },
   {name: 'Competence',
     url: '/competence',
-    icon: 'icon-gears'
+    icon: 'cil-library-add'
   },
   {name: 'Avantages',
     url: '/avantages',
@@ -26,14 +26,14 @@ export const navItems: INavData[] = [
   },
   {name: 'Postes',
     url: '/Postes',
-    icon: 'icon-pie-chart'
+    icon: 'cil-contact'
   },
   {name: 'Université',
     url: '/University',
     icon: 'cil-education'
   },
-  {name: 'Announcement',
+  {name: 'Annonce',
     url: '/announcement',
-    icon: 'icon-pie-chart'
+    icon: 'cil-volume-low'
   },
 ];

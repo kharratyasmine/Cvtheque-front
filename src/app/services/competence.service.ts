@@ -15,8 +15,6 @@ export class CompetenceService {
   findAllCompetence(): Observable<any> {
     return this.httpClient.get(this.url + 'competence');
   }
-
-
   postCompetence(competence: Competence): Observable<any> {
     return this.httpClient.post(this.url + 'competence', Competence);
   }

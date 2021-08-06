@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnChanges, OnInit} from '@angular/core';
 import {CondidatService} from '../../services/condidat.service';
 import {MatDialog} from '@angular/material/dialog';
 import {Condidat} from '../../model/condidat';
@@ -8,6 +8,7 @@ import {DiplomaService} from '../../services/diploma.service';
 import {SuivisService} from '../../services/Suivis.service';
 import {Router} from '@angular/router';
 import {GenericService} from '../../services/generic.service';
+import {PostesService} from '../../services/postes.service';
 @Component({
   selector: 'app-candidat',
   templateUrl: './candidat.component.html',
@@ -18,7 +19,10 @@ export class CandidatComponent implements OnInit {
               private universityService: UniversityService,
               private router: Router,
               private diplomaService: DiplomaService,
+              private stepService: SuivisService,
+              private postService: PostesService,
               private genericService: GenericService, ) { }
+
   settings = {
     columns: {
       last_name: {
@@ -35,12 +39,10 @@ export class CandidatComponent implements OnInit {
         title: 'Ecole',
         valuePrepareFunction: (data) => {
           return data.name; }, },
-      Post: {
+      post_name: {
         title: 'Poste',
-        valuePrepareFunction: (data) => {
-          return data.post; },
       },
-      Statut: {
+      statut: {
         title: 'Statut',
         // valuePrepareFunction: (data) => {
         //   return data.statut; },
@@ -88,14 +90,31 @@ export class CandidatComponent implements OnInit {
   deleted: any;
   disabled = false;
   title = '';
-  ngOnInit(): void {
+  ngOnInit() {
     this.findAllCondidates();
     this.findAllUniversities();
     this.findAllDiplomas();
   }
   findAllCondidates() {
     this.service.findAllCondidates().subscribe(resultat => {
-      this.data = resultat;
+      resultat.forEach(res => {
+        if (res.candidatures.length > 0) {
+          this.postService.findposteByCandidatureAndCandidate(res.candidatures[0].id, res.candidate_id)
+            .subscribe(data => {
+              Object.assign(res, {post_name: data.post_name});
+            });
+          this.stepService.findAllSuivisByIdCandidature(res.candidatures[0].id, res.candidate_id)
+            .subscribe(steps => {
+              Object.assign(res, {statut: steps[steps.length - 1].status});
+            });
+        } else {
+          Object.assign(res, {post_name: ''});
+          Object.assign(res, {statut: ''});
+        }
+      });
+      setTimeout(() => {
+        this.data = resultat;
+        }, 1000);
     });
   }
   openModal(element: any) {

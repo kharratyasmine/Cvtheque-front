@@ -25,5 +25,5 @@ export class CondidatDetails {
   status: any;
   sequence: any;
   candidature: any;
-
+  competence_name: any;
 }
