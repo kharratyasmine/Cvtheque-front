@@ -15,6 +15,9 @@ export class AvantagesService {
   findAllAvantages(): Observable<any> {
     return this.httpClient.get(this.url + 'advantage');
   }
+  findAllAvantagesByIdCandidature(idCandidature: any, idAdvantage: any): Observable<any> {
+    return this.httpClient.get(this.url + 'advantage/query/' + idCandidature + '/' + idAdvantage );
+  }
   postAdvantage(avantage: Avantage): Observable<any> {
     return this.httpClient.post(this.url + 'advantage', avantage);
   }

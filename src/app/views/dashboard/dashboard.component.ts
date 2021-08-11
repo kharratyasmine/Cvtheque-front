@@ -35,19 +35,6 @@ export class DashboardComponent implements OnInit {
         }
 
       }],
-      yAxes: [{
-        display: false,
-        ticks: {
-          display: false,
-          min: 40 - 5,
-          max: 84 + 5,
-        }
-      }],
-    },
-    elements: {
-      line: {
-        borderWidth: 1
-      },
       point: {
         radius: 4,
         hitRadius: 10,

@@ -13,8 +13,7 @@ export class SuivisComponent implements OnInit {
   suivis: any;
   @Input()
   candidature: any;
-  constructor(private service: SuivisService, private matDialog: MatDialog) {
-  }
+  constructor(private service: SuivisService, private matDialog: MatDialog) { }
   settings = {
     columns: {
       planned_date: {

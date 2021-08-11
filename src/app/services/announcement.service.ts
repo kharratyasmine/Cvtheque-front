@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Condidat} from '../model/condidat';
 import {Announcement} from '../model/announcement';
 
 @Injectable({
@@ -13,6 +12,7 @@ export class AnnouncementService {
   private url = environment.BASE_URL;
   constructor(private httpClient: HttpClient) { }
   findAnnouncement(post: any): Observable<any> {
+    debugger;
     return this.httpClient.post(this.url + 'announcement/post', post);
   }
   findAllAnnouncement(): Observable<any> {

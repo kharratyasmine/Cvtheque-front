@@ -8,7 +8,7 @@
                  (custom)="chooseAction($event, element, delete, CV )"></ng2-smart-table>
 <!--Modal-->
 <ng-template #element>
-  <strong>{{title}} Candidat</strong>
+  <strong> {{title}} Candidat</strong>
   <h2 mat-dialog-title></h2>
   <mat-dialog-content class="mat-typography">
     <div class="card-body">
@@ -18,7 +18,7 @@
             <div><i class="fa fa-info-circle " ><strong>  Informations personnelles</strong></i></div>
             <div><br></div>
             <div><br></div>
-          <div class="form-group row">
+                <div class="form-group row">
                   <label class="col-md-3 col-form-label"><strong>Civilite</strong></label>
                   <div class="col-md-9">
                     <select id="Civilite" [(ngModel)]="gender" name="Civilite" class="form-control" [disabled]="disabled" required="required">
@@ -130,14 +130,22 @@
                            placeholder="Motivation">
                   </div>
                 </div>
+<!--                <div class="form-group row">-->
+<!--              <label class="col-md-3 col-form-label" for="Poste"><strong>Poste</strong></label>-->
+<!--              <div class="col-md-9">-->
+<!--                <select [disabled]="disabled" [(ngModel)]="poste" id="Poste" name="Poste" class="form-control">-->
+<!--                  <option *ngFor="let post of listPoste" [ngValue]="post.id_post">-->
+<!--                    {{post.post_name}}-->
+<!--                  </option>-->
+<!--                </select>-->
+<!--              </div>-->
+<!--            </div>-->
                 <div class="form-group row">
-                  <label class="col-md-3 col-form-label" for="file-input"><strong>Téléverser votre CV</strong></label>
-                  <div class="col-md-9">
-                    <input type="file" required="required" accept="application/pdf" id="file-input" name="file-input"[disabled]="disabled" [(ngModel)]="cv">
-                  </div>
-                </div>
-<!--              </mat-step>-->
-<!--            </mat-horizontal-stepper>-->
+              <label class="col-md-3 col-form-label" for="file-input"><strong>Téléverser votre CV</strong></label>
+              <div class="col-md-9">
+                <input type="file" required="required" accept="application/pdf" id="file-input" name="file-input"[disabled]="disabled" [(ngModel)]="cv">
+              </div>
+            </div>
           </div>
           </div>
         </div>

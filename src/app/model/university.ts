@@ -1,6 +1,7 @@
 export class University {
   id: any;
-  nom: any;
-  idUniversities: any;
-  University: any;
+  university_id: any;
+  name: any;
+  description: any;
+  deleted: any;
 }

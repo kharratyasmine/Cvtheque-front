@@ -15,8 +15,11 @@ export class CompetenceService {
   findAllCompetence(): Observable<any> {
     return this.httpClient.get(this.url + 'competence');
   }
+  findAllCompetenceByIdCandidature(idCandidature: any, idCompetence: any): Observable<any> {
+    return this.httpClient.get(this.url + 'competence/query/' + idCandidature + '/' + idCompetence );
+  }
   postCompetence(competence: Competence): Observable<any> {
-    return this.httpClient.post(this.url + 'competence', Competence);
+    return this.httpClient.post(this.url + 'competence', competence);
   }
 
   deleteCompetence(idCompetence: any): Observable<any> {
@@ -24,6 +27,6 @@ export class CompetenceService {
   }
 
   updateCompetence(competence: Competence, idCompetence) {
-    return this.httpClient.put(this.url + 'competence/' + idCompetence, Competence);
+    return this.httpClient.put(this.url + 'competence/' + idCompetence, competence);
   }
 }

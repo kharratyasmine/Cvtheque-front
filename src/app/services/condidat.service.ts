@@ -3,12 +3,12 @@ import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {Condidat} from '../model/condidat';
-import {Suivis} from '../model/suivis';
-
 
 @Injectable({providedIn: 'root'})
 export class CondidatService {
   private url = environment.BASE_URL;
+  private ResponseContentType: any;
+  private http: any;
   constructor(private httpClient: HttpClient) {
   }
   findAllCondidates(): Observable<any> {
@@ -26,7 +26,9 @@ export class CondidatService {
   updateCondidat(candidate: Condidat, idCandidate) {
     return this.httpClient.put(this.url + 'candidate/' + idCandidate, candidate);
   }
+
   getDocument() {
     return of('https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf');
   }
+
 }

@@ -14,10 +14,10 @@ export class AnnouncementComponent implements OnInit {
   constructor(private service: AnnouncementService, private matDialog: MatDialog) { }
   settings = {
     columns: {
-      Post: {
+      post: {
         title: 'Poste' ,
-        // valuePrepareFunction: (data) => {
-        //   return data.post; },
+        valuePrepareFunction: (data) => {
+          return data.post_name; },
       },
       description: {
         title: 'Description Action' },
@@ -30,6 +30,8 @@ export class AnnouncementComponent implements OnInit {
       custom: [
         { name: 'delete',
           title: '<i class="icon-trash width: 300px"></i> ', },
+        { name: 'edit',
+          title: '<i class="icon-pencil width: 300px"></i> ', },
       ],
     },
   };
@@ -39,7 +41,7 @@ export class AnnouncementComponent implements OnInit {
   description: any;
   announcement: any;
   disabled: any;
-
+  title: string;
   ngOnInit(): void {
     this.findAllAnnouncement();
   }
@@ -58,9 +60,12 @@ export class AnnouncementComponent implements OnInit {
     this.announcement = event.data;
     switch (event.action) {
       case 'delete' :
+        this.idAnnouncement = event.data.idAnnouncement;
         this.matDialog.open(elementDelete, {disableClose: true});
         break;
       default :
+        event.action === 'edit' ? this.idAnnouncement = event.data.idAnnouncement : this.idAnnouncement = null;
+        this.title = 'Modifier';
         this.fillDate(event.data);
         this.matDialog.open(event, {
           width: '800px',
@@ -88,7 +93,10 @@ export class AnnouncementComponent implements OnInit {
     }
   }
   deleteAnnouncement() {
-    this.service.deleteAnnouncement(this.idAnnouncement).subscribe(() => this.ngOnInit());
+    this.service.deleteAnnouncement(this.idAnnouncement).subscribe(() => {
+     this.ngOnInit();
+      this.close();
+  });
   }
   close() {
     this.Post = null;

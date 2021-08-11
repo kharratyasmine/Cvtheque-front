@@ -12,8 +12,11 @@ export class UniversityComponent implements OnInit {
   }
   settings = {
     columns: {
-      nom: {
+      name: {
         title: 'Nom'
+      },
+      description: {
+        title: 'Description'
       },
     },
     actions: {
@@ -25,14 +28,19 @@ export class UniversityComponent implements OnInit {
         name: 'delete',
         title: '<i class="icon-trash width: 300px"></i> ',
       },
+        {
+          name: 'edit',
+          title: '<i class="icon-pencil width: 300px"></i> ',
+        },
       ],
     },
   };
   data = [];
-  nom: any;
+  name: any;
   university_id: any;
-  University: any;
-
+  description: any;
+  deleted: any;
+  title: string;
   ngOnInit(): void {
     this.findUniversities();
   }
@@ -41,21 +49,24 @@ export class UniversityComponent implements OnInit {
       this.data = resultat;
     });
   }
-  openModal(element: any) {
-    this.matDialog.open(element, {
+  openModal(university: any) {
+    this.title = 'Nouvelle';
+    this.matDialog.open(university, {
       width: '800px',
       disableClose: true
     });
   }
-  chooseAction(event: any, element: any, elementDelete: any ) {
-    this.University = event.data;
+  chooseAction(event: any, university: any, universityDelete: any ) {
     switch (event.action) {
       case 'delete' :
-        this.matDialog.open(elementDelete, {disableClose: true});
+        this.matDialog.open(universityDelete, {disableClose: true});
+        this.university_id = event.data.university_id;
         break;
       default :
+        event.action === 'edit' ? this.university_id = event.data.university_id : this.university_id = null;
+        this.title = 'Modifier';
         this.fillDate(event.data);
-        this.matDialog.open(element, {
+        this.matDialog.open(university, {
           width: '800px',
           disableClose: true
         });
@@ -64,24 +75,36 @@ export class UniversityComponent implements OnInit {
   }
   addUniversities(university_id) {
     const university = new University();
-    university.nom = this.nom;
-    university.idUniversities = this.university_id;
-    if (university_id === null) {
+    university.name = this.name;
+    university.description = this.description;
+    university.deleted = 0;
+    if (this.university_id === null) {
       this.service.postUniversities(university).subscribe(() => {
         this.ngOnInit();
+        this.close();
       });
-    }   }
+    } else {
+      university.id = university_id;
+      this.service.updateUniversities(university, university_id).subscribe(() => {
+        this.ngOnInit();
+        this.close();
+      });
+    }
+  }
   deleteUniversities() {
-    this.service.deleteUniversities(this.University.university_id).subscribe(() => this.ngOnInit());
+    this.service.deleteUniversities(this.university_id).subscribe(() => {
+      this.ngOnInit();
+      this.close();
+    });
   }
   close() {
-    this.nom = null;
+    this.name = null;
+    this.description = null;
     this.university_id = null;
     this.matDialog.closeAll();
   }
   private fillDate(data) {
-    this.nom = data.last_name;
-    this.University = data.University;
-    this.university_id = data.university_id;
+    this.name = data.name;
+    this.description = data.description;
   }
 }

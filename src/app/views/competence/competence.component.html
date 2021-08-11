@@ -8,7 +8,7 @@
 </div>
 <ng2-smart-table [settings]="settings" [source]="data" (custom)="chooseAction($event, avant, delete)" ></ng2-smart-table>
 <ng-template #avant>
-  <strong>Nouvelle Competence</strong>
+  <strong>{{title}} Competence</strong>
   <h2 mat-dialog-title></h2>
   <mat-dialog-content class="mat-typography">
     <div class="card-body">

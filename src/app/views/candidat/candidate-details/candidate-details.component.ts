@@ -1,5 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatAccordion} from '@angular/material/expansion';
+import {Component, OnInit} from '@angular/core';
 import {CondidatService} from '../../../services/condidat.service';
 import {PostesService} from '../../../services/postes.service';
 import {AnnouncementService} from '../../../services/announcement.service';
@@ -10,8 +9,8 @@ import {DiplomaService} from '../../../services/diploma.service';
 import {CandidatureService} from '../../../services/candidature.service';
 import {MatDialog} from '@angular/material/dialog';
 import {SuivisService} from '../../../services/suivis.service';
-import { FormBuilder} from '@angular/forms';
 import {CompetenceService} from '../../../services/competence.service';
+import {AvantagesService} from '../../../services/avantages.service';
 @Component({
   selector: 'app-candidate-details',
   templateUrl: './candidate-details.component.html',
@@ -19,6 +18,8 @@ import {CompetenceService} from '../../../services/competence.service';
 })
 export class CandidateDetailsComponent implements OnInit {
   suivis: any[] = [];
+  avantage: any[] = [];
+  competence: any[] = [];
 constructor(private service: CondidatService,
               private postesService: PostesService,
               private genericService: GenericService,
@@ -27,27 +28,44 @@ constructor(private service: CondidatService,
               private announcementService: AnnouncementService,
               private candidatureService: CandidatureService,
               private matDialog: MatDialog,
-              private suivisService: SuivisService,
-              private fb: FormBuilder,
-              private CompetenceService: CompetenceService, ) { }
-  @ViewChild(MatAccordion) accordion: MatAccordion;
-  // productForm = this.fb.group({
-  //   name: '',
-  //   competences: this.fb.array([]) ,
-  // });
-  settings = {
+              private competenceService: CompetenceService,
+              private avantagesServices: AvantagesService,
+              private suivisService: SuivisService) { }
+// settings = {
+//     columns: {
+//       piece_jointe: {
+//         title: 'Piece jointe'
+//       },
+//       Date: {
+//         title: 'Date'
+//       },
+//       type_de_piece_jointe: {
+//         title: 'Type de piece jointe'
+//       },
+//       Type: {
+//         title: 'Type'
+//       },
+//     },
+//     actions: {
+//       add: false,
+//       edit: false,
+//       delete: false,
+//       position: 'right',
+//       custom: [
+//         {
+//           name: 'delete',
+//           title: '<i class="icon-trash width: 300px"></i> ',
+//         },
+//       ],
+//     },
+//   };
+  setting = {
     columns: {
-      piece_jointe: {
-        title: 'Piece jointe'
+      competence_name: {
+       title: 'Competence'
       },
-      Date: {
-        title: 'Date'
-      },
-      type_de_piece_jointe: {
-        title: 'Type de piece jointe'
-      },
-      Type: {
-        title: 'Type'
+      evaluation: {
+        title: 'Evaluation'
       },
     },
     actions: {
@@ -63,10 +81,10 @@ constructor(private service: CondidatService,
       ],
     },
   };
-  setting = {
+  setings = {
     columns: {
-      competence_name: {
-        nom: 'Competence'
+      advantage_name: {
+       title: 'Avantage'
       },
       evaluation: {
         title: 'Evaluation'
@@ -121,16 +139,25 @@ constructor(private service: CondidatService,
   competence_name: any;
   Statut: any;
   id_candidature_steps: any;
+  idCompetence: any;
   ngOnInit(): void {
     this.genericService.subscribeMessage.subscribe((data: any) => {
       this.genericService.subscribeDisabledData.subscribe((b: boolean) => {
         this.candidatureService.findCandidatureByCandidate(data.candidate_id).subscribe(result => {
           this.candidature = result;
-          this.suivisService.findAllSuivisByIdCandidature(result.id, data.candidate_id).subscribe(steps => {
-            this.suivis = steps;
-            this.fillDate(data);
-            this.disabled = b;
-          });
+          if (result !== null) {
+            // this.competenceService.findAllCompetenceByIdCandidature(result.id, data.candidate_id).subscribe(competences => {
+            //   this.competence = competences;
+            // });
+            // this.avantagesServices.findAllAvantagesByIdCandidature(result.id, data.candidate_id).subscribe(advatages => {
+            //   this.avantage = advatages;
+            // });
+            this.suivisService.findAllSuivisByIdCandidature(result.id, data.candidate_id).subscribe(steps => {
+              this.suivis = steps;
+            });
+          }
+          this.fillDate(data);
+          this.disabled = b;
         });
       });
     });
@@ -138,7 +165,6 @@ constructor(private service: CondidatService,
     this.findAllCandidature();
     this.findAllUniversities();
     this.findAllDiplomas();
-    this.findAllCompetence();
   }
   private findAllPostes() {
     this.postesService.findAllPostes().subscribe(data => {
@@ -173,7 +199,7 @@ constructor(private service: CondidatService,
     candidate.cv = this.cv;
     candidate.Statut = null;
     candidate.deleted = 0;
-    candidate.id = this.idCandidate;
+    candidate.candidate_id = this.idCandidate;
     this.service.updateCondidat(candidate, this.idCandidate).subscribe(() => {
       this.announcementService.findAnnouncement(this.listPoste.find(post => post.id_post === this.poste))
         .subscribe(result => {
@@ -181,12 +207,15 @@ constructor(private service: CondidatService,
             candidate: candidate,
             announcement: result,
             candidature_steps: null,
+            // advantage : null,
+            // competence : null,
           };
-          this.candidatureService.postCandidature(candidature).subscribe(() => {
-            this.ngOnInit();
+          console.log(candidature);
+          // this.candidatureService.postCandidature(candidature).subscribe(() => {
+          //   this.ngOnInit();
           });
         });
-      });
+      // });
   }
   private findAllUniversities() {
     this.universityService.findUniversities().subscribe(data => {
@@ -210,6 +239,7 @@ constructor(private service: CondidatService,
         this.matDialog.open(elemDelete, {disableClose: true});
         break;
       default :
+        this.idCompetence = event.data.idCompetence;
         this.id_candidature_steps = event.data.id_candidature_steps;
         this.fillDate(event.data);
         this.matDialog.open(element, {
@@ -241,6 +271,7 @@ constructor(private service: CondidatService,
     this.identity = null;
     this.idCandidate = null;
     this.id_candidature_steps = null;
+    this.idCompetence = null;
     this.step_description = null;
     this.Avancement = null;
     this.planned_date = null;
@@ -272,9 +303,5 @@ constructor(private service: CondidatService,
   }
 
 
-  private findAllCompetence() {
-    this.CompetenceService.findAllCompetence().subscribe(data => {
-      this.listPoste = data;
-    });
-  }
+
 }

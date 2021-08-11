@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {AvantagesService} from '../../services/avantages.service';
 import {Avantage} from '../../model/Avantage';
 import {MatDialog} from '@angular/material/dialog';
@@ -9,6 +9,11 @@ import {MatDialog} from '@angular/material/dialog';
   styleUrls: ['./avantages.component.scss']
 })
 export class AvantagesComponent implements OnInit {
+  @Input()
+ avantage: any;
+  @Input()
+  candidature: any;
+
   constructor(private service: AvantagesService,  private matDialog: MatDialog, ) { }
   settings = {
     columns: {
@@ -38,8 +43,9 @@ export class AvantagesComponent implements OnInit {
   data = [];
   advantage_name: any;
   advantage_group: any;
-  idAdvantage: any;
+  idAdvantage = null;
   deleted: any;
+  title = '';
   ngOnInit(): void {
     this.findAllAvantages();
   }
@@ -49,6 +55,7 @@ export class AvantagesComponent implements OnInit {
     });
   }
   openModal(avant: any) {
+    this.title = 'Nouvelle';
     this.matDialog.open(avant, {
       width: '800px',
       disableClose: true
@@ -57,12 +64,14 @@ export class AvantagesComponent implements OnInit {
   chooseAction(event: any, avant: any, avantDelete: any) {
   switch (event.action) {
     case 'delete' :
-      this.matDialog.open(avantDelete, {disableClose: true});
       this.idAdvantage = event.data.id_advantage;
+      this.matDialog.open(avantDelete, {disableClose: true});
       break;
       default :
+        event.action === 'edit' ? this.idAdvantage = event.data.id_advantage : this.idAdvantage = null;
+        this.title = 'Modifier';
         this.fillDate(event.data);
-      this.matDialog.open(avant, {
+        this.matDialog.open(avant, {
         width: '800px',
         disableClose: true
       });
@@ -75,15 +84,11 @@ export class AvantagesComponent implements OnInit {
     avantage.deleted = 0;
     if (this.idAdvantage === null) {
       this.service.postAdvantage(avantage).subscribe(() => {
-        this.ngOnInit();
-        this.close();
-      });
+        this.findAllAdvantagesByIdCandidature(); });
     } else {
       avantage.id = idAdvantage;
       this.service.updateAvantage(avantage, idAdvantage).subscribe(() => {
-        this.ngOnInit();
-        this.close();
-      });
+        this.findAllAdvantagesByIdCandidature(); });
     }
   }
   deleteAvantage() {
@@ -101,6 +106,10 @@ export class AvantagesComponent implements OnInit {
   private fillDate(data) {
     this.advantage_name = data.advantage_name;
     this.advantage_group = data.advantage_group;
-    this.idAdvantage = data.idAdvantage;
+  }
+  findAllAdvantagesByIdCandidature() {
+    this.service.findAllAvantagesByIdCandidature(this.candidature.id, this.candidature.candidate.candidate_id)
+      .subscribe(advatages => { this.avantage = advatages;
+      });
   }
 }

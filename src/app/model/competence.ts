@@ -1,5 +1,5 @@
 export class Competence {
-  id: any;
+  id_competence: any;
   competence_name: any;
   competence_group: any;
   deleted: any;

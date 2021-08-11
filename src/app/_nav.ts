@@ -25,14 +25,14 @@ export const navItems: INavData[] = [
     icon: 'cil-star'
   },
   {name: 'Postes',
-    url: '/Postes',
+    url: '/post',
     icon: 'cil-contact'
   },
   {name: 'Université',
-    url: '/University',
+    url: '/university',
     icon: 'cil-education'
   },
-  {name: 'Annonce',
+  {name: 'Annonces',
     url: '/announcement',
     icon: 'cil-volume-low'
   },

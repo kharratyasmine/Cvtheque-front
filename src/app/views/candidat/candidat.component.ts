@@ -15,6 +15,7 @@ import {PostesService} from '../../services/postes.service';
   styleUrls: ['./candidat.component.scss']
 })
 export class CandidatComponent implements OnInit {
+  private dataService: any;
   constructor(private service: CondidatService, private matDialog: MatDialog,
               private universityService: UniversityService,
               private router: Router,
@@ -90,6 +91,8 @@ export class CandidatComponent implements OnInit {
   deleted: any;
   disabled = false;
   title = '';
+  listPoste: any;
+  poste: any;
   ngOnInit() {
     this.findAllCondidates();
     this.findAllUniversities();
@@ -105,7 +108,7 @@ export class CandidatComponent implements OnInit {
             });
           this.stepService.findAllSuivisByIdCandidature(res.candidatures[0].id, res.candidate_id)
             .subscribe(steps => {
-              Object.assign(res, {statut: steps[steps.length - 1].status});
+              Object.assign(res, {statut: steps[steps.length - 1].sequence});
             });
         } else {
           Object.assign(res, {post_name: ''});
@@ -177,7 +180,7 @@ export class CandidatComponent implements OnInit {
         this.close();
       });
     } else {
-      candidate.id = idCandidate;
+      candidate.candidate_id = idCandidate;
       this.service.updateCondidat(candidate, idCandidate).subscribe(() => {
 
         this.ngOnInit();
