@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {AnnouncementService} from '../../services/announcement.service';
 import {MatDialog} from '@angular/material/dialog';
 import {Announcement} from '../../model/announcement';
+import {Avantage} from '../../model/avantage';
+import {PostesService} from '../../services/postes.service';
 
 
 @Component({
@@ -11,13 +13,13 @@ import {Announcement} from '../../model/announcement';
 })
 export class AnnouncementComponent implements OnInit {
 
-  constructor(private service: AnnouncementService, private matDialog: MatDialog) { }
+  constructor(private service: AnnouncementService, private matDialog: MatDialog, private postesservices: PostesService) { }
   settings = {
     columns: {
-      Post: {
+      post: {
         title: 'Poste' ,
-        // valuePrepareFunction: (data) => {
-        //   return data.post; },
+        valuePrepareFunction: (data) => {
+          return data.post_name; },
       },
       description: {
         title: 'Description Action' },
@@ -30,78 +32,89 @@ export class AnnouncementComponent implements OnInit {
       custom: [
         { name: 'delete',
           title: '<i class="icon-trash width: 300px"></i> ', },
+        { name: 'edit',
+          title: '<i class="icon-pencil width: 300px"></i> ', },
       ],
     },
   };
   data = [];
   Post: any;
-  idAnnouncement: any;
+  id_announcement = null;
   description: any;
-  announcement: any;
   disabled: any;
-
+  title: string;
+  listPostes: any;
   ngOnInit(): void {
     this.findAllAnnouncement();
+    this.findAllPostes();
   }
   findAllAnnouncement() {
     this.service.findAllAnnouncement().subscribe(resultat => {
       this.data = resultat;
     });
   }
-  openModal(element: any) {
-    this.matDialog.open(element, {
+  findAllPostes() {
+    this.postesservices.findAllPostes().subscribe(resultat => {
+      this.listPostes = resultat;
+    });
+  }
+  openModal(annonce: any) {
+    this.title = 'Nouvelle';
+    this.matDialog.open(annonce, {
       width: '800px',
       disableClose: true
     });
   }
-  chooseAction(event: any, element: any, elementDelete: any) {
-    this.announcement = event.data;
+  chooseAction(event: any, annonce: any, annonceDelete: any) {
     switch (event.action) {
       case 'delete' :
-        this.matDialog.open(elementDelete, {disableClose: true});
+        this.id_announcement = event.data.id_announcement;
+        this.matDialog.open(annonceDelete, {disableClose: true});
         break;
       default :
+        event.action === 'edit' ? this.id_announcement = event.data.idAnnouncement : this.id_announcement = null;
+        this.title = 'Modifier';
         this.fillDate(event.data);
-        this.matDialog.open(event, {
+        this.matDialog.open(annonce, {
           width: '800px',
           disableClose: true
         });
         break;
-  }}
-  addAnnouncement(idAnnouncement) {
-    const announcement = new Announcement();
-    announcement.Post = this.Post;
-    announcement.idAnnouncement = this.idAnnouncement;
+    }}
+  addAnnouncement(id_announcement) {
+    const announcement  = new Announcement();
+    announcement.post = this.listPostes.find(x => x.id_post === this.Post);
     announcement.description = this.description;
-    announcement.announcement = this.announcement;
-    if (idAnnouncement === null) {
+    announcement.deleted = 0;
+    if (this.id_announcement === null) {
       this.service.postAnnouncement(announcement).subscribe(() => {
         this.ngOnInit();
         this.close();
       });
     } else {
-      announcement.id = idAnnouncement;
-      this.service.updateAnnouncement(announcement, idAnnouncement).subscribe(() => {
+      announcement.id_announcement = id_announcement;
+      this.service.updateAnnouncement(announcement, id_announcement).subscribe(() => {
         this.ngOnInit();
         this.close();
       });
     }
   }
   deleteAnnouncement() {
-    this.service.deleteAnnouncement(this.idAnnouncement).subscribe(() => this.ngOnInit());
+    this.service.deleteAnnouncement(this.id_announcement).subscribe(() => {
+      this.ngOnInit();
+      this.close();
+    });
   }
   close() {
     this.Post = null;
-    this.idAnnouncement = null;
+    this.id_announcement = null;
     this.description = null;
-    this.announcement = null;
     this.disabled = false;
     this.matDialog.closeAll();
   }
   private fillDate(data) {
-    this.Post = data.Post;
+    this.Post = data.post.id_post;
+    this.id_announcement = data.id_announcement;
     this.description = data.description;
-    this.announcement = data.announcement;
-    this.idAnnouncement = data.idAnnouncement;
   }
 }

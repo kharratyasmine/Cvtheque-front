@@ -58,7 +58,7 @@ openModal(post: any) {
     disableClose: true
   });
 }
-chooseAction(event: any, post: any, postDelete: any) {
+  chooseAction(event: any, post: any, postDelete: any) {
   switch (event.action) {
     case 'delete' :
       this.id_post = event.data.id_post;
@@ -74,7 +74,7 @@ chooseAction(event: any, post: any, postDelete: any) {
       });
       break;
   }}
-  addPostes(id_post) {
+addPostes(id_post) {
   const poste  = new Postes();
   poste .post_name = this.post_name;
   poste .description = this.description;
