@@ -9,6 +9,7 @@ import {SuivisService} from '../../services/Suivis.service';
 import {Router} from '@angular/router';
 import {GenericService} from '../../services/generic.service';
 import {PostesService} from '../../services/postes.service';
+import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms'
 @Component({
   selector: 'app-candidat',
   templateUrl: './candidat.component.html',
@@ -16,15 +17,17 @@ import {PostesService} from '../../services/postes.service';
 })
 export class CandidatComponent implements OnInit {
   private dataService: any;
+ productForm: FormGroup;
   constructor(private service: CondidatService, private matDialog: MatDialog,
               private universityService: UniversityService,
               private router: Router,
               private diplomaService: DiplomaService,
               private stepService: SuivisService,
               private postService: PostesService,
-              private genericService: GenericService, ) { }
+              private genericService: GenericService,
+              private fb: FormBuilder ) { }
 
-  settings = {
+ settings = {
     columns: {
       last_name: {
         title: 'Nom' },
@@ -59,6 +62,8 @@ export class CandidatComponent implements OnInit {
         title: '<i class="cil-check-alt width: 300px"></i>  ', },
         { name: 'edit',
           title: '<i class="cil-pencil width: 300px"></i>  ', },
+        { name: 'competence',
+          title: '<i class="cil-library-add width: 300px"></i>  ', },
         { name: 'delete',
           title: '<i class="icon-trash width: 300px"></i> ', },
         { name: 'CV',
@@ -93,6 +98,7 @@ export class CandidatComponent implements OnInit {
   title = '';
   listPoste: any;
   poste: any;
+  competence: any;
   ngOnInit() {
     this.findAllCondidates();
     this.findAllUniversities();
@@ -127,11 +133,15 @@ export class CandidatComponent implements OnInit {
       disableClose: true
     });
   }
-  chooseAction(event: any, element: any, elementDelete: any, elementCV: any) {
+
+  chooseAction(event: any, element: any, elementDelete: any, elementCV: any, elementcompetence: any) {
     this.condidat = event.data;
     switch (event.action) {
       case 'delete' :
         this.matDialog.open(elementDelete, {disableClose: true});
+        break;
+        case 'competence' :
+        this.matDialog.open(elementcompetence, {disableClose: true});
         break;
       case 'CV' :
         // this.matDialog.open(elementCV, {disableClose: true});
@@ -246,6 +256,25 @@ export class CandidatComponent implements OnInit {
     this.tel_mobile = data.tel_mobile;
     this.cv = data.cv;
     this.idCandidate = data.candidate_id;
+  }
+
+  onSubmit() {
+    console.log(this.productForm.value);
+  }
+  addCompetence() {
+    this.competences().push(this.newCompetence());
+  }
+  competences(): FormArray {
+    return this.productForm.get('competences') as FormArray
+  }
+newCompetence(): FormGroup {
+    return this.fb.group({
+      competence: '',
+      evaluation: '',
+    });
+  }
+  deleteCompetences(i: number) {
+    this.competences().removeAt(i);
   }
 }
 
