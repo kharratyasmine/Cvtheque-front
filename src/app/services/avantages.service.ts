@@ -19,13 +19,13 @@ export class AvantagesService {
     return this.httpClient.get(this.url + 'advantage/query/' + idCandidature + '/' + idAdvantage );
   }
   findAllAvantageByCandidature(idCandidature: any, idAdvantage: any): Observable<any> {
-    return this.httpClient.get(this.url + 'candidate_avantage/' + idCandidature + '/' + idAdvantage );
+    return this.httpClient.get(this.url + 'candidate_advantages/' + idCandidature + '/' + idAdvantage );
   }
   postAdvantage(avantage: Avantage): Observable<any> {
     return this.httpClient.post(this.url + 'advantage', avantage);
   }
   postAvantageCandidature(avantage: any): Observable<any> {
-    return this.httpClient.post(this.url + 'candidate_advantage', avantage);
+    return this.httpClient.post(this.url + 'candidate_advantages', avantage);
   }
   deleteAvantage(idAdvantage: any): Observable<any> {
     return this.httpClient.delete(this.url + 'advantage/' + idAdvantage);

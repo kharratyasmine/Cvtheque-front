@@ -83,14 +83,12 @@ export class CompetenceComponent implements OnInit {
     competence.deleted = 0;
     if (idCompetence === null) {
       this.service.postCompetence(competence).subscribe(() => {
-        this.findAllCompetenceByIdCandidature() ;
         this.ngOnInit();
         this.close();
       });
     } else {
       competence.id_competence = idCompetence;
       this.service.updateCompetence(competence, idCompetence).subscribe(() => {
-        this.findAllCompetenceByIdCandidature() ;
         this.ngOnInit();
         this.close();
       });
@@ -112,12 +110,6 @@ export class CompetenceComponent implements OnInit {
     this.competence_name = data.competence_name;
     this.competence_group = data.competence_group;
   }
-  findAllCompetenceByIdCandidature() {
-    this.service.findAllCompetenceByIdCandidature(this.candidature.id, this.candidature.candidate.candidate_id)
-      .subscribe(competences => { this.competence = competences;
-      });
-  }
-
 }
 
 

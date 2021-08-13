@@ -37,7 +37,7 @@ export class UniversityComponent implements OnInit {
   };
   data = [];
   name: any;
-  university_id: any;
+  university_id = null;
   description: any;
   deleted: any;
   title: string;

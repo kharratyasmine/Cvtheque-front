@@ -84,11 +84,15 @@ export class AvantagesComponent implements OnInit {
     avantage.deleted = 0;
     if (this.idAdvantage === null) {
       this.service.postAdvantage(avantage).subscribe(() => {
-        this.findAllAdvantagesByIdCandidature(); });
+        this.ngOnInit();
+        this.close();
+      });
     } else {
       avantage.id = idAdvantage;
       this.service.updateAvantage(avantage, idAdvantage).subscribe(() => {
-        this.findAllAdvantagesByIdCandidature(); });
+        this.ngOnInit();
+        this.close();
+      });
     }
   }
   deleteAvantage() {
@@ -106,10 +110,5 @@ export class AvantagesComponent implements OnInit {
   private fillDate(data) {
     this.advantage_name = data.advantage_name;
     this.advantage_group = data.advantage_group;
-  }
-  findAllAdvantagesByIdCandidature() {
-    this.service.findAllAvantagesByIdCandidature(this.candidature.id, this.candidature.candidate.candidate_id)
-      .subscribe(advatages => { this.avantage = advatages;
-      });
   }
 }

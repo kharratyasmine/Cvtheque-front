@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {PostesService} from '../../services/postes.service';
 import {MatDialog} from '@angular/material/dialog';
 import {Postes} from '../../model/postes';
-import {any} from 'codelyzer/util/function';
 
 @Component({
   selector: 'app-postes',
@@ -38,7 +37,7 @@ export class PostesComponent implements OnInit {
     },
   };
  data = [] ;
-  id_post: null ;
+  id_post = null ;
   post_name: any ;
   description: any ;
   deleted: any ;
@@ -58,7 +57,7 @@ openModal(post: any) {
     disableClose: true
   });
 }
-chooseAction(event: any, post: any, postDelete: any) {
+  chooseAction(event: any, post: any, postDelete: any) {
   switch (event.action) {
     case 'delete' :
       this.id_post = event.data.id_post;
@@ -74,7 +73,7 @@ chooseAction(event: any, post: any, postDelete: any) {
       });
       break;
   }}
-  addPostes(id_post) {
+addPostes(id_post) {
   const poste  = new Postes();
   poste .post_name = this.post_name;
   poste .description = this.description;

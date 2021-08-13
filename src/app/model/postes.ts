@@ -5,3 +5,5 @@ export class Postes {
   description: any;
   deleted: any;
 }
+
+

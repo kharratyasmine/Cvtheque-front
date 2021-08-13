@@ -145,8 +145,10 @@ constructor(private service: CondidatService,
                 });
               }
               this.fillDate(this.result);
-              this.findCompetences();
-              this.findAvantages();
+              if (this.candidature !== undefined && this.candidature !== null) {
+                this.findCompetences();
+                this.findAvantages();
+              }
               this.disabled = b;
             });
           });
