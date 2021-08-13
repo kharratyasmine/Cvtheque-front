@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-7">
+  <div class="col-sm-6">
     <div class="card">
       <div class="card-body">
         <div style="display: flex; flex-direction: column">
@@ -187,20 +187,71 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-5">
+  <div class="col-sm-6">
     <div class="card">
       <div class="card-body">
-        <ng2-smart-table [settings]="setting"></ng2-smart-table >
+        <div class="container">
+          <form [formGroup]="productForm" >
+            <table class="table table-bordered" formArrayName="competences">
+              <tr>
+                <th colspan="2">Ajouter ces Competences:</th>
+                <th width="150px"><button type="button" (click)="addCompetence()" class="btn btn-primary">Ajouter</button></th>
+              </tr>
+              <tr *ngFor="let competence of competences().controls; let i=index" [formGroupName]="i">
+                <td>
+                  Competence :
+                  <select formControlName="competence" class="form-control">
+                    <option [ngValue]="comp" *ngFor="let comp of ListCompetence">{{comp.competence_name}}</option>
+                  </select>
+                </td>
+                <td>
+                  Evaluation:
+                  <input type="number" max="5" min="0" formControlName="evaluation" class="form-control">
+                </td>
+                <td>
+                  <button (click)="deleteCompetences(i)" class="btn btn-danger">Supprimer</button>
+                </td>
+              </tr>
+            </table>
+            <button type="button" (click)="onSubmit()" class="btn btn-success">Submit</button>
+          </form>
+          <br/>
+        </div>
+        <ng2-smart-table [source]="listComptece" [settings]="setting"></ng2-smart-table >
       </div>
     </div>
   </div>
-<!--        <button type="button" class="btn btn-success" onclick="" style="margin-top: 15px;margin-bottom: 15px;"><i class="icon-cloud-download "></i>importer piéce jointe-->
-<!--        </button>-->
-<!--        <ng2-smart-table [settings]="settings"></ng2-smart-table>-->
-        <div class="col-sm-5">
+  <div class="col-sm-6" >
           <div class="card">
             <div class="card-body">
-        <ng2-smart-table [settings]="setings"></ng2-smart-table>
+              <div class="container">
+                <form [formGroup]="ProductForm" >
+                  <table class="table table-bordered" formArrayName="avantages">
+                    <tr>
+                      <th colspan="2">Ajouter ces Avantages:</th>
+                      <th width="150px"><button type="button" (click)="addAvantage()" class="btn btn-primary">Ajouter</button></th>
+                    </tr>
+                    <tr *ngFor="let avantage of avantages().controls; let i=index" [formGroupName]="i">
+                      <td>
+                        Avantage :
+                        <select formControlName="avantage" class="form-control">
+                          <option [ngValue]="avan" *ngFor="let avan of ListAvantage">{{avan.advantage_name}}</option>
+                        </select>
+                      </td>
+                      <td>
+                        Evaluation:
+                        <input type="text"  formControlName="evaluation" class="form-control">
+                      </td>
+                      <td>
+                        <button (click)="deleteAvanatges(i)" class="btn btn-danger">Supprimer</button>
+                      </td>
+                    </tr>
+                  </table>
+                  <button type="button" (click)="OnSubmit()" class="btn btn-success">Submit</button>
+                </form>
+                <br/>
+              </div>
+        <ng2-smart-table [settings]="setings" [source]="listAvantage"></ng2-smart-table>
       </div>
     </div>
   </div>

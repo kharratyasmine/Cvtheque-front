@@ -14,6 +14,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {SuivisModule} from '../suivis/Suivis.module';
+import {PdfViewerModule} from 'ng2-pdf-viewer';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import {SuivisModule} from '../suivis/Suivis.module';
     MatIconModule,
     MatDatepickerModule,
     SuivisModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PdfViewerModule
   ],
   declarations: [CandidatComponent, CandidateDetailsComponent],
   providers: [

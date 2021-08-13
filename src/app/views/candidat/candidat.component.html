@@ -5,7 +5,7 @@
   </p>
 </div>
 <ng2-smart-table [settings]="settings" [source]="data"
-                 (custom)="chooseAction($event, element, delete, CV , competence)"></ng2-smart-table>
+                 (custom)="chooseAction($event, element, delete, CV )"></ng2-smart-table>
 <!--Modal-->
 <ng-template #element>
   <strong> {{title}} Candidat</strong>
@@ -143,7 +143,7 @@
                 <div class="form-group row">
               <label class="col-md-3 col-form-label" for="file-input"><strong>Téléverser votre CV</strong></label>
               <div class="col-md-9">
-                <input type="file" required="required" accept="application/pdf" id="file-input" name="file-input"[disabled]="disabled" [(ngModel)]="cv">
+                <input type="file" (change)="getBase64($event.target)" required="required" accept="application/pdf" id="file-input" name="file-input"[disabled]="disabled" [(ngModel)]="cv">
               </div>
             </div>
           </div>
@@ -170,73 +170,15 @@
     <button mat-button [mat-dialog-close]="true" (click)="deleteCandidate()" cdkFocusInitial>supprimer</button>
   </mat-dialog-actions>
 </ng-template>
-<ng-template #CV>
-  <strong></strong>
-  <h2 mat-dialog-title></h2>
-  <mat-dialog-content class="mat-typography">
-
-  </mat-dialog-content>
-  <mat-dialog-actions align="end">
-  </mat-dialog-actions>
-</ng-template>
-<ng-template #competence>
-  <h2 mat-dialog-title></h2>
-  <mat-dialog-content class="mat-typography">
-    <div class="card-body">
-      <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-        <div class="form-group row">
-          <div class="form-group row">
-            <mat-horizontal-stepper orientation="horizontal" style="width: 160%">
-              <mat-step>
-                <ng-template matStepLabel>Compétence</ng-template>
-                <div class="container">
-                 <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-                    <table class="table table-bordered" formArrayName="Competences">
-                      <tr>
-                        <th colspan="2">Ajouter des Competences:</th>
-                        <th width="150px"><button type="button" (click)="addCompetence()" class="btn btn-primary">Ajouter</button></th>
-                      </tr>
-                      <tr *ngFor="let competence of competences().controls; let i=index" [formGroupName]="i">
-                        <td>
-                          Competence :
-                          <input type="text" formControlName="competence" class="form-control">
-                        </td>
-                        <td>
-                          Evaluation:
-                          <input type="number" formControlName="evaluation" class="form-control">
-                        </td>
-                        <td>
-                          <button (click)="deleteCompetences(i)" class="btn btn-danger">Supprimer</button>
-                        </td>
-                      </tr>
-                    </table>
-                 <button type="submit" class="btn btn-success">Submit</button>
-                  </form>
-                  <br/>
-                  {{this.productForm.value | json}}
-                </div>
-              </mat-step>
-              <mat-step>
-                <ng-template matStepLabel>Avantages</ng-template>
-                <div matStepContent>
-                  <div>
-                    <div class="form-group row">
-                      <label class="col-md-3 col-form-label"></label>
-
-
-                    </div>
-                  </div>
-                </div>
-              </mat-step>
-            </mat-horizontal-stepper>
-          </div>
-        </div>
-      </form>
-    </div>
-  </mat-dialog-content>
-  <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Annuler</button>
-    <button mat-button [mat-dialog-close]="true" (click)="ajouter()" cdkFocusInitial>Enregistrer</button>
-  </mat-dialog-actions>
+<ng-template #CV let-modal>
+  <div class="modal-body" style="height: 600px">
+    <pdf-viewer
+      [rotation]="0"
+      [fit-to-page]="true"
+      [original-size]="true"
+      [show-all]="true"
+      style="display: block;"
+      [src]="currentCv"></pdf-viewer>
+  </div>
 </ng-template>
 

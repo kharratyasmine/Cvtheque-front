@@ -26,6 +26,7 @@ import {Ng2SmartTableModule} from 'ng2-smart-table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatStepperModule} from '@angular/material/stepper';
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };

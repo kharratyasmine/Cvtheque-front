@@ -12,7 +12,6 @@ export class AnnouncementService {
   private url = environment.BASE_URL;
   constructor(private httpClient: HttpClient) { }
   findAnnouncement(post: any): Observable<any> {
-    debugger;
     return this.httpClient.post(this.url + 'announcement/post', post);
   }
   findAllAnnouncement(): Observable<any> {

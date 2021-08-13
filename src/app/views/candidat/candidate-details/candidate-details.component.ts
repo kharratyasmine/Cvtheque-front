@@ -11,6 +11,9 @@ import {MatDialog} from '@angular/material/dialog';
 import {SuivisService} from '../../../services/suivis.service';
 import {CompetenceService} from '../../../services/competence.service';
 import {AvantagesService} from '../../../services/avantages.service';
+import {ActivatedRoute} from '@angular/router';
+import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+
 @Component({
   selector: 'app-candidate-details',
   templateUrl: './candidate-details.component.html',
@@ -20,6 +23,13 @@ export class CandidateDetailsComponent implements OnInit {
   suivis: any[] = [];
   avantage: any[] = [];
   competence: any[] = [];
+  result: any;
+  productForm: FormGroup;
+  ProductForm: FormGroup;
+  listComptece: any;
+  listAvantage: any;
+
+
 constructor(private service: CondidatService,
               private postesService: PostesService,
               private genericService: GenericService,
@@ -28,46 +38,25 @@ constructor(private service: CondidatService,
               private announcementService: AnnouncementService,
               private candidatureService: CandidatureService,
               private matDialog: MatDialog,
+              private router: ActivatedRoute,
               private competenceService: CompetenceService,
               private avantagesServices: AvantagesService,
-              private suivisService: SuivisService) { }
-// settings = {
-//     columns: {
-//       piece_jointe: {
-//         title: 'Piece jointe'
-//       },
-//       Date: {
-//         title: 'Date'
-//       },
-//       type_de_piece_jointe: {
-//         title: 'Type de piece jointe'
-//       },
-//       Type: {
-//         title: 'Type'
-//       },
-//     },
-//     actions: {
-//       add: false,
-//       edit: false,
-//       delete: false,
-//       position: 'right',
-//       custom: [
-//         {
-//           name: 'delete',
-//           title: '<i class="icon-trash width: 300px"></i> ',
-//         },
-//       ],
-//     },
-//   };
+              private suivisService: SuivisService,
+              private fb: FormBuilder, ) {
+  this.productForm = this.fb.group({
+    competences: this.fb.array([])
+  });
+  this.ProductForm = this.fb.group({
+    avantages: this.fb.array([])
+  });
+}
   setting = {
     columns: {
-      competence_name: {
-       title: 'Competence'
+      competence: { title: 'Competence',
+        valuePrepareFunction: (data) => {
+          return data.competence_name; }
       },
-      evaluation: {
-        title: 'Evaluation'
-      },
-    },
+      evaluation: { title: 'Evaluation' }, },
     actions: {
       add: false,
       edit: false,
@@ -83,13 +72,11 @@ constructor(private service: CondidatService,
   };
   setings = {
     columns: {
-      advantage_name: {
-       title: 'Avantage'
+      avantages: { title: 'Avantage',
+        valuePrepareFunction: (data) => {
+          return data.advantage_name; }
       },
-      evaluation: {
-        title: 'Evaluation'
-      },
-    },
+    evaluation: { title: 'Evaluation' }, },
     actions: {
       add: false,
       edit: false,
@@ -102,7 +89,7 @@ constructor(private service: CondidatService,
         },
       ],
     },
-  };
+    };
   data = [];
   gender: any;
   disabled = false;
@@ -137,34 +124,40 @@ constructor(private service: CondidatService,
   Description_Action: any;
   date_input: any;
   competence_name: any;
+  advantage_name: any;
   Statut: any;
   id_candidature_steps: any;
   idCompetence: any;
+  idAdvantage: any;
+  ListCompetence: any;
+  ListAvantage: any;
   ngOnInit(): void {
-    this.genericService.subscribeMessage.subscribe((data: any) => {
-      this.genericService.subscribeDisabledData.subscribe((b: boolean) => {
-        this.candidatureService.findCandidatureByCandidate(data.candidate_id).subscribe(result => {
-          this.candidature = result;
-          if (result !== null) {
-            // this.competenceService.findAllCompetenceByIdCandidature(result.id, data.candidate_id).subscribe(competences => {
-            //   this.competence = competences;
-            // });
-            // this.avantagesServices.findAllAvantagesByIdCandidature(result.id, data.candidate_id).subscribe(advatages => {
-            //   this.avantage = advatages;
-            // });
-            this.suivisService.findAllSuivisByIdCandidature(result.id, data.candidate_id).subscribe(steps => {
-              this.suivis = steps;
+    this.router.params
+      .subscribe((queryParams: any) => {
+        this.service.findById(queryParams['id']).subscribe(res => {
+          this.result = res;
+          this.genericService.subscribeDisabledData.subscribe((b: boolean) => {
+            this.candidatureService.findCandidatureByCandidate(this.result.candidate_id).subscribe(result => {
+              this.candidature = result;
+              if (result !== null) {
+                this.suivisService.findAllSuivisByIdCandidature(result.id, this.result.candidate_id).subscribe(steps => {
+                  this.suivis = steps;
+                });
+              }
+              this.fillDate(this.result);
+              this.findCompetences();
+              this.findAvantages();
+              this.disabled = b;
             });
-          }
-          this.fillDate(data);
-          this.disabled = b;
+          });
         });
       });
-    });
     this.findAllPostes();
     this.findAllCandidature();
     this.findAllUniversities();
     this.findAllDiplomas();
+    this.findAllCompetences();
+    this.findAllAvantages();
   }
   private findAllPostes() {
     this.postesService.findAllPostes().subscribe(data => {
@@ -207,15 +200,14 @@ constructor(private service: CondidatService,
             candidate: candidate,
             announcement: result,
             candidature_steps: null,
-            // advantage : null,
-            // competence : null,
+            advantage : null,
+            competence : null,
           };
-          console.log(candidature);
-          // this.candidatureService.postCandidature(candidature).subscribe(() => {
-          //   this.ngOnInit();
+          this.candidatureService.postCandidature(candidature).subscribe(() => {
+            this.ngOnInit();
           });
         });
-      // });
+      });
   }
   private findAllUniversities() {
     this.universityService.findUniversities().subscribe(data => {
@@ -225,6 +217,16 @@ constructor(private service: CondidatService,
   private findAllDiplomas() {
     this.diplomaService.findDiplomas().subscribe(data => {
       this.listDiploma = data;
+    });
+  }
+  findAllCompetences() {
+    this.competenceService.findAllCompetence().subscribe(data => {
+      this.ListCompetence = data;
+    });
+  }
+  findAllAvantages() {
+    this.avantagesServices.findAllAvantages().subscribe(data => {
+      this.ListAvantage = data;
     });
   }
   openModal(element: any) {
@@ -272,6 +274,7 @@ constructor(private service: CondidatService,
     this.idCandidate = null;
     this.id_candidature_steps = null;
     this.idCompetence = null;
+    this.idAdvantage = null;
     this.step_description = null;
     this.Avancement = null;
     this.planned_date = null;
@@ -301,7 +304,67 @@ constructor(private service: CondidatService,
     this.planned_date = data.date_input;
     this.poste = data.poste;
   }
-
-
+  findCompetences() {
+    this.competenceService.findAllCompetenceByCandidature(this.candidature.id, this.idCandidate).subscribe(res => {
+      this.listComptece = res;
+      this.productForm = this.fb.group({
+        competences: this.fb.array([])
+      });
+    });
+  }
+  onSubmit() {
+    this.productForm.value.competences.forEach(competence => {
+     const comp = {
+       candidate: this.result,
+       competence: competence.competence,
+       evaluation: competence.evaluation,
+     };
+      this.competenceService.postCompetenceCandidature(comp).subscribe(() => {
+        this.findCompetences();
+      });
+    });
+   }
+  addCompetence() {
+    this.competences().push(this.newCompetence()); }
+  competences(): FormArray {
+    return this.productForm.get('competences') as FormArray; }
+  newCompetence(): FormGroup {
+    return this.fb.group({
+      competence: '',
+      evaluation: '',
+    }); }
+  deleteCompetences(i: number) {
+    this.competences().removeAt(i); }
+  findAvantages() {
+    this.avantagesServices.findAllAvantageByCandidature(this.candidature.id, this.idCandidate).subscribe(res => {
+      this.listAvantage = res;
+      this.ProductForm = this.fb.group({
+        avantages: this.fb.array([])
+      });
+    });
+  }
+  OnSubmit() {
+    this.ProductForm.value.avantages.forEach(avantage => {
+      const avan = {
+        candidate: this.result,
+        avantage: avantage.avantage,
+        evaluation: avantage.evaluation,
+      };
+      this.avantagesServices.postAvantageCandidature(avan).subscribe(() => {
+        this.findAvantages();
+      });
+    });
+  }
+  addAvantage() {
+    this.avantages().push(this.newAvantage()); }
+  avantages(): FormArray {
+    return this.ProductForm.get('avantages') as FormArray; }
+  newAvantage(): FormGroup {
+    return this.fb.group({
+      avantages: '',
+      evaluation: '',
+    }); }
+ deleteAvanatges(i: number) {
+    this.avantages().removeAt(i); }
 
 }

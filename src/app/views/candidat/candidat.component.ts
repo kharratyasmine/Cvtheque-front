@@ -1,15 +1,16 @@
-import {Component, OnChanges, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CondidatService} from '../../services/condidat.service';
 import {MatDialog} from '@angular/material/dialog';
 import {Condidat} from '../../model/condidat';
-import {Suivis} from '../../model/suivis';
 import {UniversityService} from '../../services/university.service';
 import {DiplomaService} from '../../services/diploma.service';
 import {SuivisService} from '../../services/Suivis.service';
 import {Router} from '@angular/router';
 import {GenericService} from '../../services/generic.service';
 import {PostesService} from '../../services/postes.service';
-import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms'
+import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {CompetenceService} from '../../services/competence.service';
+
 @Component({
   selector: 'app-candidat',
   templateUrl: './candidat.component.html',
@@ -17,7 +18,8 @@ import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms'
 })
 export class CandidatComponent implements OnInit {
   private dataService: any;
- productForm: FormGroup;
+  productForm: FormGroup;
+
   constructor(private service: CondidatService, private matDialog: MatDialog,
               private universityService: UniversityService,
               private router: Router,
@@ -25,24 +27,33 @@ export class CandidatComponent implements OnInit {
               private stepService: SuivisService,
               private postService: PostesService,
               private genericService: GenericService,
-              private fb: FormBuilder ) { }
+              private competenceService: CompetenceService,
+  ) {
+  }
 
- settings = {
+  settings = {
     columns: {
       last_name: {
-        title: 'Nom' },
+        title: 'Nom'
+      },
       first_name: {
-        title: 'Prénom' },
+        title: 'Prénom'
+      },
       mail: {
-        title: 'E-mail' },
+        title: 'E-mail'
+      },
       diploma: {
         title: 'Diplôme',
         valuePrepareFunction: (data) => {
-          return data.name; }, },
+          return data.name;
+        },
+      },
       university: {
         title: 'Ecole',
         valuePrepareFunction: (data) => {
-          return data.name; }, },
+          return data.name;
+        },
+      },
       post_name: {
         title: 'Poste',
       },
@@ -58,16 +69,22 @@ export class CandidatComponent implements OnInit {
       delete: false,
       position: 'right',
       custom: [
-        { name: 'view',
-        title: '<i class="cil-check-alt width: 300px"></i>  ', },
-        { name: 'edit',
-          title: '<i class="cil-pencil width: 300px"></i>  ', },
-        { name: 'competence',
-          title: '<i class="cil-library-add width: 300px"></i>  ', },
-        { name: 'delete',
-          title: '<i class="icon-trash width: 300px"></i> ', },
-        { name: 'CV',
-          title: '<i class="icon-cloud-download width: 300px"></i>', }
+        {
+          name: 'view',
+          title: '<i class="cil-check-alt width: 300px"></i>  ',
+        },
+        {
+          name: 'edit',
+          title: '<i class="cil-pencil width: 300px"></i>  ',
+        },
+        {
+          name: 'delete',
+          title: '<i class="icon-trash width: 300px"></i> ',
+        },
+        {
+          name: 'CV',
+          title: '<i class="icon-cloud-download width: 300px"></i>',
+        }
       ],
     },
   };
@@ -96,14 +113,17 @@ export class CandidatComponent implements OnInit {
   deleted: any;
   disabled = false;
   title = '';
-  listPoste: any;
   poste: any;
   competence: any;
+  blob: any;
+  currentCv = '';
+
   ngOnInit() {
     this.findAllCondidates();
     this.findAllUniversities();
     this.findAllDiplomas();
   }
+
   findAllCondidates() {
     this.service.findAllCondidates().subscribe(resultat => {
       resultat.forEach(res => {
@@ -123,9 +143,10 @@ export class CandidatComponent implements OnInit {
       });
       setTimeout(() => {
         this.data = resultat;
-        }, 1000);
+      }, 1000);
     });
   }
+
   openModal(element: any) {
     this.title = 'Nouvelle';
     this.matDialog.open(element, {
@@ -134,25 +155,15 @@ export class CandidatComponent implements OnInit {
     });
   }
 
-  chooseAction(event: any, element: any, elementDelete: any, elementCV: any, elementcompetence: any) {
+  chooseAction(event: any, element: any, elementDelete: any, elementCV: any) {
     this.condidat = event.data;
     switch (event.action) {
       case 'delete' :
         this.matDialog.open(elementDelete, {disableClose: true});
         break;
-        case 'competence' :
-        this.matDialog.open(elementcompetence, {disableClose: true});
-        break;
       case 'CV' :
-        // this.matDialog.open(elementCV, {disableClose: true});
-        // const iframe = document.createElement('frame');
-        // iframe.style.display = 'none';
-        // iframe.src = 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf';
-        // document.body.appendChild(iframe);
-        // iframe.contentWindow.print();
-        this.service.getDocument().subscribe(documentUrl => {
-          window.open(documentUrl, '_blank');
-        });
+        this.currentCv = event.data.cv;
+        this.matDialog.open(elementCV, {height: '90%', width: '70%'});
         break;
       default :
         this.title = 'Modifier';
@@ -160,10 +171,11 @@ export class CandidatComponent implements OnInit {
         event.action === 'view' ? this.disabled = true : this.disabled = false;
         this.genericService.addData(event.data);
         this.genericService.addDisabled(this.disabled);
-        this.router.navigate(['/candidat/details']);
+        this.router.navigate(['/candidat/details/' + event.data.candidate_id]);
         break;
     }
   }
+
   addCandidate(idCandidate) {
     const candidate = new Condidat();
     candidate.last_name = this.nom;
@@ -198,25 +210,31 @@ export class CandidatComponent implements OnInit {
       });
     }
   }
+
   deleteCandidate() {
     this.service.deleteCandidate(this.condidat.candidate_id).subscribe(() => this.ngOnInit());
   }
+
   private findAllUniversities() {
     this.universityService.findUniversities().subscribe(data => {
       this.listUniversity = data;
     });
   }
+
   private findAllDiplomas() {
     this.diplomaService.findDiplomas().subscribe(data => {
       this.listDiploma = data;
     });
   }
+
   findUniversity(target: any) {
     console.log(target.value);
   }
+
   findDiploma(target: any) {
     console.log(target.value);
   }
+
   close() {
     this.nom = null;
     this.prenom = null;
@@ -238,6 +256,7 @@ export class CandidatComponent implements OnInit {
     this.disabled = false;
     this.matDialog.closeAll();
   }
+
   private fillDate(data) {
     this.nom = data.last_name;
     this.prenom = data.first_name;
@@ -258,26 +277,20 @@ export class CandidatComponent implements OnInit {
     this.idCandidate = data.candidate_id;
   }
 
-  onSubmit() {
-    console.log(this.productForm.value);
-  }
-  addCompetence() {
-    this.competences().push(this.newCompetence());
-  }
-  competences(): FormArray {
-    return this.productForm.get('competences') as FormArray
-  }
-newCompetence(): FormGroup {
-    return this.fb.group({
-      competence: '',
-      evaluation: '',
-    });
-  }
-  deleteCompetences(i: number) {
-    this.competences().removeAt(i);
-  }
+  getBase64(blob: any) {
+    const file = blob.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.cv = reader.result;
+      console.log(this.cv);
+    };
+    reader.onerror = (error) => {
+      console.log('Error: ', error);
+    };
+ }
+
+
 }
-
-
 
 

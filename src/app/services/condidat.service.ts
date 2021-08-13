@@ -14,6 +14,9 @@ export class CondidatService {
   findAllCondidates(): Observable<any> {
     return this.httpClient.get(this.url + 'candidate');
   }
+  findById(id: any): Observable<any> {
+    return this.httpClient.get(this.url + 'candidate/' + id);
+  }
   postCondidat(candidate: Condidat): Observable<any> {
     return this.httpClient.post(this.url + 'candidate', candidate );
   }
@@ -26,7 +29,6 @@ export class CondidatService {
   updateCondidat(candidate: Condidat, idCandidate) {
     return this.httpClient.put(this.url + 'candidate/' + idCandidate, candidate);
   }
-
   getDocument() {
     return of('https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf');
   }
