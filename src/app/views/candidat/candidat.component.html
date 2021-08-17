@@ -1,11 +1,12 @@
+<ngx-bootstrap-spinner></ngx-bootstrap-spinner>
 <div class="col-6 col-sm-4 col-md mb-3 mb-xl-0 text-center">
   <p align="left">
     <button type="button" class="btn btn-success" (click)="openModal(element)">
-      <i class="fa fa-plus fa-lg "></i>Ajouter candidat</button>
+      <i class="fa fa-plus fa-lg margin"></i>Ajouter candidat</button>
   </p>
 </div>
 <ng2-smart-table [settings]="settings" [source]="data"
-                 (custom)="chooseAction($event, element, delete, CV )"></ng2-smart-table>
+                 (custom)="chooseAction($event, element, delete, CV, Candidature )"></ng2-smart-table>
 <!--Modal-->
 <ng-template #element>
   <strong> {{title}} Candidat</strong>
@@ -181,4 +182,36 @@
       [src]="currentCv"></pdf-viewer>
   </div>
 </ng-template>
-
+<ng-template #Candidature>
+  <strong> {{title}} Candidature</strong>
+  <h2 mat-dialog-title></h2>
+  <mat-dialog-content class="mat-typography">
+    <div class="card-body">
+      <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+        <div class="form-group ">
+          <div class="form-group row"><div style="width: 160%">
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="last_position"> <strong>Dernière position</strong></label>
+              <div class="col-md-9">
+                <input type="text" required="required" [disabled]="disabled" [(ngModel)]="last_position" id="" name=""
+                       class="form-control"
+                       placeholder="Dernière position">
+              </div>
+            </div>
+<!--                            <div class="form-group row">-->
+<!--                          <label class="col-md-3 col-form-label" for="Poste"><strong>Poste</strong></label>-->
+<!--                          <div class="col-md-9">-->
+<!--                            <select [disabled]="disabled" [(ngModel)]="poste" id="Poste" name="Poste" class="form-control">-->
+<!--                              <option *ngFor="let post of listPoste" [ngValue]="post.id_post">-->
+<!--                                {{post.post_name}}-->
+<!--                              </option>-->
+<!--                            </select>-->
+<!--                          </div>-->
+<!--                        </div>-->
+          </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-dialog-content>
+</ng-template>

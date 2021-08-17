@@ -13,6 +13,7 @@ import {CompetenceService} from '../../../services/competence.service';
 import {AvantagesService} from '../../../services/avantages.service';
 import {ActivatedRoute} from '@angular/router';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {NgxSpinnerService} from 'ngx-bootstrap-spinner';
 
 @Component({
   selector: 'app-candidate-details',
@@ -42,6 +43,7 @@ constructor(private service: CondidatService,
               private competenceService: CompetenceService,
               private avantagesServices: AvantagesService,
               private suivisService: SuivisService,
+            private spinner: NgxSpinnerService,
               private fb: FormBuilder, ) {
   this.productForm = this.fb.group({
     competences: this.fb.array([])
@@ -72,7 +74,7 @@ constructor(private service: CondidatService,
   };
   setings = {
     columns: {
-      avantages: { title: 'Avantage',
+      advantage: { title: 'Avantage',
         valuePrepareFunction: (data) => {
           return data.advantage_name; }
       },
@@ -131,7 +133,9 @@ constructor(private service: CondidatService,
   idAdvantage: any;
   ListCompetence: any;
   ListAvantage: any;
+  post_name: any;
   ngOnInit(): void {
+    this.spinner.show();
     this.router.params
       .subscribe((queryParams: any) => {
         this.service.findById(queryParams['id']).subscribe(res => {
@@ -150,6 +154,7 @@ constructor(private service: CondidatService,
                 this.findAvantages();
               }
               this.disabled = b;
+              this.spinner.hide();
             });
           });
         });
@@ -196,19 +201,19 @@ constructor(private service: CondidatService,
     candidate.deleted = 0;
     candidate.candidate_id = this.idCandidate;
     this.service.updateCondidat(candidate, this.idCandidate).subscribe(() => {
-      this.announcementService.findAnnouncement(this.listPoste.find(post => post.id_post === this.poste))
-        .subscribe(result => {
-          const candidature: any = {
-            candidate: candidate,
-            announcement: result,
-            candidature_steps: null,
-            advantage : null,
-            competence : null,
-          };
-          this.candidatureService.postCandidature(candidature).subscribe(() => {
-            this.ngOnInit();
-          });
-        });
+      // this.announcementService.findAnnouncement(this.listPoste.find(post => post.id_post === this.poste))
+      //   .subscribe(result => {
+      //     const candidature: any = {
+      //       candidate: candidate,
+      //       announcement: result,
+      //       candidature_steps: null,
+      //       advantage : null,
+      //       competence : null,
+      //     };
+      //     this.candidatureService.postCandidature(candidature).subscribe(() => {
+      //       this.ngOnInit();
+      //     });
+      //   });
       });
   }
   private findAllUniversities() {
@@ -349,7 +354,7 @@ constructor(private service: CondidatService,
     this.ProductForm.value.avantages.forEach(avantage => {
       const avan = {
         candidate: this.result,
-        avantage: avantage.avantage,
+        advantage: avantage.avantage,
         evaluation: avantage.evaluation,
       };
       this.avantagesServices.postAvantageCandidature(avan).subscribe(() => {
@@ -363,7 +368,7 @@ constructor(private service: CondidatService,
     return this.ProductForm.get('avantages') as FormArray; }
   newAvantage(): FormGroup {
     return this.fb.group({
-      avantages: '',
+      avantage: '',
       evaluation: '',
     }); }
  deleteAvanatges(i: number) {

@@ -1,5 +1,6 @@
+<ngx-bootstrap-spinner></ngx-bootstrap-spinner>
 <div class="row">
-  <div class="col-sm-6">
+  <div class="col-sm-12">
     <div class="card">
       <div class="card-body">
         <div style="display: flex; flex-direction: column">
@@ -7,8 +8,9 @@
               <span><img src="assets/img/avatars/10.jpg" class="img-circle" style="float: left;"></span>
           <div style="display: flex; flex-direction: column">
               <span><b>{{gender}} {{prenom}} {{nom}}</b></span>
-              <span>Email:{{email}}</span>
-              <span>Téléphone:{{tel_mobile}}</span>
+              <span>Email: {{email}}</span>
+              <span>Téléphone: {{tel_mobile}}</span>
+              <span>Poste: {{post_name}}</span>
           </div>
           </div>
           <mat-accordion class="example-headers-align" multi style="margin-top: 15px;margin-bottom: 15px;">
@@ -151,16 +153,16 @@
                                          placeholder="Motivation">
                                 </div>
                               </div>
-                              <div class="form-group row">
-                                <label class="col-md-3 col-form-label" for="Poste"><strong>Poste</strong></label>
-                                <div class="col-md-9">
-                                  <select [disabled]="disabled" [(ngModel)]="poste" id="Poste" name="Poste" class="form-control">
-                                    <option *ngFor="let post of listPoste" [ngValue]="post.id_post">
-                                      {{post.post_name}}
-                                    </option>
-                                  </select>
-                                </div>
-                              </div>
+<!--                              <div class="form-group row">-->
+<!--                                <label class="col-md-3 col-form-label" for="Poste"><strong>Poste</strong></label>-->
+<!--                                <div class="col-md-9">-->
+<!--                                  <select [disabled]="disabled" [(ngModel)]="poste" id="Poste" name="Poste" class="form-control">-->
+<!--                                    <option *ngFor="let post of listPoste" [ngValue]="post.id_post">-->
+<!--                                      {{post.post_name}}-->
+<!--                                    </option>-->
+<!--                                  </select>-->
+<!--                                </div>-->
+<!--                              </div>-->
                               </div>
                         </div>
                       </div>

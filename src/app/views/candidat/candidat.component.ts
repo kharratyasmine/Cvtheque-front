@@ -10,6 +10,9 @@ import {GenericService} from '../../services/generic.service';
 import {PostesService} from '../../services/postes.service';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {CompetenceService} from '../../services/competence.service';
+import {NgxSpinnerService} from 'ngx-bootstrap-spinner';
+import {Candidature} from '../../model/candidature';
+
 
 @Component({
   selector: 'app-candidat',
@@ -28,6 +31,7 @@ export class CandidatComponent implements OnInit {
               private postService: PostesService,
               private genericService: GenericService,
               private competenceService: CompetenceService,
+              private spinner: NgxSpinnerService
   ) {
   }
 
@@ -59,8 +63,6 @@ export class CandidatComponent implements OnInit {
       },
       statut: {
         title: 'Statut',
-        // valuePrepareFunction: (data) => {
-        //   return data.statut; },
       },
     },
     actions: {
@@ -84,6 +86,10 @@ export class CandidatComponent implements OnInit {
         {
           name: 'CV',
           title: '<i class="icon-cloud-download width: 300px"></i>',
+        },
+        {
+          name: 'Candidature',
+          title: '<i class="icon-plus width: 300px"></i>',
         }
       ],
     },
@@ -119,6 +125,7 @@ export class CandidatComponent implements OnInit {
   currentCv = '';
 
   ngOnInit() {
+    this.spinner.show();
     this.findAllCondidates();
     this.findAllUniversities();
     this.findAllDiplomas();
@@ -143,6 +150,7 @@ export class CandidatComponent implements OnInit {
       });
       setTimeout(() => {
         this.data = resultat;
+        this.spinner.hide();
       }, 1000);
     });
   }
@@ -155,15 +163,25 @@ export class CandidatComponent implements OnInit {
     });
   }
 
-  chooseAction(event: any, element: any, elementDelete: any, elementCV: any) {
+  chooseAction(event: any, element: any, elementDelete: any, elementCV: any, elementCandidature: any) {
     this.condidat = event.data;
     switch (event.action) {
       case 'delete' :
         this.matDialog.open(elementDelete, {disableClose: true});
         break;
       case 'CV' :
-        this.currentCv = event.data.cv;
-        this.matDialog.open(elementCV, {height: '90%', width: '70%'});
+        this.service.findCv(event.data.candidate_id).subscribe((cv: any) => {
+          this.currentCv = cv.cv;
+          this.matDialog.open(elementCV, {height: '90%', width: '70%'});
+        });
+        break;
+      case 'Candidature' :
+        this.service.addCandidature(event.data.id).subscribe((cv: any) => {
+          event.action === 'Candidature' ? this.disabled = true : this.disabled = false;
+          this.genericService.addData(event.data);
+          this.genericService.addDisabled(this.disabled);
+          this.matDialog.open(elementCV, {height: '90%', width: '70%'});
+        });
         break;
       default :
         this.title = 'Modifier';

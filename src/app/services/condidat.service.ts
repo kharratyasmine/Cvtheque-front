@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {Condidat} from '../model/condidat';
+import {Candidature} from '../model/candidature';
 
 @Injectable({providedIn: 'root'})
 export class CondidatService {
@@ -13,6 +14,9 @@ export class CondidatService {
   }
   findAllCondidates(): Observable<any> {
     return this.httpClient.get(this.url + 'candidate');
+  }
+  findCv(id): any {
+    return this.httpClient.get(this.url + 'candidate/cv/' + id);
   }
   findById(id: any): Observable<any> {
     return this.httpClient.get(this.url + 'candidate/' + id);
@@ -32,5 +36,7 @@ export class CondidatService {
   getDocument() {
     return of('https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf');
   }
-
+  addCandidature(Candidature: Candidature): Observable<any> {
+    return this.httpClient.post(this.url + 'candidate', Candidature );
+  }
 }

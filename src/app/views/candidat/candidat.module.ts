@@ -15,6 +15,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {SuivisModule} from '../suivis/Suivis.module';
 import {PdfViewerModule} from 'ng2-pdf-viewer';
+import {NgxSpinnerModule} from 'ngx-bootstrap-spinner';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import {PdfViewerModule} from 'ng2-pdf-viewer';
     MatDatepickerModule,
     SuivisModule,
     ReactiveFormsModule,
-    PdfViewerModule
+    PdfViewerModule,
+    NgxSpinnerModule
   ],
   declarations: [CandidatComponent, CandidateDetailsComponent],
   providers: [
