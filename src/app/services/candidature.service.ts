@@ -14,9 +14,7 @@ export class CandidatureService {
 
   constructor(private httpClient: HttpClient) {
   }
-  findAllCandidature(): Observable<any> {
-    return this.httpClient.get(this.url + 'candidature');
-  }
+
   findCandidatureByCandidate(id): Observable<any> {
     return this.httpClient.get(this.url + 'candidature/candidate/' + id);
   }

@@ -15,7 +15,7 @@
         <label class="col-md-3 col-form-label" for="Poste"><strong>Poste</strong></label>
         <div class="col-md-9">
           <select [disabled]="disabled" [(ngModel)]="Post" id="Poste" name="Poste" class="form-control">
-            <option *ngFor="let Post of listPostes" [ngValue]="Post.id_post" required="required" >
+            <option *ngFor="let Post of listPostes" [ngValue]="Post.id_post" >
               {{Post.post_name}}
             </option>
           </select>

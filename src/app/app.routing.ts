@@ -28,9 +28,6 @@ export const routes: Routes = [
       {path: 'avantages',
         loadChildren: () => import('./views/avantages/avantages.module').then(m => m.AvantagesModule)
       },
-      {path: 'candidature',
-        loadChildren: () => import('./views/candidature/candidature.module').then(m => m.CandidatureModule)
-      },
       {path: 'competence',
         loadChildren: () => import('./views/competence/competence.module').then(m => m.CompetenceModule)
       },

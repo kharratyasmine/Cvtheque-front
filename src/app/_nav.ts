@@ -11,11 +11,6 @@ export const navItems: INavData[] = [
     url: '/candidat',
     icon: 'icon-people'
   },
-  // {
-  //   name: 'candidature',
-  //   url: '/candidature',
-  //   icon: 'icon-people'
-  // },
   {name: 'Competence',
     url: '/competence',
     icon: 'cil-library-add'

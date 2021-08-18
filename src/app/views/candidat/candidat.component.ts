@@ -12,6 +12,8 @@ import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {CompetenceService} from '../../services/competence.service';
 import {NgxSpinnerService} from 'ngx-bootstrap-spinner';
 import {Candidature} from '../../model/candidature';
+import {AnnouncementService} from '../../services/announcement.service';
+import {CandidatureService} from '../../services/candidature.service';
 
 
 @Component({
@@ -22,10 +24,14 @@ import {Candidature} from '../../model/candidature';
 export class CandidatComponent implements OnInit {
   private dataService: any;
   productForm: FormGroup;
+  private event: any;
 
   constructor(private service: CondidatService, private matDialog: MatDialog,
               private universityService: UniversityService,
               private router: Router,
+              private announcementService: AnnouncementService,
+              private candidatureService: CandidatureService,
+              private postesService: PostesService,
               private diplomaService: DiplomaService,
               private stepService: SuivisService,
               private postService: PostesService,
@@ -85,7 +91,7 @@ export class CandidatComponent implements OnInit {
         },
         {
           name: 'CV',
-          title: '<i class="icon-cloud-download width: 300px"></i>',
+          title: '<i class="icon-cloud-download margin width: 300px"></i>',
         },
         {
           name: 'Candidature',
@@ -123,23 +129,29 @@ export class CandidatComponent implements OnInit {
   competence: any;
   blob: any;
   currentCv = '';
+  listPoste: any;
+  listAnnouncement: any;
+  announcement: any;
+  hidden = false;
+  cnd: any;
+  listcnd: any;
 
   ngOnInit() {
     this.spinner.show();
     this.findAllCondidates();
     this.findAllUniversities();
     this.findAllDiplomas();
+    this.findAllPosts();
   }
-
   findAllCondidates() {
     this.service.findAllCondidates().subscribe(resultat => {
       resultat.forEach(res => {
         if (res.candidatures.length > 0) {
-          this.postService.findposteByCandidatureAndCandidate(res.candidatures[0].id, res.candidate_id)
+          this.postService.findposteByCandidatureAndCandidate(res.candidatures[res.candidatures.length - 1].id, res.candidate_id)
             .subscribe(data => {
               Object.assign(res, {post_name: data.post_name});
             });
-          this.stepService.findAllSuivisByIdCandidature(res.candidatures[0].id, res.candidate_id)
+          this.stepService.findAllSuivisByIdCandidature(res.candidatures[res.candidatures.length - 1].id, res.candidate_id)
             .subscribe(steps => {
               Object.assign(res, {statut: steps[steps.length - 1].sequence});
             });
@@ -151,7 +163,7 @@ export class CandidatComponent implements OnInit {
       setTimeout(() => {
         this.data = resultat;
         this.spinner.hide();
-      }, 1000);
+      }, 3000);
     });
   }
 
@@ -163,7 +175,7 @@ export class CandidatComponent implements OnInit {
     });
   }
 
-  chooseAction(event: any, element: any, elementDelete: any, elementCV: any, elementCandidature: any) {
+  chooseAction(event: any, element: any, elementDelete: any, elementCV: any, elementCandidature: any, choice: any) {
     this.condidat = event.data;
     switch (event.action) {
       case 'delete' :
@@ -176,20 +188,17 @@ export class CandidatComponent implements OnInit {
         });
         break;
       case 'Candidature' :
-        this.service.addCandidature(event.data.id).subscribe((cv: any) => {
-          event.action === 'Candidature' ? this.disabled = true : this.disabled = false;
-          this.genericService.addData(event.data);
-          this.genericService.addDisabled(this.disabled);
-          this.matDialog.open(elementCV, {height: '90%', width: '70%'});
-        });
+        this.findAllPosts();
+        this.event = event;
+        this.matDialog.open(elementCandidature, { width: '800px'});
         break;
       default :
         this.title = 'Modifier';
-        this.fillDate(event.data);
-        event.action === 'view' ? this.disabled = true : this.disabled = false;
-        this.genericService.addData(event.data);
-        this.genericService.addDisabled(this.disabled);
-        this.router.navigate(['/candidat/details/' + event.data.candidate_id]);
+        this.candidatureService.findCandidatureByCandidate(event.data.candidate_id).subscribe(list => {
+          this.listcnd = list;
+          this.matDialog.open(choice, {disableClose: true});
+          this.event = event;
+        });
         break;
     }
   }
@@ -215,7 +224,8 @@ export class CandidatComponent implements OnInit {
     candidate.Statut = this.statut;
     candidate.deleted = 0;
     if (idCandidate === null) {
-      this.service.postCondidat(candidate).subscribe(() => {
+      this.service.postCondidat(candidate).subscribe((cdt: any) => {
+        this.addCandidature(cdt, this.announcement);
         this.ngOnInit();
         this.close();
       });
@@ -272,6 +282,7 @@ export class CandidatComponent implements OnInit {
     this.cv = null;
     this.idCandidate = null;
     this.disabled = false;
+    this.hidden = false;
     this.matDialog.closeAll();
   }
 
@@ -309,6 +320,35 @@ export class CandidatComponent implements OnInit {
  }
 
 
+  addCandidature(candidate: any, announcement: any) {
+    const candidature = new Candidature();
+    candidature.candidate = candidate;
+    candidature.announcement = announcement;
+    candidature.deleted = false;
+    this.candidatureService.postCandidature(candidature).subscribe();
+  }
+
+  selectedPost() {
+    const currentPost = this.listPoste.find(p => p.id_post === this.poste);
+    this.announcementService.findAnnouncement(currentPost).subscribe(announcements => {
+      this.listAnnouncement = announcements;
+      this.hidden = true;
+    });
+  }
+
+  private findAllPosts() {
+    this.postService.findAllPostes().subscribe(posts => {
+      this.listPoste = posts;
+    });
+  }
+
+  selectedCandidature() {
+    this.fillDate(this.event.data);
+    this.event.action === 'view' ? this.disabled = true : this.disabled = false;
+    this.genericService.addData(this.cnd);
+    this.genericService.addDisabled(this.disabled);
+    this.router.navigate(['/candidat/details/' + this.event.data.candidate_id]);
+  }
 }
 
 

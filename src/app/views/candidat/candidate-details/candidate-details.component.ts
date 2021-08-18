@@ -65,10 +65,10 @@ constructor(private service: CondidatService,
       delete: false,
       position: 'right',
       custom: [
-        {
-          name: 'delete',
-          title: '<i class="icon-trash width: 300px"></i> ',
-        },
+        // {
+        //   name: 'delete',
+        //   title: '<i class="icon-trash width: 300px"></i> ',
+        // },
       ],
     },
   };
@@ -85,10 +85,10 @@ constructor(private service: CondidatService,
       delete: false,
       position: 'right',
       custom: [
-        {
-          name: 'delete',
-          title: '<i class="icon-trash width: 300px"></i> ',
-        },
+        // {
+        //   name: 'delete',
+        //   title: '<i class="icon-trash width: 300px"></i> ',
+        // },
       ],
     },
     };
@@ -134,6 +134,7 @@ constructor(private service: CondidatService,
   ListCompetence: any;
   ListAvantage: any;
   post_name: any;
+  poste_name: any;
   ngOnInit(): void {
     this.spinner.show();
     this.router.params
@@ -141,10 +142,12 @@ constructor(private service: CondidatService,
         this.service.findById(queryParams['id']).subscribe(res => {
           this.result = res;
           this.genericService.subscribeDisabledData.subscribe((b: boolean) => {
-            this.candidatureService.findCandidatureByCandidate(this.result.candidate_id).subscribe(result => {
+            this.genericService.subscribeMessage.subscribe(result => {
               this.candidature = result;
               if (result !== null) {
-                this.suivisService.findAllSuivisByIdCandidature(result.id, this.result.candidate_id).subscribe(steps => {
+                this.postesService.findposteByCandidatureAndCandidate(this.candidature.id, this.result.candidate_id)
+                  .subscribe(post => this.poste_name = post.post_name);
+                this.suivisService.findAllSuivisByIdCandidature(this.candidature.id, this.result.candidate_id).subscribe(steps => {
                   this.suivis = steps;
                 });
               }
@@ -160,7 +163,6 @@ constructor(private service: CondidatService,
         });
       });
     this.findAllPostes();
-    this.findAllCandidature();
     this.findAllUniversities();
     this.findAllDiplomas();
     this.findAllCompetences();
@@ -171,14 +173,7 @@ constructor(private service: CondidatService,
       this.listPoste = data;
     });
   }
-  findAnnouncement(target: any) {
-    console.log(target.value);
-  }
-  findPoste(target: any) {
-    console.log(target.value); }
-  private findAllCandidature() {
-    this.candidatureService.findAllCandidature().subscribe(data => {}
-    ); }
+
   updateCandidate() {
     const candidate = new Condidat();
     candidate.last_name = this.nom;
@@ -200,21 +195,7 @@ constructor(private service: CondidatService,
     candidate.Statut = null;
     candidate.deleted = 0;
     candidate.candidate_id = this.idCandidate;
-    this.service.updateCondidat(candidate, this.idCandidate).subscribe(() => {
-      // this.announcementService.findAnnouncement(this.listPoste.find(post => post.id_post === this.poste))
-      //   .subscribe(result => {
-      //     const candidature: any = {
-      //       candidate: candidate,
-      //       announcement: result,
-      //       candidature_steps: null,
-      //       advantage : null,
-      //       competence : null,
-      //     };
-      //     this.candidatureService.postCandidature(candidature).subscribe(() => {
-      //       this.ngOnInit();
-      //     });
-      //   });
-      });
+    this.service.updateCondidat(candidate, this.idCandidate).subscribe(() => { this.ngOnInit(); });
   }
   private findAllUniversities() {
     this.universityService.findUniversities().subscribe(data => {
@@ -312,11 +293,13 @@ constructor(private service: CondidatService,
     this.poste = data.poste;
   }
   findCompetences() {
+    this.spinner.show();
     this.competenceService.findAllCompetenceByCandidature(this.candidature.id, this.idCandidate).subscribe(res => {
       this.listComptece = res;
       this.productForm = this.fb.group({
         competences: this.fb.array([])
       });
+      this.spinner.hide();
     });
   }
   onSubmit() {
@@ -325,6 +308,7 @@ constructor(private service: CondidatService,
        candidate: this.result,
        competence: competence.competence,
        evaluation: competence.evaluation,
+       candidatureId: this.candidature.id,
      };
       this.competenceService.postCompetenceCandidature(comp).subscribe(() => {
         this.findCompetences();
@@ -343,11 +327,13 @@ constructor(private service: CondidatService,
   deleteCompetences(i: number) {
     this.competences().removeAt(i); }
   findAvantages() {
+    this.spinner.show();
     this.avantagesServices.findAllAvantageByCandidature(this.candidature.id, this.idCandidate).subscribe(res => {
       this.listAvantage = res;
       this.ProductForm = this.fb.group({
         avantages: this.fb.array([])
       });
+      this.spinner.hide();
     });
   }
   OnSubmit() {
@@ -356,6 +342,7 @@ constructor(private service: CondidatService,
         candidate: this.result,
         advantage: avantage.avantage,
         evaluation: avantage.evaluation,
+        candidatureId: this.candidature.id,
       };
       this.avantagesServices.postAvantageCandidature(avan).subscribe(() => {
         this.findAvantages();

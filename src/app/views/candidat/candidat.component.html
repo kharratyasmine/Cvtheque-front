@@ -6,157 +6,184 @@
   </p>
 </div>
 <ng2-smart-table [settings]="settings" [source]="data"
-                 (custom)="chooseAction($event, element, delete, CV, Candidature )"></ng2-smart-table>
+                 (custom)="chooseAction($event, element, delete, CV, Candidature, choice )"></ng2-smart-table>
 <!--Modal-->
 <ng-template #element>
   <strong> {{title}} Candidat</strong>
   <h2 mat-dialog-title></h2>
-  <mat-dialog-content class="mat-typography">
-    <div class="card-body">
-      <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+  <form #f="ngForm" action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+    <mat-dialog-content class="mat-typography">
+      <div class="card-body">
         <div class="form-group ">
-          <div class="form-group row"><div style="width: 160%">
-            <div><i class="fa fa-info-circle " ><strong>  Informations personnelles</strong></i></div>
-            <div><br></div>
-            <div><br></div>
-                <div class="form-group row">
-                  <label class="col-md-3 col-form-label"><strong>Civilite</strong></label>
-                  <div class="col-md-9">
-                    <select id="Civilite" [(ngModel)]="gender" name="Civilite" class="form-control" [disabled]="disabled" required="required">
-                      <option value="Mr." >Monsieur</option>
-                      <option value="Mme.">Madame</option>
-                    </select>
-                  </div>
+          <div class="form-group row">
+            <div style="width: 160%">
+              <div><i class="fa fa-info-circle "><strong> Informations personnelles</strong></i></div>
+              <div><br></div>
+              <div><br></div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label"><strong>Civilite</strong></label>
+                <div class="col-md-9">
+                  <select id="Civilite" [(ngModel)]="gender" name="Civilite" class="form-control" [disabled]="disabled"
+                          required="required">
+                    <option value="Mr.">Monsieur</option>
+                    <option value="Mme.">Madame</option>
+                  </select>
                 </div>
-                <div class="form-group row">
-                  <label class="col-md-3 col-form-label" for="nom"><strong>Nom</strong></label>
-                  <div class="col-md-9">
-                    <input type="text" id="nom" name="nom" class="form-control" placeholder="nom" [disabled]="disabled" [(ngModel)]="nom" required="required">
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="nom"><strong>Nom</strong></label>
+                <div class="col-md-9">
+                  <input type="text" id="nom" name="nom" class="form-control" placeholder="nom" [disabled]="disabled"
+                         [(ngModel)]="nom" required="required">
                 </div>
-                <div class="form-group row">
-                  <label class="col-md-3 col-form-label" for="prenom"><strong>Prenom</strong></label>
-                  <div class="col-md-9">
-                    <input type="text" id="prenom" name="prenom" class="form-control" placeholder="prenom"
-                           [(ngModel)]="prenom" [disabled]="disabled" required="required">
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="prenom"><strong>Prenom</strong></label>
+                <div class="col-md-9">
+                  <input type="text" id="prenom" name="prenom" class="form-control" placeholder="prenom"
+                         [(ngModel)]="prenom" [disabled]="disabled" required="required">
                 </div>
-                <div class="form-group row">
-                  <label class="col-md-3 col-form-label" for="dateDeNaissance"><strong>Date de naissance</strong></label>
-                  <div class="col-md-9">
-                    <input class="form-control" required="required" [disabled]="disabled" [(ngModel)]="birth_date" id="dateDeNaissance" type="date" name="dateDeNaissance" placeholder="date">
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="dateDeNaissance"><strong>Date de naissance</strong></label>
+                <div class="col-md-9">
+                  <input class="form-control" required="required" [disabled]="disabled" [(ngModel)]="birth_date"
+                         id="dateDeNaissance" type="date" name="dateDeNaissance" placeholder="date">
                 </div>
-                <div class="form-group row">
-                  <label class="col-md-3 col-form-label" for="Email"><strong>Email</strong></label>
-                  <div class="col-md-9">
-                    <input type="email" required="required" [(ngModel)]="email" id="Email" name="email-input" class="form-control"
-                           placeholder="name@example.com" autocomplete="email" [disabled]="disabled">
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="Email"><strong>Email</strong></label>
+                <div class="col-md-9">
+                  <input type="email" required="required" [(ngModel)]="email" id="Email" name="email-input"
+                         class="form-control"
+                         placeholder="name@example.com" autocomplete="email" [disabled]="disabled">
                 </div>
-                <div class="form-group row">
-                  <label class="col-md-3 col-form-label" for="Identité"><strong>Identité</strong></label>
-                  <div class="col-md-9">
-                    <input type="text" id="Identité" required="required" name="Identité" class="form-control" placeholder="Identité" [disabled]="disabled" [(ngModel)]="identity">
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="Identité"><strong>Identité</strong></label>
+                <div class="col-md-9">
+                  <input type="text" id="Identité" required="required" name="Identité" class="form-control"
+                         placeholder="Identité" [disabled]="disabled" [(ngModel)]="identity">
                 </div>
-                <div class="form-group row">
-                  <label class="col-md-3 col-form-label" for="tel_mobile"><strong>Téléphone</strong></label>
-                  <div class="col-md-9">
-                    <input type="text" id="tel_mobile" required="required" name="tel_mobile" class="form-control" placeholder="tel_mobile" [disabled]="disabled" [(ngModel)]="tel_mobile">
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="tel_mobile"><strong>Téléphone</strong></label>
+                <div class="col-md-9">
+                  <input type="text" id="tel_mobile" required="required" name="tel_mobile" class="form-control"
+                         placeholder="tel_mobile" [disabled]="disabled" [(ngModel)]="tel_mobile">
                 </div>
-                <div class="form-group row">
-                  <label class="col-md-3 col-form-label" for="TéléphoneFix"><strong>Téléphone fix</strong></label>
-                  <div class="col-md-9">
-                    <input type="text" id="TéléphoneFix" required="required" name="Téléphone fix" class="form-control" placeholder="Téléphone fix" [disabled]="disabled" [(ngModel)]="tel_fix">
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="TéléphoneFix"><strong>Téléphone fix</strong></label>
+                <div class="col-md-9">
+                  <input type="text" id="TéléphoneFix" required="required" name="Téléphone fix" class="form-control"
+                         placeholder="Téléphone fix" [disabled]="disabled" [(ngModel)]="tel_fix">
                 </div>
-                <div class="form-group row">
-                  <label class="col-md-3 col-form-label" for="Diplôme"><strong>Diplôme</strong></label>
-                  <div class="col-md-9">
-                    <select [disabled]="disabled" [(ngModel)]="diplome" id="Diplôme" name="Diplôme" class="form-control">
-                      <option *ngFor="let dip of listDiploma" [ngValue]="dip.diploma_id" required="required" >
-                        {{dip.name}}
-                      </option>
-                    </select>
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="Diplôme"><strong>Diplôme</strong></label>
+                <div class="col-md-9">
+                  <select [disabled]="disabled" [(ngModel)]="diplome" id="Diplôme" name="Diplôme" class="form-control">
+                    <option *ngFor="let dip of listDiploma" [ngValue]="dip.diploma_id">
+                      {{dip.name}}
+                    </option>
+                  </select>
                 </div>
-                <div class="form-group row">
-                  <label class="col-md-3 col-form-label" for="diploma_date"><strong>Date de diplome</strong></label>
-                  <div class="col-md-9">
-                    <input class="form-control" required="required" [disabled]="disabled" [(ngModel)]="diploma_date" id="diploma_date" type="date" name="dateDeNaissance" placeholder="date">
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="diploma_date"><strong>Date de diplome</strong></label>
+                <div class="col-md-9">
+                  <input class="form-control" required="required" [disabled]="disabled" [(ngModel)]="diploma_date"
+                         id="diploma_date" type="date" name="dateDeNaissance" placeholder="date">
                 </div>
-                <div class="form-group row">
-                  <label class="col-md-3 col-form-label" for="Ecole"><strong>Ecole</strong></label>
-                  <div class="col-md-9">
-                    <select [(ngModel)]="ecole" [disabled]="disabled" id="Ecole" name="Ecole" class="form-control">
-                      <option *ngFor="let university of listUniversity" [ngValue]="university.university_id" required="required">
-                        {{university.name}}
-                      </option>
-                    </select>
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="Ecole"><strong>Ecole</strong></label>
+                <div class="col-md-9">
+                  <select [(ngModel)]="ecole" [disabled]="disabled" id="Ecole" name="Ecole" class="form-control">
+                    <option *ngFor="let university of listUniversity" [ngValue]="university.university_id"
+                            >
+                      {{university.name}}
+                    </option>
+                  </select>
                 </div>
-                <div class="form-group row">
-                  <label class="col-md-3 col-form-label" for="Nombre d'anné d'expérience"> <strong>Nombre d'année
-                    d'expérience</strong></label>
-                  <div class="col-md-9">
-                    <input type="text" required="required" [disabled]="disabled" [(ngModel)]="nombreDanneDexperience" id="Nombre d'anné d'expérience"
-                           name="Nombre d'anné d'expérience"
-                           class="form-control"
-                           placeholder="Nombre d'anné d'expérience">
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="Nombre d'anné d'expérience"> <strong>Nombre d'année
+                  d'expérience</strong></label>
+                <div class="col-md-9">
+                  <input type="number" min="0" required="required" [disabled]="disabled"
+                         [(ngModel)]="nombreDanneDexperience" id="Nombre d'anné d'expérience"
+                         name="Nombre d'anné d'expérience"
+                         class="form-control"
+                         placeholder="Nombre d'anné d'expérience">
                 </div>
-                <div class="form-group row">
-                  <label class="col-md-3 col-form-label" for="Ex-employeurs"> <strong>Ex-employeurs</strong></label>
-                  <div class="col-md-9">
-                    <input type="text" required="required" [disabled]="disabled" [(ngModel)]="Ex_employeurs" id="Ex-employeurs" name="Ex-employeurs"
-                           class="form-control"
-                           placeholder="Ex-employeurs">
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="Ex-employeurs"> <strong>Ex-employeurs</strong></label>
+                <div class="col-md-9">
+                  <input type="text" required="required" [disabled]="disabled" [(ngModel)]="Ex_employeurs"
+                         id="Ex-employeurs" name="Ex-employeurs"
+                         class="form-control"
+                         placeholder="Ex-employeurs">
                 </div>
-                <div class="form-group row">
-                  <label class="col-md-3 col-form-label" for="last_position"> <strong>Dernière position</strong></label>
-                  <div class="col-md-9">
-                    <input type="text" required="required" [disabled]="disabled" [(ngModel)]="last_position" id="last_position" name="last_position"
-                           class="form-control"
-                           placeholder="Dernière position">
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="last_position"> <strong>Dernière position</strong></label>
+                <div class="col-md-9">
+                  <input type="text" required="required" [disabled]="disabled" [(ngModel)]="last_position"
+                         id="last_position" name="last_position"
+                         class="form-control"
+                         placeholder="Dernière position">
                 </div>
-                <div class="form-group row">
-                  <label class="col-md-3 col-form-label" for="Motivation"><strong>Motivation</strong></label>
-                  <div class="col-md-9">
-                    <input type="text" required="required" [disabled]="disabled" [(ngModel)]="Motivation" id="Motivation" name="Motivation" class="form-control"
-                           placeholder="Motivation">
-                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="Motivation"><strong>Motivation</strong></label>
+                <div class="col-md-9">
+                  <input type="text" required="required" [disabled]="disabled" [(ngModel)]="Motivation" id="Motivation"
+                         name="Motivation" class="form-control"
+                         placeholder="Motivation">
                 </div>
-<!--                <div class="form-group row">-->
-<!--              <label class="col-md-3 col-form-label" for="Poste"><strong>Poste</strong></label>-->
-<!--              <div class="col-md-9">-->
-<!--                <select [disabled]="disabled" [(ngModel)]="poste" id="Poste" name="Poste" class="form-control">-->
-<!--                  <option *ngFor="let post of listPoste" [ngValue]="post.id_post">-->
-<!--                    {{post.post_name}}-->
-<!--                  </option>-->
-<!--                </select>-->
-<!--              </div>-->
-<!--            </div>-->
-                <div class="form-group row">
-              <label class="col-md-3 col-form-label" for="file-input"><strong>Téléverser votre CV</strong></label>
-              <div class="col-md-9">
-                <input type="file" (change)="getBase64($event.target)" required="required" accept="application/pdf" id="file-input" name="file-input"[disabled]="disabled" [(ngModel)]="cv">
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="post"><strong>Poste</strong></label>
+                <div class="col-md-9">
+                  <select [disabled]="disabled" (change)="selectedPost()" [(ngModel)]="poste" id="post" name="Poste"
+                          class="form-control">
+                    <option *ngFor="let post of listPoste" [ngValue]="post.id_post">
+                      {{post.post_name}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row" *ngIf="hidden">
+                <label class="col-md-3 col-form-label" for="annoncemen"><strong>Annoncement</strong></label>
+                <div class="col-md-9">
+                  <select [(ngModel)]="announcement" [disabled]="disabled" id="annoncemen" name="annoncement"
+                          class="form-control" required>
+                    <option *ngFor="let ann of listAnnouncement" [ngValue]="ann">
+                      {{ann.description}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-3 col-form-label" for="file-input"><strong>Téléverser votre CV</strong></label>
+                <div class="col-md-9">
+                  <input type="file" (change)="getBase64($event.target)" required="required" accept="application/pdf"
+                         id="file-input" name="file-input" [disabled]="disabled" [(ngModel)]="cv">
+                </div>
               </div>
             </div>
           </div>
-          </div>
         </div>
-      </form>
-    </div>
-  </mat-dialog-content>
-  <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close (click)="close()">Annuler</button>
-    <button mat-button [mat-dialog-close]="true" (click)="addCandidate(idCandidate)" cdkFocusInitial >Enregistrer</button>
-  </mat-dialog-actions>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close (click)="close()">Annuler</button>
+      <button mat-button [disabled]="f.invalid" [mat-dialog-close]="true" (click)="addCandidate(idCandidate)" cdkFocusInitial >Enregistrer</button>
+    </mat-dialog-actions>
+  </form>
 </ng-template>
 <ng-template #delete>
   <strong>Confirmation de la Suppression</strong>
@@ -183,35 +210,66 @@
   </div>
 </ng-template>
 <ng-template #Candidature>
-  <strong> {{title}} Candidature</strong>
-  <h2 mat-dialog-title></h2>
-  <mat-dialog-content class="mat-typography">
+  <strong> Nouvelle Candidature</strong>
     <div class="card-body">
-      <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-        <div class="form-group ">
+      <form #f="ngForm" action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="P"><strong>Poste</strong></label>
+          <div class="col-md-9">
+            <select [disabled]="disabled" (change)="selectedPost()" [(ngModel)]="poste" id="P" name="Poste" class="form-control" required>
+              <option *ngFor="let post of listPoste" [ngValue]="post.id_post">
+                {{post.post_name}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group " *ngIf="hidden">
           <div class="form-group row"><div style="width: 160%">
             <div class="form-group row">
-              <label class="col-md-3 col-form-label" for="last_position"> <strong>Dernière position</strong></label>
+              <label class="col-md-3 col-form-label" for="annonce"><strong>Annonce</strong></label>
               <div class="col-md-9">
-                <input type="text" required="required" [disabled]="disabled" [(ngModel)]="last_position" id="" name=""
-                       class="form-control"
-                       placeholder="Dernière position">
+                <select [disabled]="disabled" [(ngModel)]="announcement" id="annonce" name="annonce" class="form-control" required>
+                  <option *ngFor="let announcement of listAnnouncement" [ngValue]="announcement">
+                    {{announcement.description}}
+                  </option>
+                </select>
               </div>
             </div>
-<!--                            <div class="form-group row">-->
-<!--                          <label class="col-md-3 col-form-label" for="Poste"><strong>Poste</strong></label>-->
-<!--                          <div class="col-md-9">-->
-<!--                            <select [disabled]="disabled" [(ngModel)]="poste" id="Poste" name="Poste" class="form-control">-->
-<!--                              <option *ngFor="let post of listPoste" [ngValue]="post.id_post">-->
-<!--                                {{post.post_name}}-->
-<!--                              </option>-->
-<!--                            </select>-->
-<!--                          </div>-->
-<!--                        </div>-->
           </div>
           </div>
         </div>
+        <mat-dialog-actions align="end right">
+          <button mat-button mat-dialog-close (click)="close()">Annuler</button>
+          <button mat-button [disabled]="f.invalid" [mat-dialog-close]="true" (click)="addCandidature(event.data, announcement)" cdkFocusInitial >Enregistrer</button>
+        </mat-dialog-actions>
       </form>
     </div>
-  </mat-dialog-content>
+</ng-template>
+<ng-template #choice>
+  <strong> Choisir une candidature</strong>
+  <div class="card-body">
+      <form #f="ngForm" class="row">
+        <mat-dialog-content class="mat-typography">
+          <div class="card-body">
+            <div class="form-group ">
+              <div class="form-group row">
+              <label class="col-md-3" for="cnd"><strong>Condidature</strong></label>
+              <div class="col-md-9">
+                <select [(ngModel)]="cnd" id="cnd" name="cnd" class="form-control" required>
+                  <option *ngFor="let cnd of listcnd" [ngValue]="cnd">
+                    {{cnd.announcement.description}}
+                  </option>
+                </select>
+              </div>
+             </div>
+            </div>
+          </div>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end" >
+        <button mat-button mat-dialog-close (click)="close()">Annuler</button>
+        <button  mat-button [disabled]="f.invalid"  [mat-dialog-close]="true" (click)="selectedCandidature()" cdkFocusInitial >Valider</button>
+        </mat-dialog-actions>
+      </form>
+
+  </div>
 </ng-template>
