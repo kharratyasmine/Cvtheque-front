@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {SuivisService} from '../../services/Suivis.service';
 import {MatDialog} from '@angular/material/dialog';
 import {Suivis} from '../../model/suivis';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-suivis',
@@ -15,7 +16,7 @@ export class SuivisComponent implements OnInit {
   candidature: any;
   @Input()
   candidate: any;
-  constructor(private service: SuivisService, private matDialog: MatDialog) { }
+  constructor(private service: SuivisService, private matDialog: MatDialog, private toastr: ToastrService) { }
   settings = {
     columns: {
       planned_date: {
@@ -93,7 +94,8 @@ export class SuivisComponent implements OnInit {
       suivis.deleted = 0;
       if (idCandidatureSteps === null) {
         this.service.postSuivis(suivis).subscribe(() => {
-          this.findAllStepsByCandidature(); });
+          this.findAllStepsByCandidature();
+        }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
       } else {
         suivis.id_candidature_steps = idCandidatureSteps;
         this.service.updateSuivis(suivis, idCandidatureSteps).subscribe(() => {
@@ -109,8 +111,10 @@ export class SuivisComponent implements OnInit {
       this.disabled = false;
       this.idCandidatureSteps = null;
       this.step_description = null;
+      this.Description_Action = null;
       this.Avancement = null;
       this.planned_date = null;
+      this.date_input = null;
       this.candidature = null;
       this.sequence = null; }
     private fillDate(data) {

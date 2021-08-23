@@ -6,6 +6,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 import { DashboardComponent } from './dashboard.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
+import {Ng2SmartTableModule} from 'ng2-smart-table';
 
 @NgModule({
     imports: [
@@ -14,6 +15,7 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
         ChartsModule,
         BsDropdownModule,
         ButtonsModule.forRoot(),
+        Ng2SmartTableModule,
     ],
   declarations: [ DashboardComponent ]
 })

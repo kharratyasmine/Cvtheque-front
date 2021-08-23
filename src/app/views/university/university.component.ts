@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {UniversityService} from '../../services/university.service';
 import {University} from '../../model/university';
 import {MatDialog} from '@angular/material/dialog';
+import {ToastrService} from 'ngx-toastr';
 @Component({
   selector: 'app-university',
   templateUrl: './university.component.html',
   styleUrls: ['./university.component.scss']
 })
 export class UniversityComponent implements OnInit {
-  constructor(private service: UniversityService, private matDialog: MatDialog) {
+  constructor(private service: UniversityService, private matDialog: MatDialog, private toastr: ToastrService ) {
   }
   settings = {
     columns: {
@@ -82,7 +83,7 @@ export class UniversityComponent implements OnInit {
       this.service.postUniversities(university).subscribe(() => {
         this.ngOnInit();
         this.close();
-      });
+      }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
     } else {
       university.id = university_id;
       this.service.updateUniversities(university, university_id).subscribe(() => {

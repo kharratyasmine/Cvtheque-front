@@ -27,6 +27,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatStepperModule} from '@angular/material/stepper';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import {ToastrModule} from 'ngx-toastr';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
@@ -59,6 +60,7 @@ const APP_CONTAINERS = [
     ReactiveFormsModule,
     MatDialogModule,
     MatStepperModule,
+    ToastrModule.forRoot(),
   ],
   declarations: [
     AppComponent,

@@ -65,10 +65,10 @@ constructor(private service: CondidatService,
       delete: false,
       position: 'right',
       custom: [
-        // {
-        //   name: 'delete',
-        //   title: '<i class="icon-trash width: 300px"></i> ',
-        // },
+        {
+          name: 'delete',
+          title: '<i class="icon-trash width: 300px"></i> ',
+        },
       ],
     },
   };
@@ -85,10 +85,10 @@ constructor(private service: CondidatService,
       delete: false,
       position: 'right',
       custom: [
-        // {
-        //   name: 'delete',
-        //   title: '<i class="icon-trash width: 300px"></i> ',
-        // },
+        {
+          name: 'delete',
+          title: '<i class="icon-trash width: 300px"></i> ',
+        },
       ],
     },
     };
@@ -223,10 +223,11 @@ constructor(private service: CondidatService,
       disableClose: true
     });
   }
-  chooseAction(event: any, element: any, elemDelete: any) {
+
+  chooseAction(event: any, element: any, Delete: any) {
     switch (event.action) {
       case 'delete' :
-        this.matDialog.open(elemDelete, {disableClose: true});
+        this.matDialog.open(Delete, {disableClose: true});
         break;
       default :
         this.idCompetence = event.data.idCompetence;

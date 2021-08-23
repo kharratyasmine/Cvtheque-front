@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {CompetenceService} from '../../services/Competence.service';
 import {MatDialog} from '@angular/material/dialog';
 import {Competence} from '../../model/competence';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-competence',
@@ -13,7 +14,7 @@ export class CompetenceComponent implements OnInit {
   competence: any;
   @Input()
  candidature: any;
-  constructor(private service: CompetenceService, private matDialog: MatDialog ) { }
+  constructor(private service: CompetenceService, private matDialog: MatDialog , private toastr: ToastrService) { }
 
   settings = {
     columns: {
@@ -85,7 +86,7 @@ export class CompetenceComponent implements OnInit {
       this.service.postCompetence(competence).subscribe(() => {
         this.ngOnInit();
         this.close();
-      });
+      }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
     } else {
       competence.id_competence = idCompetence;
       this.service.updateCompetence(competence, idCompetence).subscribe(() => {

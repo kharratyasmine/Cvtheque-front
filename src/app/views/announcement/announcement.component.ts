@@ -3,6 +3,7 @@ import {AnnouncementService} from '../../services/announcement.service';
 import {MatDialog} from '@angular/material/dialog';
 import {Announcement} from '../../model/announcement';
 import {PostesService} from '../../services/postes.service';
+import {ToastrService} from 'ngx-toastr';
 
 
 @Component({
@@ -12,7 +13,7 @@ import {PostesService} from '../../services/postes.service';
 })
 export class AnnouncementComponent implements OnInit {
 
-  constructor(private service: AnnouncementService, private matDialog: MatDialog, private postesservices: PostesService) { }
+  constructor(private service: AnnouncementService, private matDialog: MatDialog, private postesservices: PostesService , private toastr: ToastrService) { }
   settings = {
     columns: {
       post: {
@@ -89,7 +90,7 @@ export class AnnouncementComponent implements OnInit {
       this.service.postAnnouncement(announcement).subscribe(() => {
         this.ngOnInit();
         this.close();
-      });
+      }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
     } else {
       announcement.id_announcement = id_announcement;
       this.service.updateAnnouncement(announcement, id_announcement).subscribe(() => {

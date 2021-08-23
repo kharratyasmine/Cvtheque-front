@@ -14,6 +14,7 @@ import {NgxSpinnerService} from 'ngx-bootstrap-spinner';
 import {Candidature} from '../../model/candidature';
 import {AnnouncementService} from '../../services/announcement.service';
 import {CandidatureService} from '../../services/candidature.service';
+import {ToastrService} from 'ngx-toastr';
 
 
 @Component({
@@ -37,9 +38,9 @@ export class CandidatComponent implements OnInit {
               private postService: PostesService,
               private genericService: GenericService,
               private competenceService: CompetenceService,
-              private spinner: NgxSpinnerService
-  ) {
-  }
+              private spinner: NgxSpinnerService,
+              private toastr: ToastrService
+  ) {}
 
   settings = {
     columns: {
@@ -69,6 +70,12 @@ export class CandidatComponent implements OnInit {
       },
       statut: {
         title: 'Statut',
+      },
+      candidatures: {
+        title: 'Nombre de candidatures',
+        valuePrepareFunction: (data) => {
+          return data.length;
+        },
       },
     },
     actions: {
@@ -137,6 +144,7 @@ export class CandidatComponent implements OnInit {
   listcnd: any;
 
   ngOnInit() {
+    // this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500});
     this.spinner.show();
     this.findAllCondidates();
     this.findAllUniversities();
@@ -149,11 +157,11 @@ export class CandidatComponent implements OnInit {
         if (res.candidatures.length > 0) {
           this.postService.findposteByCandidatureAndCandidate(res.candidatures[res.candidatures.length - 1].id, res.candidate_id)
             .subscribe(data => {
-              Object.assign(res, {post_name: data.post_name});
-            });
-          this.stepService.findAllSuivisByIdCandidature(res.candidatures[res.candidatures.length - 1].id, res.candidate_id)
-            .subscribe(steps => {
-              Object.assign(res, {statut: steps[steps.length - 1].sequence});
+              this.stepService.findAllSuivisByIdCandidature(res.candidatures[res.candidatures.length - 1].id, res.candidate_id)
+                .subscribe(steps => {
+                  Object.assign(res, {post_name: data.post_name});
+                  Object.assign(res, {statut: steps[steps.length - 1]?.sequence});
+                });
             });
         } else {
           Object.assign(res, {post_name: ''});
@@ -163,7 +171,7 @@ export class CandidatComponent implements OnInit {
       setTimeout(() => {
         this.data = resultat;
         this.spinner.hide();
-      }, 3000);
+      }, 4000);
     });
   }
 
@@ -228,7 +236,7 @@ export class CandidatComponent implements OnInit {
         this.addCandidature(cdt, this.announcement);
         this.ngOnInit();
         this.close();
-      });
+      }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
     } else {
       candidate.candidate_id = idCandidate;
       this.service.updateCondidat(candidate, idCandidate).subscribe(() => {
@@ -318,8 +326,6 @@ export class CandidatComponent implements OnInit {
       console.log('Error: ', error);
     };
  }
-
-
   addCandidature(candidate: any, announcement: any) {
     const candidature = new Candidature();
     candidature.candidate = candidate;

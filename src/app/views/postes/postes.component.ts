@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {PostesService} from '../../services/postes.service';
 import {MatDialog} from '@angular/material/dialog';
 import {Postes} from '../../model/postes';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-postes',
@@ -9,7 +10,7 @@ import {Postes} from '../../model/postes';
   styleUrls: ['./postes.component.scss']
 })
 export class PostesComponent implements OnInit {
-  constructor(private service: PostesService, private matDialog: MatDialog) { }
+  constructor(private service: PostesService, private matDialog: MatDialog, private toastr: ToastrService) { }
   settings = {
     columns: {
       post_name: {
@@ -82,7 +83,7 @@ addPostes(id_post) {
     this.service.postPostes(poste).subscribe(() => {
       this.ngOnInit();
       this.close();
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   } else {
     poste.id = id_post;
     this.service.updatePostes(poste, id_post).subscribe(() => {

@@ -9,12 +9,13 @@
 <ng-template #annonce>
   <strong>{{title}} Annonce</strong>
   <h2 mat-dialog-title></h2>
+  <form #f="ngForm">
   <mat-dialog-content class="mat-typography">
     <div class="card-body">
       <div class="form-group row">
         <label class="col-md-3 col-form-label" for="Poste"><strong>Poste</strong></label>
         <div class="col-md-9">
-          <select [disabled]="disabled" [(ngModel)]="Post" id="Poste" name="Poste" class="form-control">
+          <select required [disabled]="disabled" [(ngModel)]="Post" id="Poste" name="Poste" class="form-control">
             <option *ngFor="let Post of listPostes" [ngValue]="Post.id_post" >
               {{Post.post_name}}
             </option>
@@ -25,15 +26,16 @@
         <label class="col-md-3 col-form-label" for="Description"><strong>Description</strong></label>
         <div class="col-md-9">
           <input type="text" id="Description" name="Description" class="form-control" placeholder="Description"
-                 [(ngModel)]="description" [disabled]="disabled" required="required">
+                 [(ngModel)]="description" [disabled]="disabled" required>
         </div>
       </div>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close (click)="close()">Annuler</button>
-    <button mat-button [mat-dialog-close]="true" (click)="addAnnouncement(id_announcement)" cdkFocusInitial >Enregistrer</button>
+    <button mat-button  [disabled]="f.invalid" [mat-dialog-close]="true" (click)="addAnnouncement(id_announcement)" cdkFocusInitial >Enregistrer</button>
   </mat-dialog-actions>
+  </form>
 </ng-template>
 <ng-template #delete>
   <strong>Confirmation de la Suppression</strong>

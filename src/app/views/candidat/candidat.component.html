@@ -206,7 +206,11 @@
       [original-size]="true"
       [show-all]="true"
       style="display: block;"
-      [src]="currentCv"></pdf-viewer>
+      [src]="currentCv"
+      [useBrowserLocale]="true"
+      [textLayer]="true"
+      [showHandToolButton]="true">
+    </pdf-viewer>
   </div>
 </ng-template>
 <ng-template #Candidature>
@@ -265,11 +269,12 @@
             </div>
           </div>
         </mat-dialog-content>
-        <mat-dialog-actions align="end" >
+        <div>
+        <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close (click)="close()">Annuler</button>
         <button  mat-button [disabled]="f.invalid"  [mat-dialog-close]="true" (click)="selectedCandidature()" cdkFocusInitial >Valider</button>
         </mat-dialog-actions>
+        </div>
       </form>
-
   </div>
 </ng-template>

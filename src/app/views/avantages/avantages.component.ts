@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {AvantagesService} from '../../services/avantages.service';
 import {Avantage} from '../../model/Avantage';
 import {MatDialog} from '@angular/material/dialog';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-avantages',
@@ -14,7 +15,7 @@ export class AvantagesComponent implements OnInit {
   @Input()
   candidature: any;
 
-  constructor(private service: AvantagesService,  private matDialog: MatDialog, ) { }
+  constructor(private service: AvantagesService,  private matDialog: MatDialog, private toastr: ToastrService ) { }
   settings = {
     columns: {
       advantage_name: {
@@ -86,7 +87,7 @@ export class AvantagesComponent implements OnInit {
       this.service.postAdvantage(avantage).subscribe(() => {
         this.ngOnInit();
         this.close();
-      });
+      }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
     } else {
       avantage.id = idAdvantage;
       this.service.updateAvantage(avantage, idAdvantage).subscribe(() => {

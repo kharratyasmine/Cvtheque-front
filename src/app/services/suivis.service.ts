@@ -26,5 +26,8 @@ export class SuivisService {
   updateSuivis(suivis: Suivis, id_candidature_steps) {
     return this.httpClient.put(this.url + 'candidature_steps/' + id_candidature_steps, suivis);
 
-}}
+}
+
+
+}
 
