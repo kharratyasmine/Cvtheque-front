@@ -11,57 +11,54 @@
 <!--    <p id="saved"></p>-->
 <!--  </div></div>-->
 <!--<ng2-smart-table [settings]="settings" [source]="data"></ng2-smart-table>-->
-<div class="card" class="col-sm-6">
-  <div class="card-header">
-   Status
-  </div>
- <ul class="list-group list-group-flush"> <table>
-  <li class="list-group-item" >Entretien Orale
-    <div align="right" class="btn-group" role="group" aria-label="Third group" >
-      <button type="button" class="btn btn-secondary" >{{nbreorale}}</button>
-    </div></li>
-
-     <li class="list-group-item">Entretien RH
-       <div align="right" class="btn-group" role="group" aria-label="Third group">
-        <td><button type="button" class="btn btn-secondary" (click)="findAllbyrh()">{{nbrerh}}</button></td>
-       </div></li>
-    <li class="list-group-item">Entretien Technique
-      <div align="right" class="btn-group" role="group" aria-label="Third group">
-        <button type="button" class="btn btn-secondary">{{nbre}}</button>
-      </div>
-    </li>
-    <li class="list-group-item">Autres
-      <div align="right" class="btn-group" role="group" aria-label="Third group">
-        <button type="button" class="btn btn-secondary">{{nbreautre}}</button>
-      </div>
-    </li></table>
-  </ul>
-</div>
-
-
-
-<div class="card" class="col-sm-6">
-  <div class="card-header">
-   Position
-  </div>
+<div class="card" class="col-sm-9" >
+  <div class="card-header"><strong> Status </strong> </div>
  <ul class="list-group list-group-flush">
+
   <li class="list-group-item" >Entretien Orale
-    <div align="right" class="btn-group" role="group" aria-label="Third group" >
-      <button type="button" class="btn btn-secondary" >{{nbreorale}}</button>
-    </div></li>
-     <li class="list-group-item">Entretien RH
+    <div  class="btn-group" role="group" aria-label="Third group" >
+      <button type="button" class="btn btn-secondary" style="background-color: forestgreen; color: white" (click)="findAllbystatus()">{{nbreorale}}</button>
+    </div>
+   </li>
+
+   <li class="list-group-item">Entretien RH
        <div align="right" class="btn-group" role="group" aria-label="Third group">
-         <button type="button" class="btn btn-secondary">{{nbrerh}}</button>
-       </div></li>
+        <td><button type="button" class="btn btn-secondary" style="background-color: forestgreen; color: white" (click)="findAllbystatus()" >{{nbrerh}}</button></td>
+       </div>
+     </li>
     <li class="list-group-item">Entretien Technique
       <div align="right" class="btn-group" role="group" aria-label="Third group">
-        <button type="button" class="btn btn-secondary">{{nbre}}</button>
+        <button type="button" class="btn btn-secondary"style="background-color: forestgreen; color: white" (click)="findAllbystatus()">{{nbre}}
+        </button>
       </div>
     </li>
     <li class="list-group-item">Autres
       <div align="right" class="btn-group" role="group" aria-label="Third group">
-        <button type="button" class="btn btn-secondary">{{nbreautre}}</button>
+        <button type="button" class="btn btn-secondary" style="background-color: forestgreen; color: white" (click)="findAllbystatus()">{{nbreautre}}</button>
       </div>
     </li>
   </ul>
 </div>
+
+
+
+<div class="card" class="col-sm-9" style="margin-top: 15px;" >
+  <div class="card-header"><strong>
+   Position</strong>
+  </div>
+
+<table class="table" style="background-color: white">
+  <tbody>
+  <tr>
+    <td>
+ {{listCandidature}}
+    </td>
+    <td> <div align="right" class="btn-group" role="group" aria-label="Third group">
+      <button type="button" class="btn btn-secondary" style="background-color: forestgreen; color: white">{{nbreautre}}</button>
+    </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</div>
+<!--<ng2-smart-table [settings]="settings" [source]="data"></ng2-smart-table>-->

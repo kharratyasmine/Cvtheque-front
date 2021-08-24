@@ -205,7 +205,7 @@
           </form>
           <br/>
         </div>
-        <ng2-smart-table [source]="listComptece" [settings]="setting"></ng2-smart-table >
+        <ng2-smart-table [source]="listComptece" [settings]="setting" (custom)="chooseAction($event,element,Delete)"></ng2-smart-table >
       </div>
     </div>
   </div>
@@ -239,8 +239,60 @@
                 </form>
                 <br/>
               </div>
-        <ng2-smart-table [settings]="setings" [source]="listAvantage"></ng2-smart-table>
+        <ng2-smart-table [settings]="setings" [source]="listAvantage" (custom)="chooseAction($event,element, Delete)"></ng2-smart-table>
       </div>
     </div>
   </div>
 </div>
+<ng-template #element>
+  <h2 mat-dialog-title></h2>
+  <form #f="ngForm">
+    <mat-dialog-content class="mat-typography">
+      <div class="card-body" >
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" ><strong>Description</strong></label>
+          <div class="col-md-9">
+            <textarea required id="textarea-input" [(ngModel)]="Description_Action" name="textarea-input" rows="9" class="form-control" placeholder="Content.."></textarea>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-6 col-sm-4 col-md mb-3 mb-xl-0 text-center">
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <div class="col-6 col-sm-4 col-md mb-3 mb-xl-0 text-center">
+        <p align="right">
+          <button mat-button mat-dialog-close (click)="close()">Annuler</button>
+          <button mat-button [disabled]="f.invalid" [mat-dialog-close]="true"  cdkFocusInitial>valider</button>
+        </p>
+      </div>
+    </mat-dialog-actions>
+  </form>
+</ng-template>
+<ng-template #Delete>
+  <strong>Confirmation de la Suppression</strong>
+  <h2 mat-dialog-title></h2>
+  <mat-dialog-content class="mat-typography">
+    <div class="card-body">
+      <p>Etes-vous sur de vouloir supprimer cet Avantage ?</p>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close (click)="close()">Annuler</button>
+    <button mat-button [mat-dialog-close]="true" (click)="deleteAvantage()" cdkFocusInitial>supprimer</button>
+  </mat-dialog-actions>
+</ng-template>
+<ng-template #Delete>
+  <strong>Confirmation de la Suppression</strong>
+  <h2 mat-dialog-title></h2>
+  <mat-dialog-content class="mat-typography">
+    <div class="card-body">
+      <p>Etes-vous sur de vouloir supprimer cet Competence ?</p>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close (click)="close()">Annuler</button>
+    <button mat-button [mat-dialog-close]="true" (click)="deleteCompetence()" cdkFocusInitial>supprimer</button>
+  </mat-dialog-actions>
+</ng-template>

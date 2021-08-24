@@ -29,6 +29,8 @@ export class CandidateDetailsComponent implements OnInit {
   ProductForm: FormGroup;
   listComptece: any;
   listAvantage: any;
+  advantage_group: null;
+  competence_group: null;
 
 
 constructor(private service: CondidatService,
@@ -173,8 +175,7 @@ constructor(private service: CondidatService,
       this.listPoste = data;
     });
   }
-
-  updateCandidate() {
+ updateCandidate() {
     const candidate = new Condidat();
     candidate.last_name = this.nom;
     candidate.first_name = this.prenom;
@@ -224,10 +225,10 @@ constructor(private service: CondidatService,
     });
   }
 
-  chooseAction(event: any, element: any, Delete: any) {
+  chooseAction(event: any, element: any, elementDelete: any) {
     switch (event.action) {
       case 'delete' :
-        this.matDialog.open(Delete, {disableClose: true});
+        this.matDialog.open(elementDelete, {disableClose: true});
         break;
       default :
         this.idCompetence = event.data.idCompetence;
@@ -268,7 +269,14 @@ constructor(private service: CondidatService,
     this.Avancement = null;
     this.planned_date = null;
     this.candidature = null;
-    this.sequence = null; }
+    this.sequence = null;
+    this.advantage_name = null;
+    this.advantage_group = null;
+    this.idAdvantage = null;
+    this.competence_name = null;
+    this.competence_group = null;
+    this.idCompetence = null;
+    this.matDialog.closeAll(); }
   private fillDate(data) {
     this.nom = data.last_name;
     this.prenom = data.first_name;
@@ -292,6 +300,10 @@ constructor(private service: CondidatService,
     this.Avancement = data.Avancement;
     this.planned_date = data.date_input;
     this.poste = data.poste;
+    this.advantage_name = data.advantage_name;
+    this.advantage_group = data.advantage_group;
+    this.competence_name = data.competence_name;
+    this.competence_group = data.competence_group;
   }
   findCompetences() {
     this.spinner.show();
@@ -361,5 +373,17 @@ constructor(private service: CondidatService,
     }); }
  deleteAvanatges(i: number) {
     this.avantages().removeAt(i); }
+  deleteAvantage() {
+    this.avantagesServices.deleteAvantage(this.idAdvantage).subscribe(r => {
+      this.ngOnInit();
+      this.close();
+    } );
+  }
+  deleteCompetence() {
+    this.competenceService.deleteCompetence(this.idCompetence).subscribe(r => {
+      this.ngOnInit();
+      this.close();
+    });
+  }
 
 }

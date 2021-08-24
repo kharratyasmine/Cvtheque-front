@@ -9,8 +9,8 @@ export class DashboardService {
 
   constructor(private httpClient: HttpClient) {
   }
-  findAllbyrh(): Observable<any> {
-  return this.httpClient.get(this.url + '/listcandidaturebyrh');
+  findAllbystatus(): Observable<any> {
+  return this.httpClient.get(this.url + 'candidature_steps/listcandidaturebyrh');
 }
   findCandidaturebytechnique(): Observable<any> {
     return this.httpClient.get(this.url + 'candidature_steps/nbrcandidaturebyTechnique' );
@@ -23,6 +23,9 @@ export class DashboardService {
   }
   findCandidaturebyrh(): Observable<any> {
     return this.httpClient.get(this.url + 'candidature_steps/nbrcandidaturebyrh');
+  }
+  findcandidaturebypost(): Observable<any> {
+    return this.httpClient.get(this.url + 'post/nbrcandidaturebypost');
   }
 
 }

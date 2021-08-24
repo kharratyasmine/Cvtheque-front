@@ -1,6 +1,6 @@
 export class Dashboard {
   nbre: any;
-  last_name: any;
-  first_name: any;
+  post_name: any;
+  total: any;
   gender: any;
   birth_date: any; }

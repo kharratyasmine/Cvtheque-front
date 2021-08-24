@@ -3,10 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
-
 import { DashboardComponent } from './dashboard.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
+
+
 
 @NgModule({
     imports: [
@@ -16,6 +17,7 @@ import {Ng2SmartTableModule} from 'ng2-smart-table';
         BsDropdownModule,
         ButtonsModule.forRoot(),
         Ng2SmartTableModule,
+
     ],
   declarations: [ DashboardComponent ]
 })
