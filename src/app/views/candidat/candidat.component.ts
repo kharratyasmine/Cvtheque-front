@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {CondidatService} from '../../services/condidat.service';
 import {MatDialog} from '@angular/material/dialog';
 import {Condidat} from '../../model/condidat';
@@ -8,13 +8,13 @@ import {SuivisService} from '../../services/Suivis.service';
 import {Router} from '@angular/router';
 import {GenericService} from '../../services/generic.service';
 import {PostesService} from '../../services/postes.service';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {CompetenceService} from '../../services/competence.service';
 import {NgxSpinnerService} from 'ngx-bootstrap-spinner';
 import {Candidature} from '../../model/candidature';
 import {AnnouncementService} from '../../services/announcement.service';
 import {CandidatureService} from '../../services/candidature.service';
 import {ToastrService} from 'ngx-toastr';
+import {Ng2SmartTableComponent} from 'ng2-smart-table';
 
 
 @Component({
@@ -22,11 +22,10 @@ import {ToastrService} from 'ngx-toastr';
   templateUrl: './candidat.component.html',
   styleUrls: ['./candidat.component.scss']
 })
-export class CandidatComponent implements OnInit {
-  private dataService: any;
-  productForm: FormGroup;
-  private event: any;
-
+export class CandidatComponent implements OnInit, AfterViewInit {
+  event: any;
+  base64: string;
+@ViewChild('smart') smart: Ng2SmartTableComponent;
   constructor(private service: CondidatService, private matDialog: MatDialog,
               private universityService: UniversityService,
               private router: Router,
@@ -162,7 +161,7 @@ export class CandidatComponent implements OnInit {
                   Object.assign(res, {post_name: data.post_name});
                   Object.assign(res, {statut: steps[steps.length - 1]?.sequence});
                 });
-            });
+            }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
         } else {
           Object.assign(res, {post_name: ''});
           Object.assign(res, {statut: ''});
@@ -172,7 +171,7 @@ export class CandidatComponent implements OnInit {
         this.data = resultat;
         this.spinner.hide();
       }, 4000);
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
 
   openModal(element: any) {
@@ -190,10 +189,12 @@ export class CandidatComponent implements OnInit {
         this.matDialog.open(elementDelete, {disableClose: true});
         break;
       case 'CV' :
+        this.spinner.show();
         this.service.findCv(event.data.candidate_id).subscribe((cv: any) => {
           this.currentCv = cv.cv;
           this.matDialog.open(elementCV, {height: '90%', width: '70%'});
-        });
+          this.spinner.hide();
+        }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
         break;
       case 'Candidature' :
         this.findAllPosts();
@@ -206,7 +207,7 @@ export class CandidatComponent implements OnInit {
           this.listcnd = list;
           this.matDialog.open(choice, {disableClose: true});
           this.event = event;
-        });
+        }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
         break;
     }
   }
@@ -250,27 +251,22 @@ export class CandidatComponent implements OnInit {
   deleteCandidate() {
     this.service.deleteCandidate(this.condidat.candidate_id).subscribe(() => this.ngOnInit());
   }
-
-  private findAllUniversities() {
+ private findAllUniversities() {
     this.universityService.findUniversities().subscribe(data => {
       this.listUniversity = data;
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
-
-  private findAllDiplomas() {
+ private findAllDiplomas() {
     this.diplomaService.findDiplomas().subscribe(data => {
       this.listDiploma = data;
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
-
-  findUniversity(target: any) {
+findUniversity(target: any) {
     console.log(target.value);
   }
-
   findDiploma(target: any) {
     console.log(target.value);
   }
-
   close() {
     this.nom = null;
     this.prenom = null;
@@ -293,7 +289,6 @@ export class CandidatComponent implements OnInit {
     this.hidden = false;
     this.matDialog.closeAll();
   }
-
   private fillDate(data) {
     this.nom = data.last_name;
     this.prenom = data.first_name;
@@ -313,7 +308,6 @@ export class CandidatComponent implements OnInit {
     this.cv = data.cv;
     this.idCandidate = data.candidate_id;
   }
-
   getBase64(blob: any) {
     const file = blob.files[0];
     const reader = new FileReader();
@@ -333,19 +327,17 @@ export class CandidatComponent implements OnInit {
     candidature.deleted = false;
     this.candidatureService.postCandidature(candidature).subscribe();
   }
-
   selectedPost() {
     const currentPost = this.listPoste.find(p => p.id_post === this.poste);
     this.announcementService.findAnnouncement(currentPost).subscribe(announcements => {
       this.listAnnouncement = announcements;
       this.hidden = true;
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
-
   private findAllPosts() {
     this.postService.findAllPostes().subscribe(posts => {
       this.listPoste = posts;
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
 
   selectedCandidature() {
@@ -355,6 +347,25 @@ export class CandidatComponent implements OnInit {
     this.genericService.addDisabled(this.disabled);
     this.router.navigate(['/candidat/details/' + this.event.data.candidate_id]);
   }
+
+  ngAfterViewInit(): void {
+    this.smart.filter('query');
+  }
+
+  download(currentCv: string) {
+    const a = document.createElement('a');
+    document.body.appendChild(a);
+    a.setAttribute('style', 'display: none');
+    a.href = currentCv;
+    a.download = 'Cv.pdf';
+    a.click();
+    a.remove();
+  }
+
+  // print(currentCv: string) {
+  //   window.applicationC
+  //   window.print();
+  // }
 }
 
 

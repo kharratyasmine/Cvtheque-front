@@ -31,9 +31,6 @@ export class SuivisComponent implements OnInit {
       status: {
         title: 'Statut',
       },
-      // Attacher_une_piece_jointe: {
-      //   title: 'Attacher une piéce jointe'
-      // },
     },
     actions: {
       add: false,
@@ -99,7 +96,8 @@ export class SuivisComponent implements OnInit {
       } else {
         suivis.id_candidature_steps = idCandidatureSteps;
         this.service.updateSuivis(suivis, idCandidatureSteps).subscribe(() => {
-          this.findAllStepsByCandidature(); });
+          this.findAllStepsByCandidature();
+        }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
       }
     }
     deleteSuivis() {
@@ -127,7 +125,7 @@ export class SuivisComponent implements OnInit {
     findAllStepsByCandidature() {
       this.service.findAllSuivisByIdCandidature(this.candidature.id, this.candidature.candidate.candidate_id)
         .subscribe(steps => { this.suivis = steps;
-      });
+      }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
     }
 }
 

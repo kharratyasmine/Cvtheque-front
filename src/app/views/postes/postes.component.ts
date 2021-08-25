@@ -49,7 +49,7 @@ export class PostesComponent implements OnInit {
 findAllPostes() {
   this.service.findAllPostes().subscribe(resultat => {
     this.data = resultat;
-  });
+  }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
 }
 openModal(post: any) {
   this.title = 'Nouvelle';
@@ -58,7 +58,7 @@ openModal(post: any) {
     disableClose: true
   });
 }
-  chooseAction(event: any, post: any, postDelete: any) {
+chooseAction(event: any, post: any, postDelete: any) {
   switch (event.action) {
     case 'delete' :
       this.id_post = event.data.id_post;
@@ -89,14 +89,14 @@ addPostes(id_post) {
     this.service.updatePostes(poste, id_post).subscribe(() => {
       this.ngOnInit();
       this.close();
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
 }
 deletePostes() {
   this.service.deletePostes(this.id_post).subscribe(r => {
     this.ngOnInit();
     this.close();
-  } );
+  } , error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
 }
 close() {
   this.post_name = null;

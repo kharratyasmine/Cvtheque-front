@@ -14,6 +14,7 @@ import {AvantagesService} from '../../../services/avantages.service';
 import {ActivatedRoute} from '@angular/router';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {NgxSpinnerService} from 'ngx-bootstrap-spinner';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-candidate-details',
@@ -45,8 +46,10 @@ constructor(private service: CondidatService,
               private competenceService: CompetenceService,
               private avantagesServices: AvantagesService,
               private suivisService: SuivisService,
-            private spinner: NgxSpinnerService,
-              private fb: FormBuilder, ) {
+              private spinner: NgxSpinnerService,
+              private fb: FormBuilder,
+              private toastr: ToastrService
+) {
   this.productForm = this.fb.group({
     competences: this.fb.array([])
   });
@@ -54,7 +57,7 @@ constructor(private service: CondidatService,
     avantages: this.fb.array([])
   });
 }
-  setting = {
+  settingsCompetence = {
     columns: {
       competence: { title: 'Competence',
         valuePrepareFunction: (data) => {
@@ -74,7 +77,7 @@ constructor(private service: CondidatService,
       ],
     },
   };
-  setings = {
+  setingsAdvantage = {
     columns: {
       advantage: { title: 'Avantage',
         valuePrepareFunction: (data) => {
@@ -160,10 +163,10 @@ constructor(private service: CondidatService,
               }
               this.disabled = b;
               this.spinner.hide();
-            });
-          });
-        });
-      });
+            }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
+          }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
+        }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
+      }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
     this.findAllPostes();
     this.findAllUniversities();
     this.findAllDiplomas();
@@ -173,7 +176,7 @@ constructor(private service: CondidatService,
   private findAllPostes() {
     this.postesService.findAllPostes().subscribe(data => {
       this.listPoste = data;
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
  updateCandidate() {
     const candidate = new Condidat();
@@ -196,27 +199,28 @@ constructor(private service: CondidatService,
     candidate.Statut = null;
     candidate.deleted = 0;
     candidate.candidate_id = this.idCandidate;
-    this.service.updateCondidat(candidate, this.idCandidate).subscribe(() => { this.ngOnInit(); });
+    this.service.updateCondidat(candidate, this.idCandidate).subscribe(() => { this.ngOnInit();
+      }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
   private findAllUniversities() {
     this.universityService.findUniversities().subscribe(data => {
       this.listUniversity = data;
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
   private findAllDiplomas() {
     this.diplomaService.findDiplomas().subscribe(data => {
       this.listDiploma = data;
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
   findAllCompetences() {
     this.competenceService.findAllCompetence().subscribe(data => {
       this.ListCompetence = data;
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
   findAllAvantages() {
     this.avantagesServices.findAllAvantages().subscribe(data => {
       this.ListAvantage = data;
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
   openModal(element: any) {
     this.matDialog.open(element, {
@@ -225,19 +229,20 @@ constructor(private service: CondidatService,
     });
   }
 
-  chooseAction(event: any, element: any, elementDelete: any) {
+  chooseActionCompetence(event: any, elementDelete: any) {
     switch (event.action) {
       case 'delete' :
+        this.idCompetence = event.data.id_candidate_competence;
         this.matDialog.open(elementDelete, {disableClose: true});
         break;
-      default :
-        this.idCompetence = event.data.idCompetence;
-        this.id_candidature_steps = event.data.id_candidature_steps;
-        this.fillDate(event.data);
-        this.matDialog.open(element, {
-          width: '800px',
-          disableClose: true
-        });
+    }
+  }
+
+  chooseActionAdvantage(event: any, elementDelete: any) {
+    switch (event.action) {
+      case 'delete' :
+        this.idAdvantage = event.data.candidate_advantage_id;
+        this.matDialog.open(elementDelete, {disableClose: true});
         break;
     }
   }
@@ -272,10 +277,8 @@ constructor(private service: CondidatService,
     this.sequence = null;
     this.advantage_name = null;
     this.advantage_group = null;
-    this.idAdvantage = null;
     this.competence_name = null;
     this.competence_group = null;
-    this.idCompetence = null;
     this.matDialog.closeAll(); }
   private fillDate(data) {
     this.nom = data.last_name;
@@ -313,7 +316,7 @@ constructor(private service: CondidatService,
         competences: this.fb.array([])
       });
       this.spinner.hide();
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
   onSubmit() {
     this.productForm.value.competences.forEach(competence => {
@@ -325,7 +328,7 @@ constructor(private service: CondidatService,
      };
       this.competenceService.postCompetenceCandidature(comp).subscribe(() => {
         this.findCompetences();
-      });
+      }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
     });
    }
   addCompetence() {
@@ -347,7 +350,7 @@ constructor(private service: CondidatService,
         avantages: this.fb.array([])
       });
       this.spinner.hide();
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
   OnSubmit() {
     this.ProductForm.value.avantages.forEach(avantage => {
@@ -359,7 +362,7 @@ constructor(private service: CondidatService,
       };
       this.avantagesServices.postAvantageCandidature(avan).subscribe(() => {
         this.findAvantages();
-      });
+      }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
     });
   }
   addAvantage() {
@@ -374,16 +377,16 @@ constructor(private service: CondidatService,
  deleteAvanatges(i: number) {
     this.avantages().removeAt(i); }
   deleteAvantage() {
-    this.avantagesServices.deleteAvantage(this.idAdvantage).subscribe(r => {
+    this.avantagesServices.deleteCandidateAvantage(this.idAdvantage).subscribe(r => {
       this.ngOnInit();
       this.close();
-    } );
+    } , error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
   deleteCompetence() {
-    this.competenceService.deleteCompetence(this.idCompetence).subscribe(r => {
+    this.competenceService.deleteCandidateCompetence(this.idCompetence).subscribe(r => {
       this.ngOnInit();
       this.close();
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
 
 }

@@ -10,55 +10,81 @@
 <!--    <button type="button" class="btn btn-success" onclick=""> <i class="icon-cloud-download "></i> importer CV</button>-->
 <!--    <p id="saved"></p>-->
 <!--  </div></div>-->
-<!--<ng2-smart-table [settings]="settings" [source]="data"></ng2-smart-table>-->
+
 <div class="card" class="col-sm-9" >
-  <div class="card-header"><strong> Status </strong> </div>
- <ul class="list-group list-group-flush">
+  <div class="card-header" ><strong> Status </strong></div>
+  <ul class="list-group list-group-flush">
 
-  <li class="list-group-item" >Entretien Orale
-    <div  class="btn-group" role="group" aria-label="Third group" >
-      <button type="button" class="btn btn-secondary" style="background-color: forestgreen; color: white" (click)="findAllbystatus()">{{nbreorale}}</button>
-    </div>
-   </li>
-
-   <li class="list-group-item">Entretien RH
-       <div align="right" class="btn-group" role="group" aria-label="Third group">
-        <td><button type="button" class="btn btn-secondary" style="background-color: forestgreen; color: white" (click)="findAllbystatus()" >{{nbrerh}}</button></td>
-       </div>
-     </li>
-    <li class="list-group-item">Entretien Technique
+    <li class="list-group-item" style="display: flex; justify-content: space-between" >Entretien Orale
+      <div class="btn-group" role="group" aria-label="Third group">
+        <button type="button" class="btn btn-secondary" style="background-color: forestgreen; color: white"
+                (click)="openModal(element)" [mat-dialog-close]="true">{{nbreorale}}</button>
+      </div>
+    </li>
+    <li class="list-group-item" style="display: flex; justify-content: space-between">Entretien RH
+      <div class="btn-group" role="group" aria-label="Third group">
+        <button type="button" class="btn btn-secondary" style="background-color: forestgreen; color: white"
+                (click)="openModal(element)">{{nbrerh}}</button>
+      </div>
+    </li>
+    <li class="list-group-item" style="display: flex; justify-content: space-between">Entretien Technique
       <div align="right" class="btn-group" role="group" aria-label="Third group">
-        <button type="button" class="btn btn-secondary"style="background-color: forestgreen; color: white" (click)="findAllbystatus()">{{nbre}}
+        <button type="button" class="btn btn-secondary" style="background-color: forestgreen; color: white"
+                (click)="openModal(element)">{{nbre}}
         </button>
       </div>
     </li>
-    <li class="list-group-item">Autres
+    <li class="list-group-item" style="display: flex; justify-content: space-between">Autres
       <div align="right" class="btn-group" role="group" aria-label="Third group">
-        <button type="button" class="btn btn-secondary" style="background-color: forestgreen; color: white" (click)="findAllbystatus()">{{nbreautre}}</button>
+        <button type="button" class="btn btn-secondary" style="background-color: forestgreen; color: white"
+                (click)="openModal(element)">{{nbreautre}}</button>
       </div>
     </li>
   </ul>
 </div>
 
+<ng-template #element>
+  <strong> </strong>
+  <mat-dialog-content class="mat-typography">
+<!--    <ng2-smart-table #smart [settings]="settings" [source]="data"></ng2-smart-table>-->
+    <table>
+      <th>Nom</th>
+      <th>Prénom</th>
+      <th>E-mail</th>
+      <th>Diplôme</th>
+      <th>Ecole</th>
+      <th>Poste</th>
+      <th>Statut</th>
+      <th>Nombre de candidatures</th>
+      <tr>
+        <td>test</td>
+        <td>test</td>
+        <td>test</td>
+        <td>test</td>
+        <td>test</td>
+        <td>test</td>
+        <td>test</td>
+
+      </tr>
+    </table>
+  </mat-dialog-content>
+      <mat-dialog-actions align="end right">
+        <button  mat-button mat-dialog-close  (click)="close()">Annuler</button>
+      </mat-dialog-actions>
+</ng-template>
 
 
 <div class="card" class="col-sm-9" style="margin-top: 15px;" >
   <div class="card-header"><strong>
    Position</strong>
   </div>
-
-<table class="table" style="background-color: white">
-  <tbody>
-  <tr>
-    <td>
- {{listCandidature}}
-    </td>
-    <td> <div align="right" class="btn-group" role="group" aria-label="Third group">
-      <button type="button" class="btn btn-secondary" style="background-color: forestgreen; color: white">{{nbreautre}}</button>
-    </div>
-    </td>
-  </tr>
-  </tbody>
-</table>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item" *ngFor="let post of listCandidature" style="display: flex; justify-content: space-between">
+      {{post[6]}}
+      <div  class="btn-group" role="group" aria-label="Third group" >
+        <button type="button" class="btn btn-secondary" style="background-color: forestgreen; color: white"
+                (click)="openModal(element)">{{post[8]}}</button>
+      </div>
+    </li>
+  </ul>
 </div>
-<!--<ng2-smart-table [settings]="settings" [source]="data"></ng2-smart-table>-->

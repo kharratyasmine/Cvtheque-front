@@ -27,6 +27,9 @@ export class CompetenceService {
   postCompetenceCandidature(competence: any): Observable<any> {
     return this.httpClient.post(this.url + 'candidate_competence', competence);
   }
+  deleteCandidateCompetence(idCompetence: any): Observable<any> {
+    return this.httpClient.delete(this.url + 'candidate_competence/' + idCompetence);
+  }
   deleteCompetence(idCompetence: any): Observable<any> {
     return this.httpClient.delete(this.url + 'competence/' + idCompetence);
   }

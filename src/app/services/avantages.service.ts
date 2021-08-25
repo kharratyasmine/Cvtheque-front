@@ -30,6 +30,9 @@ export class AvantagesService {
   deleteAvantage(idAdvantage: any): Observable<any> {
     return this.httpClient.delete(this.url + 'advantage/' + idAdvantage);
   }
+  deleteCandidateAvantage(idAdvantage: any): Observable<any> {
+    return this.httpClient.delete(this.url + 'candidate_advantages/' + idAdvantage);
+  }
   updateAvantage(avantage: Avantage, idAdvantage) {
     return this.httpClient.put(this.url + 'advantage/' + idAdvantage, avantage);
   }

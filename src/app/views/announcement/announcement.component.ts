@@ -12,7 +12,6 @@ import {ToastrService} from 'ngx-toastr';
   styleUrls: ['./announcement.component.scss']
 })
 export class AnnouncementComponent implements OnInit {
-
   constructor(private service: AnnouncementService, private matDialog: MatDialog, private postesservices: PostesService , private toastr: ToastrService) { }
   settings = {
     columns: {
@@ -51,12 +50,12 @@ export class AnnouncementComponent implements OnInit {
   findAllAnnouncement() {
     this.service.findAllAnnouncement().subscribe(resultat => {
       this.data = resultat;
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
   findAllPostes() {
     this.postesservices.findAllPostes().subscribe(resultat => {
       this.listPostes = resultat;
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
   openModal(annonce: any) {
     this.title = 'Nouvelle';
@@ -96,14 +95,14 @@ export class AnnouncementComponent implements OnInit {
       this.service.updateAnnouncement(announcement, id_announcement).subscribe(() => {
         this.ngOnInit();
         this.close();
-      });
+      }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
     }
   }
   deleteAnnouncement() {
     this.service.deleteAnnouncement(this.id_announcement).subscribe(() => {
       this.ngOnInit();
       this.close();
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
   close() {
     this.Post = null;

@@ -53,7 +53,7 @@ export class AvantagesComponent implements OnInit {
   findAllAvantages() {
     this.service.findAllAvantages().subscribe(resultat => {
       this.data = resultat;
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
   openModal(avant: any) {
     this.title = 'Nouvelle';
@@ -93,14 +93,14 @@ export class AvantagesComponent implements OnInit {
       this.service.updateAvantage(avantage, idAdvantage).subscribe(() => {
         this.ngOnInit();
         this.close();
-      });
+      }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
     }
   }
   deleteAvantage() {
     this.service.deleteAvantage(this.idAdvantage).subscribe(r => {
       this.ngOnInit();
       this.close();
-     } );
+     } , error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
   close() {
     this.advantage_name = null;

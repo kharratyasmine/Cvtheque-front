@@ -205,7 +205,7 @@
           </form>
           <br/>
         </div>
-        <ng2-smart-table [source]="listComptece" [settings]="setting" (custom)="chooseAction($event,element,Delete)"></ng2-smart-table >
+        <ng2-smart-table [source]="listComptece" [settings]="settingsCompetence" (custom)="chooseActionCompetence($event, deleteComp)"></ng2-smart-table >
       </div>
     </div>
   </div>
@@ -239,7 +239,7 @@
                 </form>
                 <br/>
               </div>
-        <ng2-smart-table [settings]="setings" [source]="listAvantage" (custom)="chooseAction($event,element, Delete)"></ng2-smart-table>
+        <ng2-smart-table [settings]="setingsAdvantage" [source]="listAvantage" (custom)="chooseActionAdvantage($event, deleteAdvantage)"></ng2-smart-table>
       </div>
     </div>
   </div>
@@ -270,7 +270,7 @@
     </mat-dialog-actions>
   </form>
 </ng-template>
-<ng-template #Delete>
+<ng-template #deleteAdvantage>
   <strong>Confirmation de la Suppression</strong>
   <h2 mat-dialog-title></h2>
   <mat-dialog-content class="mat-typography">
@@ -283,7 +283,7 @@
     <button mat-button [mat-dialog-close]="true" (click)="deleteAvantage()" cdkFocusInitial>supprimer</button>
   </mat-dialog-actions>
 </ng-template>
-<ng-template #Delete>
+<ng-template #deleteComp>
   <strong>Confirmation de la Suppression</strong>
   <h2 mat-dialog-title></h2>
   <mat-dialog-content class="mat-typography">

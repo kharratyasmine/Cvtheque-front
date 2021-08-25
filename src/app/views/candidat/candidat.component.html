@@ -5,7 +5,7 @@
       <i class="fa fa-plus fa-lg margin"></i>Ajouter candidat</button>
   </p>
 </div>
-<ng2-smart-table [settings]="settings" [source]="data"
+<ng2-smart-table #smart [settings]="settings" [source]="data"
                  (custom)="chooseAction($event, element, delete, CV, Candidature, choice )"></ng2-smart-table>
 <!--Modal-->
 <ng-template #element>
@@ -200,6 +200,7 @@
 </ng-template>
 <ng-template #CV let-modal>
   <div class="modal-body" style="height: 600px">
+   <button class="btn btn-outline-light btn-sm" (click)="download(currentCv)"><mat-icon>save_alt</mat-icon></button>
     <pdf-viewer
       [rotation]="0"
       [fit-to-page]="true"

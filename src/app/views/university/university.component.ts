@@ -48,7 +48,7 @@ export class UniversityComponent implements OnInit {
   private findUniversities() {
     this.service.findUniversities().subscribe(resultat => {
       this.data = resultat;
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
   openModal(university: any) {
     this.title = 'Nouvelle';
@@ -89,14 +89,14 @@ export class UniversityComponent implements OnInit {
       this.service.updateUniversities(university, university_id).subscribe(() => {
         this.ngOnInit();
         this.close();
-      });
+      }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
     }
   }
   deleteUniversities() {
     this.service.deleteUniversities(this.university_id).subscribe(() => {
       this.ngOnInit();
       this.close();
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
   close() {
     this.name = null;

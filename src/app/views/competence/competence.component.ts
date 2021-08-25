@@ -54,7 +54,7 @@ export class CompetenceComponent implements OnInit {
   findAllCompetence() {
     this.service.findAllCompetence().subscribe(resultat => {
       this.data = resultat;
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
   openModal( element: any) {
     this.title = 'Nouvelle';
@@ -92,14 +92,14 @@ export class CompetenceComponent implements OnInit {
       this.service.updateCompetence(competence, idCompetence).subscribe(() => {
         this.ngOnInit();
         this.close();
-      });
+      }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
     }
   }
   deleteCompetence() {
       this.service.deleteCompetence(this.idCompetence).subscribe(r => {
       this.ngOnInit();
       this.close();
-    });
+    }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
   close() {
     this.competence_name = null;
