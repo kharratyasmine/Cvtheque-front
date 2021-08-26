@@ -5,7 +5,7 @@ import {Condidat} from '../../model/condidat';
 import {UniversityService} from '../../services/university.service';
 import {DiplomaService} from '../../services/diploma.service';
 import {SuivisService} from '../../services/Suivis.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {GenericService} from '../../services/generic.service';
 import {PostesService} from '../../services/postes.service';
 import {CompetenceService} from '../../services/competence.service';
@@ -14,21 +14,23 @@ import {Candidature} from '../../model/candidature';
 import {AnnouncementService} from '../../services/announcement.service';
 import {CandidatureService} from '../../services/candidature.service';
 import {ToastrService} from 'ngx-toastr';
-import {Ng2SmartTableComponent} from 'ng2-smart-table';
-
+import {LocalDataSource} from 'ng2-smart-table';
 
 @Component({
   selector: 'app-candidat',
   templateUrl: './candidat.component.html',
   styleUrls: ['./candidat.component.scss']
 })
-export class CandidatComponent implements OnInit, AfterViewInit {
+export class CandidatComponent implements OnInit {
   event: any;
   base64: string;
-@ViewChild('smart') smart: Ng2SmartTableComponent;
+  source: LocalDataSource;
+  private filter: string;
+  private externalStatut: string;
   constructor(private service: CondidatService, private matDialog: MatDialog,
               private universityService: UniversityService,
               private router: Router,
+              private route: ActivatedRoute,
               private announcementService: AnnouncementService,
               private candidatureService: CandidatureService,
               private postesService: PostesService,
@@ -143,20 +145,24 @@ export class CandidatComponent implements OnInit, AfterViewInit {
   listcnd: any;
 
   ngOnInit() {
-    // this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500});
     this.spinner.show();
     this.findAllCondidates();
     this.findAllUniversities();
     this.findAllDiplomas();
     this.findAllPosts();
+    this.filter = this.route.snapshot.queryParamMap.get('id');
+    this.externalStatut = this.route.snapshot.queryParamMap.get('statut');
   }
+
   findAllCondidates() {
     this.service.findAllCondidates().subscribe(resultat => {
       resultat.forEach(res => {
         if (res.candidatures.length > 0) {
           this.postService.findposteByCandidatureAndCandidate(res.candidatures[res.candidatures.length - 1].id, res.candidate_id)
             .subscribe(data => {
-              this.stepService.findAllSuivisByIdCandidature(res.candidatures[res.candidatures.length - 1].id, res.candidate_id)
+              const candidature =  res.candidatures.reduce(function (a, b) { return a.last_modified_date > b.last_modified_date ? a : b; });
+              this.stepService.findAllSuivisByIdCandidature(
+                candidature.id, res.candidate_id)
                 .subscribe(steps => {
                   Object.assign(res, {post_name: data.post_name});
                   Object.assign(res, {statut: steps[steps.length - 1]?.sequence});
@@ -169,8 +175,17 @@ export class CandidatComponent implements OnInit, AfterViewInit {
       });
       setTimeout(() => {
         this.data = resultat;
+        this.source = new LocalDataSource(this.data);
+        if (this.filter !== undefined && this.filter !== null) {
+          this.onSearch(this.filter);
+          this.onSearch(this.filter);
+        }
+        if (this.externalStatut !== undefined && this.externalStatut !== null) {
+          this.onSearchStatut(this.externalStatut);
+          this.onSearchStatut(this.externalStatut);
+        }
         this.spinner.hide();
-      }, 4000);
+      }, 3000);
     }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
 
@@ -251,22 +266,27 @@ export class CandidatComponent implements OnInit, AfterViewInit {
   deleteCandidate() {
     this.service.deleteCandidate(this.condidat.candidate_id).subscribe(() => this.ngOnInit());
   }
- private findAllUniversities() {
+
+  private findAllUniversities() {
     this.universityService.findUniversities().subscribe(data => {
       this.listUniversity = data;
     }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
- private findAllDiplomas() {
+
+  private findAllDiplomas() {
     this.diplomaService.findDiplomas().subscribe(data => {
       this.listDiploma = data;
     }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
-findUniversity(target: any) {
+
+  findUniversity(target: any) {
     console.log(target.value);
   }
+
   findDiploma(target: any) {
     console.log(target.value);
   }
+
   close() {
     this.nom = null;
     this.prenom = null;
@@ -289,6 +309,7 @@ findUniversity(target: any) {
     this.hidden = false;
     this.matDialog.closeAll();
   }
+
   private fillDate(data) {
     this.nom = data.last_name;
     this.prenom = data.first_name;
@@ -308,6 +329,7 @@ findUniversity(target: any) {
     this.cv = data.cv;
     this.idCandidate = data.candidate_id;
   }
+
   getBase64(blob: any) {
     const file = blob.files[0];
     const reader = new FileReader();
@@ -320,6 +342,7 @@ findUniversity(target: any) {
       console.log('Error: ', error);
     };
  }
+
   addCandidature(candidate: any, announcement: any) {
     const candidature = new Candidature();
     candidature.candidate = candidate;
@@ -327,6 +350,7 @@ findUniversity(target: any) {
     candidature.deleted = false;
     this.candidatureService.postCandidature(candidature).subscribe();
   }
+
   selectedPost() {
     const currentPost = this.listPoste.find(p => p.id_post === this.poste);
     this.announcementService.findAnnouncement(currentPost).subscribe(announcements => {
@@ -334,6 +358,7 @@ findUniversity(target: any) {
       this.hidden = true;
     }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
   }
+
   private findAllPosts() {
     this.postService.findAllPostes().subscribe(posts => {
       this.listPoste = posts;
@@ -348,10 +373,6 @@ findUniversity(target: any) {
     this.router.navigate(['/candidat/details/' + this.event.data.candidate_id]);
   }
 
-  ngAfterViewInit(): void {
-    this.smart.filter('query');
-  }
-
   download(currentCv: string) {
     const a = document.createElement('a');
     document.body.appendChild(a);
@@ -362,10 +383,23 @@ findUniversity(target: any) {
     a.remove();
   }
 
-  // print(currentCv: string) {
-  //   window.applicationC
-  //   window.print();
-  // }
+  onSearch(query: string) {
+    this.source.setFilter([
+      {
+        field: 'post_name',
+        search: query
+      },
+    ], false);
+  }
+
+  private onSearchStatut(externalStatut: string) {
+    this.source.setFilter([
+      {
+        field: 'statut',
+        search: externalStatut
+      },
+    ], false);
+  }
 }
 
 

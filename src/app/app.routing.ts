@@ -25,6 +25,9 @@ export const routes: Routes = [
       {path: 'candidat',
         loadChildren: () => import('./views/candidat/candidat.module').then(m => m.CandidatModule)
       },
+      {path: 'candidat/:id',
+        loadChildren: () => import('./views/candidat/candidat.module').then(m => m.CandidatModule)
+      },
       {path: 'avantages',
         loadChildren: () => import('./views/avantages/avantages.module').then(m => m.AvantagesModule)
       },

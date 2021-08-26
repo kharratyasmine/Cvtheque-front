@@ -5,8 +5,11 @@
       <i class="fa fa-plus fa-lg margin"></i>Ajouter candidat</button>
   </p>
 </div>
-<ng2-smart-table #smart [settings]="settings" [source]="data"
-                 (custom)="chooseAction($event, element, delete, CV, Candidature, choice )"></ng2-smart-table>
+<input hidden="hidden" #search class="search" type="text" placeholder="Search..."
+       (keyup)="onSearch(search.value)">
+<input hidden="hidden" #search class="search" type="text" placeholder="Search..."
+       (keyup)="onSearchStatut(search.value)">
+<ng2-smart-table [settings]="settings" [source]="source" (custom)="chooseAction($event, element, delete, CV, Candidature, choice )"></ng2-smart-table>
 <!--Modal-->
 <ng-template #element>
   <strong> {{title}} Candidat</strong>
@@ -17,7 +20,7 @@
         <div class="form-group ">
           <div class="form-group row">
             <div style="width: 160%">
-              <div><i class="fa fa-info-circle "><strong> Informations personnelles</strong></i></div>
+              <div><i class="fa fa-info-circle"><strong> Informations personnelles</strong></i></div>
               <div><br></div>
               <div><br></div>
               <div class="form-group row">

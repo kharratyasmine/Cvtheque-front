@@ -27,5 +27,9 @@ export class DashboardService {
   findcandidaturebypost(): Observable<any> {
     return this.httpClient.get(this.url + 'post/nbrcandidaturebypost');
   }
+  countCandidatureByPostName(): Observable<any> {
+    return this.httpClient.get(this.url + 'candidature/countCandidatureByPostName');
+  }
+
 
 }
