@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {Suivis} from '../model/suivis';
 import {Condidat} from '../model/condidat';
+import {DateFormatter} from 'ngx-bootstrap/datepicker';
 
 @Injectable({providedIn: 'root'})
 export class SuivisService {
@@ -19,6 +20,11 @@ export class SuivisService {
   }
   postSuivis(suivis: Suivis): Observable<any> {
     return this.httpClient.post(this.url + 'candidature_steps', suivis);
+  }
+  sendMail(condidat: Condidat, sequence: string, post: string, date_input: any, heure: any, type: any): Observable<any> {
+   const params =  new HttpParams().set('date', date_input).set('heure', heure).set('type', type);
+
+    return this.httpClient.post(this.url + 'candidate/email/'  + sequence + '/' + post, condidat, {params: params});
   }
   deleteSuivis(id_candidature_steps: any): Observable<any> {
     return this.httpClient.delete(this.url + 'candidature_steps/' + id_candidature_steps);

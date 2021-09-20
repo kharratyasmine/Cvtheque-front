@@ -9,7 +9,7 @@
        (keyup)="onSearch(search.value)">
 <input hidden="hidden" #search class="search" type="text" placeholder="Search..."
        (keyup)="onSearchStatut(search.value)">
-<ng2-smart-table [settings]="settings" [source]="source" (custom)="chooseAction($event, element, delete, CV, Candidature, choice )"></ng2-smart-table>
+  <ng2-smart-table [settings]="settings" [source]="source" (custom)="chooseAction($event, element, delete, CV, Candidature, choice, send )" ></ng2-smart-table>
 <!--Modal-->
 <ng-template #element>
   <strong> {{title}} Candidat</strong>
@@ -250,6 +250,7 @@
       </form>
     </div>
 </ng-template>
+<!-- this  update style of the modal-->
 <ng-template #choice>
   <strong> Choisir une candidature</strong>
   <div class="card-body">
@@ -258,7 +259,7 @@
           <div class="card-body">
             <div class="form-group ">
               <div class="form-group row">
-              <label class="col-md-3" for="cnd"><strong>Condidature</strong></label>
+              <label style="margin-right:15px " class="col-md-3" for="cnd"><strong>Condidature</strong></label>
               <div class="col-md-9">
                 <select [(ngModel)]="cnd" id="cnd" name="cnd" class="form-control" required>
                   <option *ngFor="let cnd of listcnd" [ngValue]="cnd">
@@ -278,4 +279,18 @@
         </div>
       </form>
   </div>
+</ng-template>
+
+<ng-template #send>
+  <h2> Êtes-vous sûr d'envoyer ce courrier!  </h2>
+  <h2 mat-dialog-title></h2>
+  <mat-dialog-content class="mat-typography">
+    <div class="card-body">
+
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close (click)="close()">Annuler</button>
+    <button mat-button [mat-dialog-close]="true" (click)="sendMail()" cdkFocusInitial>Envoyer</button>
+  </mat-dialog-actions>
 </ng-template>

@@ -10,6 +10,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {SuivisService} from '../../services/suivis.service';
 import {CommonModule} from '@angular/common';
+import {NgbTimepickerModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     imports: [
@@ -22,7 +23,8 @@ import {CommonModule} from '@angular/common';
         FormsModule,
         MatSelectModule,
         ReactiveFormsModule,
-        CommonModule
+        CommonModule,
+        NgbTimepickerModule
     ],
     declarations: [SuivisComponent],
     exports: [

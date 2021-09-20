@@ -41,6 +41,12 @@
             <span class="help-block">Veuillez entrer une date valide</span>
           </div>
         </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label"><strong>Heure de Suivi</strong></label>
+          <div class="col-md-9">
+            <ngb-timepicker [(ngModel)]="heure" name="heure" required></ngb-timepicker>
+          </div>
+        </div>
 <!--        <div class="form-group row">-->
 <!--          <label class="col-md-3 col-form-label" ><strong>Attacher une piéce jointe</strong></label>-->
 <!--          <label class="col-md-3 col-form-label" for="file-multiple-input"></label>-->
@@ -54,8 +60,8 @@
   <mat-dialog-actions align="end">
     <div class="col-6 col-sm-4 col-md mb-3 mb-xl-0 text-center">
       <p align="right">
-        <button mat-button mat-dialog-close (click)="close()">Annuler</button>
-        <button mat-button [disabled]="f.invalid" [mat-dialog-close]="true" (click)="addSuivis(idCandidatureSteps)" cdkFocusInitial>valider</button>
+        <button mat-button mat-dialog-close (click)="clear()">Annuler</button>
+        <button mat-button [disabled]="f.invalid" [mat-dialog-close]="true" (click)="addSuivis(idCandidatureSteps)">valider</button>
       </p>
     </div>
   </mat-dialog-actions>
@@ -70,7 +76,7 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close (click)="close()">Annuler</button>
+    <button mat-button mat-dialog-close (click)="clear()">Annuler</button>
     <button mat-button [mat-dialog-close]="true" (click)="deleteSuivis()" cdkFocusInitial>supprimer</button>
   </mat-dialog-actions>
 </ng-template>

@@ -5,16 +5,16 @@
 import {KeycloakConfig} from 'keycloak-angular';
 
 const keycloakConfig: KeycloakConfig = {
-  url: 'http://172.19.0.29:8180/auth/',
+  url: 'http://localhost:8180/auth/',
   realm: 'master',
   clientId: 'cv_theque',
   credentials: {
-    secret: '68bb9b71-c9b9-4f4a-a6cd-1104544f2f43'
+    secret: '6a28c2c5-d0c0-4675-9f54-c6dde78f922e'
   },
 
 };
 export const environment = {
   production: false,
   keycloak: keycloakConfig,
-  BASE_URL: 'http://172.19.0.29:8081/api/'
+  BASE_URL: 'http://localhost:8081/api/'
 };

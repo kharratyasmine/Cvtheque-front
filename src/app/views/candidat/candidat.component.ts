@@ -27,6 +27,7 @@ export class CandidatComponent implements OnInit {
   source: LocalDataSource;
   private filter: string;
   private externalStatut: string;
+  candidature_id: any;
   constructor(private service: CondidatService, private matDialog: MatDialog,
               private universityService: UniversityService,
               private router: Router,
@@ -44,6 +45,7 @@ export class CandidatComponent implements OnInit {
   ) {}
 
   settings = {
+    responsive: true,
     columns: {
       last_name: {
         title: 'Nom'
@@ -103,7 +105,11 @@ export class CandidatComponent implements OnInit {
         },
         {
           name: 'Candidature',
-          title: '<i class="icon-plus width: 300px"></i>',
+          title: '<i class="icon-plus margin width: 300px"></i>',
+        },
+        {
+          name: 'SendMail',
+          title: '<i class="icon-envelope width: 300px"></i>',
         }
       ],
     },
@@ -161,6 +167,7 @@ export class CandidatComponent implements OnInit {
           this.postService.findposteByCandidatureAndCandidate(res.candidatures[res.candidatures.length - 1].id, res.candidate_id)
             .subscribe(data => {
               const candidature =  res.candidatures.reduce(function (a, b) { return a.last_modified_date > b.last_modified_date ? a : b; });
+              this.candidature_id = candidature.id;
               this.stepService.findAllSuivisByIdCandidature(
                 candidature.id, res.candidate_id)
                 .subscribe(steps => {
@@ -197,11 +204,14 @@ export class CandidatComponent implements OnInit {
     });
   }
 
-  chooseAction(event: any, element: any, elementDelete: any, elementCV: any, elementCandidature: any, choice: any) {
+  chooseAction(event: any, element: any, elementDelete: any, elementCV: any, elementCandidature: any, choice: any, send: any) {
     this.condidat = event.data;
     switch (event.action) {
       case 'delete' :
         this.matDialog.open(elementDelete, {disableClose: true});
+        break;
+      case 'SendMail' :
+        this.matDialog.open(send, {disableClose: true});
         break;
       case 'CV' :
         this.spinner.show();
@@ -370,7 +380,7 @@ export class CandidatComponent implements OnInit {
     this.event.action === 'view' ? this.disabled = true : this.disabled = false;
     this.genericService.addData(this.cnd);
     this.genericService.addDisabled(this.disabled);
-    this.router.navigate(['/candidat/details/' + this.event.data.candidate_id]);
+    this.router.navigate([`/candidat/details/${this.event.data.candidate_id}/${this.candidature_id}`]);
   }
 
   download(currentCv: string) {
@@ -399,6 +409,19 @@ export class CandidatComponent implements OnInit {
         search: externalStatut
       },
     ], false);
+  }
+
+  sendMail() {
+    console.log(this.condidat);
+    this.stepService.findAllSuivisByIdCandidature(this.condidat.candidatures[0].id, this.condidat.candidate_id).subscribe(rep => {
+      if (rep.length === 0) {
+        this.stepService.sendMail(this.condidat, 'Réponse', this.condidat.candidatures[0].announcement.post.post_name, '', '', 'RepSansEntretien').subscribe(() => {}, () =>
+          this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
+      } else {
+        this.stepService.sendMail(this.condidat, 'Réponse', this.condidat.candidatures[0].announcement.post.post_name, rep[rep.length - 1].planned_date, '', 'RepSuiteEntretien').subscribe(() =>
+        {}, () => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}))
+      }
+    });
   }
 }
 

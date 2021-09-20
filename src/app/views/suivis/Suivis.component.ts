@@ -3,6 +3,7 @@ import {SuivisService} from '../../services/Suivis.service';
 import {MatDialog} from '@angular/material/dialog';
 import {Suivis} from '../../model/suivis';
 import {ToastrService} from 'ngx-toastr';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-suivis',
@@ -16,7 +17,8 @@ export class SuivisComponent implements OnInit {
   candidature: any;
   @Input()
   candidate: any;
-  constructor(private service: SuivisService, private matDialog: MatDialog, private toastr: ToastrService) { }
+  heure: any;
+  constructor(private service: SuivisService, private matDialog: MatDialog, private toastr: ToastrService, private route: ActivatedRoute) { }
   settings = {
     columns: {
       planned_date: {
@@ -58,14 +60,24 @@ export class SuivisComponent implements OnInit {
   sequence: any;
   Statut: any;
   idCandidatureSteps = null;
-    ngOnInit(): void {}
+    ngOnInit(): void {
+      if(this.suivis.length === 0) {
+        this.route.params.subscribe(obj => {
+          if(obj.idCandidature !== undefined) {
+            this.service.findAllSuivisByIdCandidature(obj.idCandidature, obj.id).subscribe(steps => {
+              this.suivis = steps;
+            });
+          }
+        })
+      }
+    }
     openModal(element: any) {
     this.matDialog.open(element, {
       width: '800px'
     });
   }
     chooseAction(event: any, element: any, elementDelete: any) {
-    this.suivis = event.data;
+   // this.suivis = event.data;
     switch (event.action) {
       case 'delete' :
         this.idCandidatureSteps = event.data.id_candidature_steps;
@@ -91,19 +103,24 @@ export class SuivisComponent implements OnInit {
       suivis.deleted = 0;
       if (idCandidatureSteps === null) {
         this.service.postSuivis(suivis).subscribe(() => {
+          this.clear();
           this.findAllStepsByCandidature();
         }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
       } else {
         suivis.id_candidature_steps = idCandidatureSteps;
         this.service.updateSuivis(suivis, idCandidatureSteps).subscribe(() => {
           this.findAllStepsByCandidature();
+          this.clear();
         }, error => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
       }
+      const heure = `${this.heure.hour}h:${this.heure.minute} `;
+      this.service.sendMail(this.candidate, this.sequence, this.candidature.announcement.post.post_name, this.date_input, heure, 'Invitation')
+        .subscribe();
     }
     deleteSuivis() {
       this.service.deleteSuivis(this.idCandidatureSteps).subscribe(() => this.findAllStepsByCandidature());
     }
-    close() {
+    clear() {
       this.status = null;
       this.Statut = null;
       this.disabled = false;

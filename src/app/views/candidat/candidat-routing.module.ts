@@ -13,7 +13,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'details/:id',
+    path: 'details/:id/:idCandidature',
     component: CandidateDetailsComponent,
     data: {
       title: 'Candidat Details'
