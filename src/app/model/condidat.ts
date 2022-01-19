@@ -1,5 +1,5 @@
 export class Condidat {
-  id: any;
+  candidate_id: any;
   last_name: any;
   first_name: any;
   gender: any;
@@ -15,5 +15,7 @@ export class Condidat {
   ex_employers: any;
   last_position: any;
   motivation: any;
+  Statut: any;
   deleted: any;
+  cv: any;
 }

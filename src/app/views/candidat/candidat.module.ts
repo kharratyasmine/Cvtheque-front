@@ -6,9 +6,16 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 import {MatStepper, MatStepperModule} from '@angular/material/stepper';
 import {CdkStepper, CdkStepperModule} from '@angular/cdk/stepper';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {CommonModule} from '@angular/common';
+import { CandidateDetailsComponent } from './candidate-details/candidate-details.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatIconModule} from '@angular/material/icon';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {SuivisModule} from '../suivis/Suivis.module';
+import {PdfViewerModule} from 'ng2-pdf-viewer';
+import {NgxSpinnerModule} from 'ngx-bootstrap-spinner';
 
 @NgModule({
   imports: [
@@ -20,9 +27,16 @@ import {CommonModule} from '@angular/common';
     CdkStepperModule,
     FormsModule,
     MatSelectModule,
-    CommonModule
+    CommonModule,
+    MatExpansionModule,
+    MatIconModule,
+    MatDatepickerModule,
+    SuivisModule,
+    ReactiveFormsModule,
+    PdfViewerModule,
+    NgxSpinnerModule
   ],
-  declarations: [CandidatComponent],
+  declarations: [CandidatComponent, CandidateDetailsComponent],
   providers: [
     MatStepper, CdkStepper
   ]

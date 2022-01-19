@@ -25,13 +25,9 @@
     <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="appSidebar.minimized"></app-sidebar-nav>
     <app-sidebar-minimizer></app-sidebar-minimizer>
   </app-sidebar>
-  <!-- Main content -->
-  <main class="main">
-    <!-- Breadcrumb -->
-    <!-- breaking change 'cui-breadcrumb' -->
-    <cui-breadcrumb>
-      <!-- Breadcrumb Menu-->
-    </cui-breadcrumb>
+<main class="main">
+ <cui-breadcrumb>
+ </cui-breadcrumb>
     <div class="container-fluid">
       <router-outlet></router-outlet>
     </div><!-- /.container-fluid -->
@@ -39,5 +35,5 @@
 </div>
 <app-footer>
   <span><a href="https://www.actia.com/fr/">ACTIA </a> &copy; 2021</span>
-  <span class="ml-auto">Powered by <a href="https://www.actia.com/fr/">ACTIA</a></span>
+  <span class="ml-auto">Alimenté par <a href="https://www.actia.com/fr/">ACTIA</a></span>
 </app-footer>

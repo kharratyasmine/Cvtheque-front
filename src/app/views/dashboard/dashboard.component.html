@@ -1,0 +1,66 @@
+<div class="card" class="col-sm-9" >
+  <div class="card-header" ><strong> Status </strong></div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item" style="display: flex; justify-content: space-between" >Entretien Orale
+      <div class="btn-group" role="group" aria-label="Third group">
+        <button type="button" class="btn btn-secondary" style="background-color: forestgreen; color: white"
+                (click)="openModal('Entretien Orale')">{{nbreorale?.length}}</button>
+      </div>
+    </li>
+    <li class="list-group-item" style="display: flex; justify-content: space-between">Entretien RH
+      <div class="btn-group" role="group" aria-label="Third group">
+        <button type="button" class="btn btn-secondary" style="background-color: forestgreen; color: white"
+                (click)="openModal('Entretien RH')">{{nbrerh?.length}}</button>
+      </div>
+    </li>
+    <li class="list-group-item" style="display: flex; justify-content: space-between">Entretien Technique
+      <div align="right" class="btn-group" role="group" aria-label="Third group">
+        <button type="button" class="btn btn-secondary" style="background-color: forestgreen; color: white"
+                (click)="openModal('Entretien Technique')">{{nbre?.length}}
+        </button>
+      </div>
+    </li>
+    <li class="list-group-item" style="display: flex; justify-content: space-between">Autres
+      <div align="right" class="btn-group" role="group" aria-label="Third group">
+        <button type="button" class="btn btn-secondary" style="background-color: forestgreen; color: white"
+                (click)="openModal('Autres')">{{nbreautre?.length}}</button>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<ng-template #element>
+  <strong> Liste des candidats ayant le statut {{result[0].sequence}} </strong>
+  <mat-dialog-content class="mat-typography">
+    <ng2-smart-table [settings]="settings" [source]="data"></ng2-smart-table>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end right">
+    <button class="btn btn-outline-light" mat-button mat-dialog-close (click)="close()">Annuler</button>
+  </mat-dialog-actions>
+
+</ng-template>
+
+<ng-template #pos>
+  <strong> Liste des candidats ayant le Poste {{result[0].post_name}} </strong>
+  <mat-dialog-content class="mat-typography">
+    <ng2-smart-table [settings]="settings" [source]="data"></ng2-smart-table>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end right">
+    <button  class="btn btn-outline-light" mat-button mat-dialog-close (click)="close()">Annuler</button>
+  </mat-dialog-actions>
+</ng-template>
+
+<div class="card" class="col-sm-9" style="margin-top: 15px;" >
+  <div class="card-header">
+    <strong>Position</strong>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item" *ngFor="let post of listCandidature" style="display: flex; justify-content: space-between">
+      {{post[6]}}
+      <div  class="btn-group" role="group" aria-label="Third group" >
+        <button type="button" class="btn btn-secondary" style="background-color: forestgreen; color: white" (click)="navigate(post[6])">
+          {{post[8]}}</button>
+      </div>
+    </li>
+  </ul>
+</div>
