@@ -62,7 +62,7 @@
     "ngx-bootstrap": "^6.2.0",
     "ngx-bootstrap-spinner": "^10.0.5",
     "ngx-perfect-scrollbar": "^10.1.0",
-    "ngx-toastr": "^14.1.0",
+    "ngx-toastr": "^13.2.1",
     "rxjs": "^6.6.6",
     "simple-line-icons": "^2.5.5",
     "ts-helpers": "^1.1.2",

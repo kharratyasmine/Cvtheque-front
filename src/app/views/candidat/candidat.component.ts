@@ -15,7 +15,6 @@ import {AnnouncementService} from '../../services/announcement.service';
 import {CandidatureService} from '../../services/candidature.service';
 import {ToastrService} from 'ngx-toastr';
 import {LocalDataSource} from 'ng2-smart-table';
-
 @Component({
   selector: 'app-candidat',
   templateUrl: './candidat.component.html',
@@ -346,7 +345,31 @@ export class CandidatComponent implements OnInit {
     reader.readAsDataURL(file);
     reader.onload = () => {
       this.cv = reader.result;
-      console.log(this.cv);
+      // api to parsing pdf
+      this.cv = this.cv.replace('data:application/pdf;base64,', '');
+      this.service.parseCV(this.cv).subscribe(result => {
+        this.nom = result.nom;
+        this.prenom = result.prenom;
+        this.email = result.mail;
+        this.tel_mobile = result.telephone;
+        this.birth_date = result.dateNaissance;
+        this.diploma_date = result.formation.dateDiplome;
+        const formation = result.formation.nameDiplome.split(',');
+        const ecoleReference = formation[1].trim().charAt(0).toUpperCase() + formation[1].trim().toLowerCase().slice(1);
+        const diplomeReference = formation[0].trim().charAt(0).toUpperCase() + formation[0].trim().toLowerCase().slice(1);
+        this.diplome = this.listDiploma.find(diplome => diplome.name === diplomeReference)?.diploma_id;
+        this.ecole = this.listUniversity.find(university => university.name === ecoleReference)?.university_id;
+        let nbrexp = 0;
+         result.experiences.forEach(experience => {
+         const res = experience.split(' ') ;
+         let y = null;
+         if ((res[2].toLowerCase() === 'present') || (res[2].toLowerCase() === 'now')) {
+           y = new Date().getFullYear();
+         } else { y = Number(res[2].trim()); }
+         nbrexp += (y - Number(res[0].trim()));
+         });
+        this.nombreDanneDexperience = nbrexp;
+      });
     };
     reader.onerror = (error) => {
       console.log('Error: ', error);
@@ -415,11 +438,14 @@ export class CandidatComponent implements OnInit {
     console.log(this.condidat);
     this.stepService.findAllSuivisByIdCandidature(this.condidat.candidatures[0].id, this.condidat.candidate_id).subscribe(rep => {
       if (rep.length === 0) {
-        this.stepService.sendMail(this.condidat, 'Réponse', this.condidat.candidatures[0].announcement.post.post_name, '', '', 'RepSansEntretien').subscribe(() => {}, () =>
+        this.stepService.sendMail(this.condidat, 'Réponse', this.condidat.candidatures[0].announcement.post.post_name, '', '', 'RepSansEntretien').subscribe(() => {
+        }, () =>
           this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
       } else {
-        this.stepService.sendMail(this.condidat, 'Réponse', this.condidat.candidatures[0].announcement.post.post_name, rep[rep.length - 1].planned_date, '', 'RepSuiteEntretien').subscribe(() =>
-        {}, () => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}))
+        this.stepService.sendMail(this.condidat, 'Réponse',
+          this.condidat.candidatures[0].announcement.post.post_name, rep[rep.length - 1].planned_date,
+          '', 'RepSuiteEntretien').subscribe(() => {
+        }, () => this.toastr.error('Un problème est survenu, veuillez contacter votre administrateur!', 'Erreur!', {timeOut: 1500}));
       }
     });
   }

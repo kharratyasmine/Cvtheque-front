@@ -36,7 +36,12 @@ export class CondidatService {
   getDocument() {
     return of('https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf');
   }
-  addCandidature(Candidature: Candidature): Observable<any> {
-    return this.httpClient.post(this.url + 'candidate', Candidature );
+  addCandidature(candidature: Candidature): Observable<any> {
+    return this.httpClient.post(this.url + 'candidate', candidature );
   }
+
+  parseCV(base64: any): Observable<any> {
+    return this.httpClient.post(this.url + 'candidate/parsing', base64);
+  }
+
 }

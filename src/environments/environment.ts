@@ -9,7 +9,7 @@ const keycloakConfig: KeycloakConfig = {
   realm: 'master',
   clientId: 'cv_theque',
   credentials: {
-    secret: '6a28c2c5-d0c0-4675-9f54-c6dde78f922e'
+    secret: 'iQ97T6cNsuPErU1vfBmMOn7122Rbl2P6'
   },
 
 };
